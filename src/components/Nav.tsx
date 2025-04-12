@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import ThemeToggle from './ThemeToggle'
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false)
@@ -21,32 +20,28 @@ export default function Nav() {
           <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
         </Link>
         
-        <div className="flex items-center space-x-4">
-          <ThemeToggle />
-          
-          <button
-            className="text-textPrimary dark:text-textPrimary md:hidden p-2 rounded hover:bg-primary/10 transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
-            aria-label="Toggle menu"
-          >
-            {/* Hamburger icon with animation */}
-            <div className="w-6 flex flex-col items-end space-y-1.5">
-              <motion.span 
-                className="block h-0.5 bg-textPrimary dark:bg-textPrimary w-6"
-                animate={{ width: isOpen ? '24px' : '16px', rotate: isOpen ? 45 : 0, y: isOpen ? 8 : 0 }}
-              />
-              <motion.span 
-                className="block h-0.5 bg-textPrimary dark:bg-textPrimary w-4"
-                animate={{ width: isOpen ? '24px' : '12px', opacity: isOpen ? 0 : 1 }}
-              />
-              <motion.span 
-                className="block h-0.5 bg-textPrimary dark:bg-textPrimary w-6"
-                animate={{ width: isOpen ? '24px' : '20px', rotate: isOpen ? -45 : 0, y: isOpen ? -8 : 0 }}
-              />
-            </div>
-          </button>
-        </div>
+        <button
+          className="text-textPrimary dark:text-textPrimary md:hidden p-2 rounded hover:bg-primary/10 transition-colors"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          aria-label="Toggle menu"
+        >
+          {/* Hamburger icon with animation */}
+          <div className="w-6 flex flex-col items-end space-y-1.5">
+            <motion.span 
+              className="block h-0.5 bg-textPrimary dark:bg-textPrimary w-6"
+              animate={{ width: isOpen ? '24px' : '16px', rotate: isOpen ? 45 : 0, y: isOpen ? 8 : 0 }}
+            />
+            <motion.span 
+              className="block h-0.5 bg-textPrimary dark:bg-textPrimary w-4"
+              animate={{ width: isOpen ? '24px' : '12px', opacity: isOpen ? 0 : 1 }}
+            />
+            <motion.span 
+              className="block h-0.5 bg-textPrimary dark:bg-textPrimary w-6"
+              animate={{ width: isOpen ? '24px' : '20px', rotate: isOpen ? -45 : 0, y: isOpen ? -8 : 0 }}
+            />
+          </div>
+        </button>
         
         <motion.div
           className={`${
