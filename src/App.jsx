@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import BasicScene from './components/three/BasicScene'
 import OptimizedScene from './components/three/OptimizedScene'
+import InteractivePortal from './components/three/InteractivePortal'
 import './App.css'
 
 export default function App() {
-  const [scene, setScene] = useState('basic') // 'basic' or 'optimized'
+  const [scene, setScene] = useState('basic') // 'basic', 'optimized', or 'portal'
   
   return (
     <div className="w-full h-screen bg-gray-900">
@@ -21,9 +22,17 @@ export default function App() {
         >
           Optimized Scene
         </button>
+        <button 
+          className={`px-4 py-2 rounded ${scene === 'portal' ? 'bg-blue-500' : 'bg-gray-700'}`}
+          onClick={() => setScene('portal')}
+        >
+          Interactive Portal
+        </button>
       </div>
       
-      {scene === 'basic' ? <BasicScene /> : <OptimizedScene />}
+      {scene === 'basic' ? <BasicScene /> : 
+       scene === 'optimized' ? <OptimizedScene /> : 
+       <InteractivePortal />}
     </div>
   )
 }
