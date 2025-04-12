@@ -8,7 +8,7 @@ export default function App() {
   const [scene, setScene] = useState('basic') // 'basic', 'optimized', or 'portal'
   
   return (
-    <div className="w-full h-screen bg-gray-900">
+    <div className="w-screen h-screen overflow-hidden bg-gray-900">
       <div className="absolute top-0 left-0 z-10 p-4 flex gap-4">
         <button 
           className={`px-4 py-2 rounded ${scene === 'basic' ? 'bg-blue-500' : 'bg-gray-700'}`}

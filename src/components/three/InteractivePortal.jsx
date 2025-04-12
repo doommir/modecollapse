@@ -75,7 +75,10 @@ export default function InteractivePortal() {
   }
 
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+    <Canvas 
+      camera={{ position: [0, 0, 5], fov: 45 }} 
+      style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+    >
       <color attach="background" args={['#111827']} />
       <ambientLight intensity={0.4} />
       <directionalLight intensity={1} position={[5, 10, 7]} />
