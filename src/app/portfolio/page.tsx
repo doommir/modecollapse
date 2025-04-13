@@ -39,7 +39,7 @@ export default function PortfolioPage() {
       title: "LoopCoach",
       description: "Your personal AI speech coach — powered by microfeedback loops. Improve your teaching and presenting skills with AI-powered feedback.",
       tags: ["Speech", "AI Feedback", "Teaching"],
-      image: "/images/loopcoach-thumbnail.png",
+      image: "/images/loopcoachthumbnail.png",
       link: "/tools/loop-coach"
     },
     {
