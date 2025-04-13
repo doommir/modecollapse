@@ -128,9 +128,8 @@ export default function PortfolioPage() {
                 {/* Top border highlight on hover */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 
-                {/* Wrap the entire card in a Link if project has a link */}
                 {project.link ? (
-                  <Link href={project.link} className="block h-full cursor-pointer relative z-10">
+                  <a href={project.link} className="block h-full cursor-pointer">
                     <motion.div 
                       className="p-6 flex flex-col h-full"
                       whileHover={{ y: -8 }}
@@ -142,58 +141,30 @@ export default function PortfolioPage() {
                       <p className="text-textSecondary dark:text-textSecondary mb-5 flex-grow">
                         {project.description}
                       </p>
-                      {project.iframe && (
-                        <div className="mb-5 w-full">
-                          <iframe 
-                            src={project.iframe} 
-                            className="w-full"
-                            height="700px" 
-                            frameBorder="0" 
-                            allow="clipboard-write"
-                          />
-                        </div>
-                      )}
                       {project.image && (
                         <div className="mb-5 w-full">
-                          <Image 
+                          <img 
                             src={project.image}
                             alt={project.title}
-                            width={800}
-                            height={600}
                             className="w-full rounded-md hover:shadow-lg transition-shadow duration-300"
-                            priority
                           />
                         </div>
                       )}
                       <div className="flex flex-wrap gap-2 mt-auto">
                         {project.tags.map(tag => (
-                          <motion.span 
+                          <span 
                             key={tag} 
                             className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
-                            whileHover={{ 
-                              scale: 1.1, 
-                              backgroundColor: "rgba(100, 255, 218, 0.2)",
-                              boxShadow: "0 0 8px rgba(100, 255, 218, 0.3)"
-                            }}
                           >
                             {tag}
-                          </motion.span>
+                          </span>
                         ))}
                       </div>
-                      <button 
-                        className="mt-4 text-primary flex items-center bg-primary/10 hover:bg-primary/20 px-4 py-2 rounded-md font-medium transition-colors duration-300 w-full justify-center"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.location.href = project.link as string;
-                        }}
-                      >
-                        <span>View Project</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                      </button>
+                      <div className="mt-4 text-primary text-center bg-primary/10 hover:bg-primary/20 p-2 rounded-md font-medium transition-colors">
+                        View Project →
+                      </div>
                     </motion.div>
-                  </Link>
+                  </a>
                 ) : (
                   <motion.div 
                     className="p-6 flex flex-col h-full"
@@ -206,41 +177,23 @@ export default function PortfolioPage() {
                     <p className="text-textSecondary dark:text-textSecondary mb-5 flex-grow">
                       {project.description}
                     </p>
-                    {project.iframe && (
-                      <div className="mb-5 w-full">
-                        <iframe 
-                          src={project.iframe} 
-                          className="w-full"
-                          height="700px" 
-                          frameBorder="0" 
-                          allow="clipboard-write"
-                        />
-                      </div>
-                    )}
                     {project.image && (
                       <div className="mb-5 w-full">
-                        <Image 
+                        <img 
                           src={project.image}
                           alt={project.title}
-                          width={800}
-                          height={600}
                           className="w-full rounded-md hover:shadow-lg transition-shadow duration-300"
                         />
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2 mt-auto">
                       {project.tags.map(tag => (
-                        <motion.span 
+                        <span 
                           key={tag} 
                           className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
-                          whileHover={{ 
-                            scale: 1.1, 
-                            backgroundColor: "rgba(100, 255, 218, 0.2)",
-                            boxShadow: "0 0 8px rgba(100, 255, 218, 0.3)"
-                          }}
                         >
                           {tag}
-                        </motion.span>
+                        </span>
                       ))}
                     </div>
                   </motion.div>
