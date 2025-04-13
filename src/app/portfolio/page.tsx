@@ -5,6 +5,18 @@ import SectionDivider from '@/components/SectionDivider'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import GlitchText from '@/components/GlitchText'
 import { useRef } from 'react'
+import Link from 'next/link'
+
+// Define types for project data
+type Project = {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  iframe?: string;
+  image?: string;
+  link?: string;
+}
 
 export default function PortfolioPage() {
   // Ref for the portfolio section to track scroll position
@@ -21,39 +33,47 @@ export default function PortfolioPage() {
   const headerOpacity = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0.6])
   
   // Sample project data
-  const projects = [
+  const projects: Project[] = [
     {
       id: 1,
+      title: "Restorative Assignment Generator",
+      description: "AI-powered tool that helps educators create restorative assignments for students.",
+      tags: ["Restorative", "Assignment", "Generator"],
+      image: "/images/restorativethumbnail.png",
+      link: "/tools/assignment-generator"
+    },
+    {
+      id: 2,
       title: "AI Teaching Assistant",
       description: "An AI companion that helps teachers grade assignments, answer student questions, and create personalized learning plans.",
       tags: ["Education", "AI", "LLM"]
     },
     {
-      id: 2,
+      id: 3,
       title: "Ethics Framework",
       description: "A comprehensive framework for implementing AI in educational settings with equity and ethical considerations at the forefront.",
       tags: ["Ethics", "Policy", "Guidelines"]
     },
     {
-      id: 3,
+      id: 4,
       title: "Curriculum Builder",
       description: "Tool for educators to build AI-enhanced curriculum materials aligned with educational standards.",
       tags: ["Curriculum", "Planning", "K-12"]
     },
     {
-      id: 4,
+      id: 5,
       title: "Student Analysis Dashboard",
       description: "Data visualization tool that helps identify learning patterns and opportunities for intervention.",
       tags: ["Analytics", "Data", "Dashboard"]
     },
     {
-      id: 5,
+      id: 6,
       title: "AI Literacy Course",
       description: "Online course teaching the fundamentals of AI for educators and administrators with no technical background.",
       tags: ["Course", "Literacy", "Training"]
     },
     {
-      id: 6,
+      id: 7,
       title: "Research Repository",
       description: "Collection of research papers and case studies on the impact of AI in educational settings globally.",
       tags: ["Research", "Papers", "Case Studies"]
@@ -79,11 +99,9 @@ export default function PortfolioPage() {
         
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div style={{ y: headerY, opacity: headerOpacity }}>
-            <GlitchText 
-              text="Our Portfolio"
-              as="h1"
-              className="text-3xl md:text-4xl lg:text-5xl font-heading mb-4 text-primary"
-            />
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading mb-4 text-primary">
+              Our Portfolio
+            </h1>
             
             <motion.p
               className="text-textSecondary dark:text-textSecondary text-lg max-w-3xl mb-16"
@@ -110,36 +128,106 @@ export default function PortfolioPage() {
                 {/* Top border highlight on hover */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 
-                {/* Micro-interactions: Content card */}
-                <motion.div 
-                  className="p-6 flex flex-col h-full"
-                  whileHover={{ y: -8 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  <GlitchText
-                    text={project.title}
-                    as="h3"
-                    className="text-xl font-bold mb-3 text-textPrimary dark:text-textPrimary group-hover:text-primary transition-colors"
-                  />
-                  <p className="text-textSecondary dark:text-textSecondary mb-5 flex-grow">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {project.tags.map(tag => (
-                      <motion.span 
-                        key={tag} 
-                        className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
-                        whileHover={{ 
-                          scale: 1.1, 
-                          backgroundColor: "rgba(100, 255, 218, 0.2)",
-                          boxShadow: "0 0 8px rgba(100, 255, 218, 0.3)"
-                        }}
-                      >
-                        {tag}
-                      </motion.span>
-                    ))}
-                  </div>
-                </motion.div>
+                {/* Wrap the entire card in a Link if project has a link */}
+                {project.link ? (
+                  <Link href={project.link} className="block h-full">
+                    <motion.div 
+                      className="p-6 flex flex-col h-full"
+                      whileHover={{ y: -8 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <h3 className="text-xl font-bold mb-3 text-textPrimary dark:text-textPrimary group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-textSecondary dark:text-textSecondary mb-5 flex-grow">
+                        {project.description}
+                      </p>
+                      {project.iframe && (
+                        <div className="mb-5 w-full">
+                          <iframe 
+                            src={project.iframe} 
+                            className="w-full"
+                            height="700px" 
+                            frameBorder="0" 
+                            allow="clipboard-write"
+                          />
+                        </div>
+                      )}
+                      {project.image && (
+                        <div className="mb-5 w-full">
+                          <img 
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full rounded-md hover:shadow-lg transition-shadow duration-300"
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-wrap gap-2 mt-auto">
+                        {project.tags.map(tag => (
+                          <motion.span 
+                            key={tag} 
+                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                            whileHover={{ 
+                              scale: 1.1, 
+                              backgroundColor: "rgba(100, 255, 218, 0.2)",
+                              boxShadow: "0 0 8px rgba(100, 255, 218, 0.3)"
+                            }}
+                          >
+                            {tag}
+                          </motion.span>
+                        ))}
+                      </div>
+                    </motion.div>
+                  </Link>
+                ) : (
+                  <motion.div 
+                    className="p-6 flex flex-col h-full"
+                    whileHover={{ y: -8 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <h3 className="text-xl font-bold mb-3 text-textPrimary dark:text-textPrimary group-hover:text-primary transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-textSecondary dark:text-textSecondary mb-5 flex-grow">
+                      {project.description}
+                    </p>
+                    {project.iframe && (
+                      <div className="mb-5 w-full">
+                        <iframe 
+                          src={project.iframe} 
+                          className="w-full"
+                          height="700px" 
+                          frameBorder="0" 
+                          allow="clipboard-write"
+                        />
+                      </div>
+                    )}
+                    {project.image && (
+                      <div className="mb-5 w-full">
+                        <img 
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full rounded-md hover:shadow-lg transition-shadow duration-300"
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      {project.tags.map(tag => (
+                        <motion.span 
+                          key={tag} 
+                          className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                          whileHover={{ 
+                            scale: 1.1, 
+                            backgroundColor: "rgba(100, 255, 218, 0.2)",
+                            boxShadow: "0 0 8px rgba(100, 255, 218, 0.3)"
+                          }}
+                        >
+                          {tag}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
                 
                 {/* Hover effect overlay - additional depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
