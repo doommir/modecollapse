@@ -62,7 +62,7 @@ export default function AssignmentGeneratorPage() {
           
           <div className="space-y-4 text-textSecondary">
             <p>
-              1. Enter details about the student's situation and the incident
+              1. Enter details about the student&apos;s situation and the incident
             </p>
             <p>
               2. Specify educational goals and desired learning outcomes
@@ -88,7 +88,7 @@ export default function AssignmentGeneratorPage() {
               </div>
               <div>
                 <h3 className="font-bold text-textPrimary">Personalized Learning</h3>
-                <p className="text-textSecondary">Tailored to each student's specific situation and needs</p>
+                <p className="text-textSecondary">Tailored to each student&apos;s specific situation and needs</p>
               </div>
             </div>
             

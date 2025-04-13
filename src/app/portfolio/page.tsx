@@ -3,9 +3,9 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import SectionDivider from '@/components/SectionDivider'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
-import GlitchText from '@/components/GlitchText'
 import { useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // Define types for project data
 type Project = {
@@ -155,9 +155,11 @@ export default function PortfolioPage() {
                       )}
                       {project.image && (
                         <div className="mb-5 w-full">
-                          <img 
+                          <Image 
                             src={project.image}
                             alt={project.title}
+                            width={800}
+                            height={600}
                             className="w-full rounded-md hover:shadow-lg transition-shadow duration-300"
                           />
                         </div>
@@ -204,9 +206,11 @@ export default function PortfolioPage() {
                     )}
                     {project.image && (
                       <div className="mb-5 w-full">
-                        <img 
+                        <Image 
                           src={project.image}
                           alt={project.title}
+                          width={800}
+                          height={600}
                           className="w-full rounded-md hover:shadow-lg transition-shadow duration-300"
                         />
                       </div>
