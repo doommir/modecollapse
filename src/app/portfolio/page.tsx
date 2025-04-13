@@ -35,7 +35,15 @@ export default function PortfolioPage() {
   // Sample project data
   const projects: Project[] = [
     {
-      id: 1,
+      id: 1, 
+      title: "LoopCoach",
+      description: "Your personal AI speech coach — powered by microfeedback loops. Improve your teaching and presenting skills with AI-powered feedback.",
+      tags: ["Speech", "AI Feedback", "Teaching"],
+      image: "/images/loopcoach-thumbnail.png",
+      link: "/tools/loop-coach"
+    },
+    {
+      id: 2,
       title: "Restorative Assignment Generator",
       description: "AI-powered tool that helps educators create restorative assignments for students.",
       tags: ["Restorative", "Assignment", "Generator"],
@@ -43,37 +51,37 @@ export default function PortfolioPage() {
       link: "/tools/assignment-generator"
     },
     {
-      id: 2,
+      id: 3,
       title: "AI Teaching Assistant",
       description: "An AI companion that helps teachers grade assignments, answer student questions, and create personalized learning plans.",
       tags: ["Education", "AI", "LLM"]
     },
     {
-      id: 3,
+      id: 4,
       title: "Ethics Framework",
       description: "A comprehensive framework for implementing AI in educational settings with equity and ethical considerations at the forefront.",
       tags: ["Ethics", "Policy", "Guidelines"]
     },
     {
-      id: 4,
+      id: 5,
       title: "Curriculum Builder",
       description: "Tool for educators to build AI-enhanced curriculum materials aligned with educational standards.",
       tags: ["Curriculum", "Planning", "K-12"]
     },
     {
-      id: 5,
+      id: 6,
       title: "Student Analysis Dashboard",
       description: "Data visualization tool that helps identify learning patterns and opportunities for intervention.",
       tags: ["Analytics", "Data", "Dashboard"]
     },
     {
-      id: 6,
+      id: 7,
       title: "AI Literacy Course",
       description: "Online course teaching the fundamentals of AI for educators and administrators with no technical background.",
       tags: ["Course", "Literacy", "Training"]
     },
     {
-      id: 7,
+      id: 8,
       title: "Research Repository",
       description: "Collection of research papers and case studies on the impact of AI in educational settings globally.",
       tags: ["Research", "Papers", "Case Studies"]
