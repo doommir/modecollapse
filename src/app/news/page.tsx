@@ -17,7 +17,7 @@ export default function NewsPage() {
     {
       id: 2,
       title: "CTE & AI: Future of Vocational Learning",
-      excerpt: "Exploring AI-driven skill training for tomorrow's workforce.",
+      excerpt: "Exploring AI-driven skill training for tomorrow&apos;s workforce.",
       date: "April 8, 2025",
       tags: ["Career Tech", "Workforce", "Training"]
     },
@@ -56,7 +56,7 @@ export default function NewsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
           >
-            Explore our latest insights, research findings, and updates on AI's evolving role in education.
+            Explore our latest insights, research findings, and updates on AI&apos;s evolving role in education.
           </motion.p>
         </ScrollRevealSection>
         
