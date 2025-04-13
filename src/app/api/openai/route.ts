@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import PDFParse from 'pdf-parse';
 
 // Initialize OpenAI with API key
 const openai = new OpenAI({
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
           return NextResponse.json({ error: 'No file data provided' }, { status: 400 });
         }
 
-        // Only process image files with GPT-4o vision
+        // For image files, use GPT-4o vision capabilities
         if (fileType.startsWith('image/')) {
           const extractResponse = await openai.chat.completions.create({
             model: "gpt-4o",
@@ -49,12 +50,48 @@ export async function POST(request: Request) {
             text: extractResponse.choices[0].message.content
           });
         } 
-        // For PDF or other file types that aren't supported by GPT-4o vision
+        // For PDF files, use pdf-parse to extract text
+        else if (fileType === 'application/pdf') {
+          try {
+            // Convert base64 to buffer
+            const pdfBuffer = Buffer.from(fileData, 'base64');
+            
+            // Parse PDF
+            const pdfData = await PDFParse(pdfBuffer);
+            
+            // Extract text
+            const rawText = pdfData.text;
+            
+            // Use GPT to organize the extracted text
+            const organizeResponse = await openai.chat.completions.create({
+              model: "gpt-4o",
+              messages: [
+                {
+                  role: "system",
+                  content: "You are an expert at organizing study content. Format the following raw text extracted from a PDF into a well-structured format with appropriate headings, bullet points, and paragraphs. Preserve all important information."
+                },
+                {
+                  role: "user",
+                  content: `Here is the raw text extracted from a PDF. Please organize it in a clear, structured format:\n\n${rawText}`
+                }
+              ],
+              max_tokens: 4000
+            });
+            
+            return NextResponse.json({ 
+              text: organizeResponse.choices[0].message.content
+            });
+          } catch (error: any) {
+            console.error("PDF parsing error:", error);
+            return NextResponse.json({ 
+              error: `Failed to parse PDF: ${error.message}` 
+            }, { status: 500 });
+          }
+        }
+        // For other file types
         else {
-          // For now, return a placeholder message
-          // In a production environment, you would use a PDF parsing library
           return NextResponse.json({
-            text: `### Content extracted from uploaded file\n\nThis is a placeholder for PDF content extraction. In production, this would use a specialized PDF parsing library like pdf.js or PyPDF.\n\nFor testing purposes, you can paste your study content directly in the text area.`
+            text: `### Content extracted from uploaded file\n\nThis file type (${fileType}) is not supported for automatic text extraction. Please upload a PDF or image file, or paste your study content directly in the text area.`
           });
         }
 
