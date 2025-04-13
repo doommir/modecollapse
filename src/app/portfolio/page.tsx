@@ -47,7 +47,7 @@ export default function PortfolioPage() {
       title: "StudyCrafter",
       description: "Transform your notes and study materials into interactive flashcards, quizzes, and an AI-powered study buddy.",
       tags: ["Education", "Study Tools", "AI"],
-      image: "/images/studycrafter-thumbnail.png",
+      image: "/images/25f93ea9-8d68-41b9-a7af-b53d5b39bd51.png",
       link: "/tools/study-crafter"
     },
     {
