@@ -47,7 +47,7 @@ export default function PortfolioPage() {
       title: "Restorative Assignment Generator",
       description: "AI-powered tool that helps educators create restorative assignments for students.",
       tags: ["Restorative", "Assignment", "Generator"],
-      image: "/images/restorativethumbnail.png",
+      image: "/images/ChatGPT Image Apr 13 2025 from AI Assignment Generator (1).png",
       link: "/tools/assignment-generator"
     },
     {
