@@ -1,0 +1,109 @@
+---
+title: "LoopCoach"
+description: "Your personal AI speech coach — powered by microfeedback loops"
+date: "2023-12-01"
+---
+
+# LoopCoach – Microfeedback AI Coach for Teaching & Speaking
+
+## Overview
+
+**LoopCoach** is an AI-powered tool that helps online educators and content creators rapidly improve their speaking delivery by analyzing short videos (1–3 minutes). The system provides targeted, actionable feedback on clarity, pace, filler words, engagement, tone, and expressiveness.
+
+---
+
+## Goals
+
+- Enable fast, private, personalized feedback on spoken delivery.
+- Support iterative practice via a "loop" workflow (record → analyze → improve).
+- Encourage self-awareness and confidence for educators in async video formats.
+
+---
+
+## Core Features
+
+### 🎥 Video Upload + Trim
+- Upload raw video or screen recording.
+- Optional: basic trimming (select 1–3 minute segment).
+
+### 🧠 AI Microfeedback Engine
+Uses:
+- **Whisper** (for transcript + speech timing)
+- **OpenAI** (for coaching insights & suggestions)
+- **Facial expression + tone detection** (for emotional expressiveness)
+
+Feedback includes:
+- Clarity of explanation
+- Speaking pace (wpm + visual graph)
+- Filler word usage (e.g., "uh," "like," "you know")
+- Engagement tone (e.g., monotone vs varied intonation)
+- Facial expressiveness / smile detection
+
+### 🔁 "Loop" Coaching Interface
+- Highlighted transcript with feedback tooltips.
+- Dynamic visual graphs for pacing & tone.
+- Summary dashboard: "What You Did Well" / "What to Improve"
+- Re-record button + history of past uploads to track growth.
+
+### 📈 Progress Tracking
+- Trendline of improvement across key metrics.
+- Option to set speaking goals (e.g., reduce filler words by 50%).
+
+---
+
+## User Flow
+
+1. User uploads or records a short teaching clip.
+2. AI analyzes audio, transcript, tone, and facial expression.
+3. Returns a visual feedback report with suggestions.
+4. User iterates and re-records — forms a microfeedback loop.
+
+---
+
+## Tech Stack
+
+- **Frontend**: React + Tailwind (or no-code like Webflow + Outseta for MVP)
+- **Backend**: Node.js or Python (API endpoints for processing)
+- **Speech-to-Text**: Whisper API
+- **Analysis Models**:
+  - Prosody / filler detection: Deepgram / Descript SDK
+  - Facial expression: Amazon Rekognition / Affectiva / Banuba
+  - Feedback logic: OpenAI (GPT-4 prompt chains)
+- **Storage**: S3 or Firebase for videos
+- **Auth**: Clerk or Supabase
+
+---
+
+## Future Add-ons
+
+- Compare side-by-side videos ("Before vs After")
+- Integrate with Loom, Zoom, or Google Meet clips
+- Peer feedback layer (like "review buddy" mode)
+- Gamified challenges (e.g., "Explain X concept under 60 seconds")
+
+---
+
+## Ideal Users
+
+- Online course creators (e.g., Teachable, Kajabi, Maven instructors)
+- Teachers recording async lessons or flipped classrooms
+- YouTube educators & edutainers
+- Non-native speakers prepping lectures or webinars
+
+---
+
+## Why Now?
+
+- Explosion of async, video-first education
+- Rise of creator-educators wanting to stand out
+- Increased comfort with AI tools for coaching and self-improvement
+
+---
+
+## V1 MVP Roadmap
+
+1. Upload + trim interface
+2. Whisper + filler/pacing analysis
+3. Basic visual feedback report
+4. Loopable upload/re-record workflow
+5. Polished UI for solo educators 
