@@ -114,36 +114,78 @@ export default function StudyCrafterPage() {
           }
           reader.readAsText(file)
         } 
-        // For PDFs, images, etc. use GPT-4o OCR capabilities
-        else if (file.type.startsWith('image/') || file.type === 'application/pdf') {
-          // Convert file to base64
-          const base64Data = await fileToBase64(file)
-          
-          // Call our API to extract text
-          const response = await fetch('/api/openai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              action: 'extractText',
-              fileData: base64Data,
-              fileType: file.type
+        // For images, use GPT-4o OCR capabilities
+        else if (file.type.startsWith('image/')) {
+          try {
+            // Convert file to base64
+            const base64Data = await fileToBase64(file)
+            
+            // Call our API to extract text
+            const response = await fetch('/api/openai', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'extractText',
+                fileData: base64Data,
+                fileType: file.type
+              })
             })
-          })
-          
-          if (!response.ok) {
-            throw new Error('Failed to extract text from file')
+            
+            if (!response.ok) {
+              throw new Error(`Server responded with ${response.status}: ${response.statusText}`)
+            }
+            
+            const data = await response.json()
+            if (data.error) {
+              throw new Error(data.error)
+            }
+            
+            setContent(data.text)
+            setProcessedContent(data.text)
+          } catch (err: any) {
+            console.error('Error processing image:', err)
+            setError(`Failed to process image: ${err.message || 'Unknown error'}`)
           }
-          
-          const data = await response.json()
-          setContent(data.text)
-          setProcessedContent(data.text)
+        }
+        // For PDFs or other files, send to API but handle differently
+        else if (file.type === 'application/pdf') {
+          try {
+            // Convert file to base64
+            const base64Data = await fileToBase64(file)
+            
+            // Call our API to extract text
+            const response = await fetch('/api/openai', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'extractText',
+                fileData: base64Data,
+                fileType: file.type
+              })
+            })
+            
+            if (!response.ok) {
+              throw new Error(`Server responded with ${response.status}: ${response.statusText}`)
+            }
+            
+            const data = await response.json()
+            if (data.error) {
+              throw new Error(data.error)
+            }
+            
+            setContent(data.text)
+            setProcessedContent(data.text)
+          } catch (err: any) {
+            console.error('Error processing PDF:', err)
+            setError(`Failed to process PDF: ${err.message || 'Unknown error'}`)
+          }
         }
         else {
           setError('Unsupported file type. Please upload a text, PDF, or image file.')
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error processing file:', error)
-        setError('Failed to process file. Please try again.')
+        setError(`Failed to process file: ${error.message || 'Unknown error'}`)
       } finally {
         setIsProcessing(false)
       }

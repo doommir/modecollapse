@@ -19,33 +19,44 @@ export async function POST(request: Request) {
           return NextResponse.json({ error: 'No file data provided' }, { status: 400 });
         }
 
-        const extractResponse = await openai.chat.completions.create({
-          model: "gpt-4o",
-          messages: [
-            {
-              role: "system",
-              content: "You are an expert at extracting and organizing study content. Extract all readable text from the image in a well-structured format, preserving the original organization and hierarchy."
-            },
-            {
-              role: "user",
-              content: [
-                { type: "text", text: "Extract all the text content from this study material and organize it in a clear format with appropriate headings, bullet points, and paragraphs." },
-                { 
-                  type: "image_url", 
-                  image_url: {
-                    url: `data:${fileType};base64,${fileData}`,
-                    detail: "high"
-                  } 
-                }
-              ]
-            }
-          ],
-          max_tokens: 4000
-        });
+        // Only process image files with GPT-4o vision
+        if (fileType.startsWith('image/')) {
+          const extractResponse = await openai.chat.completions.create({
+            model: "gpt-4o",
+            messages: [
+              {
+                role: "system",
+                content: "You are an expert at extracting and organizing study content. Extract all readable text from the image in a well-structured format, preserving the original organization and hierarchy."
+              },
+              {
+                role: "user",
+                content: [
+                  { type: "text", text: "Extract all the text content from this study material and organize it in a clear format with appropriate headings, bullet points, and paragraphs." },
+                  { 
+                    type: "image_url", 
+                    image_url: {
+                      url: `data:${fileType};base64,${fileData}`,
+                      detail: "high"
+                    } 
+                  }
+                ]
+              }
+            ],
+            max_tokens: 4000
+          });
 
-        return NextResponse.json({ 
-          text: extractResponse.choices[0].message.content
-        });
+          return NextResponse.json({ 
+            text: extractResponse.choices[0].message.content
+          });
+        } 
+        // For PDF or other file types that aren't supported by GPT-4o vision
+        else {
+          // For now, return a placeholder message
+          // In a production environment, you would use a PDF parsing library
+          return NextResponse.json({
+            text: `### Content extracted from uploaded file\n\nThis is a placeholder for PDF content extraction. In production, this would use a specialized PDF parsing library like pdf.js or PyPDF.\n\nFor testing purposes, you can paste your study content directly in the text area.`
+          });
+        }
 
       case 'generateTools':
         // Generate study tools from content
