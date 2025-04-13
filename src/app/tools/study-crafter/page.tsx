@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import SectionDivider from '@/components/SectionDivider'
@@ -29,7 +29,9 @@ type ConceptType = {
 export default function StudyCrafterPage() {
   const [file, setFile] = useState<File | null>(null)
   const [content, setContent] = useState<string>('')
+  const [processedContent, setProcessedContent] = useState<string>('')
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [generatedTools, setGeneratedTools] = useState<{
     flashcards: FlashcardType[];
     quiz: QuizQuestionType[];
@@ -40,163 +42,227 @@ export default function StudyCrafterPage() {
   const [chatInput, setChatInput] = useState('')
   const [chatMode, setChatMode] = useState<'ask' | 'quiz' | 'explain'>('ask')
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [studySession, setStudySession] = useState<{
+    id: string;
+    title: string;
+    content: string;
+    createdAt: Date;
+  } | null>(null)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const chatInputRef = useRef<HTMLInputElement>(null)
   
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Check for existing study session in localStorage
+  useEffect(() => {
+    const savedSession = localStorage.getItem('studySession')
+    if (savedSession) {
+      try {
+        const session = JSON.parse(savedSession)
+        setStudySession(session)
+        setProcessedContent(session.content)
+        
+        // If we have a saved session but no tools yet, generate them
+        if (!generatedTools) {
+          setTimeout(() => {
+            generateStudyTools(session.content)
+          }, 500)
+        }
+      } catch (error) {
+        console.error('Error loading saved study session:', error)
+      }
+    }
+  }, [])
+  
+  // Convert file to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        const base64String = reader.result as string
+        // Remove data URL prefix (e.g., "data:image/jpeg;base64,")
+        const base64Content = base64String.split(',')[1]
+        resolve(base64Content)
+      }
+      reader.onerror = error => reject(error)
+    })
+  }
+  
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       setFile(file)
       setContent('')
       setGeneratedTools(null)
+      setError(null)
+      setIsProcessing(true)
       
-      // For PDF or DOCX, we'd need a parser
-      // For demo, we'll just handle text files
-      if (file.type === 'text/plain') {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          const text = e.target?.result as string
-          setContent(text)
+      try {
+        // For text files, read directly
+        if (file.type === 'text/plain') {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            const text = e.target?.result as string
+            setContent(text)
+            setProcessedContent(text)
+            setIsProcessing(false)
+          }
+          reader.onerror = () => {
+            setError('Failed to read file')
+            setIsProcessing(false)
+          }
+          reader.readAsText(file)
+        } 
+        // For PDFs, images, etc. use GPT-4o OCR capabilities
+        else if (file.type.startsWith('image/') || file.type === 'application/pdf') {
+          // Convert file to base64
+          const base64Data = await fileToBase64(file)
+          
+          // Call our API to extract text
+          const response = await fetch('/api/openai', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'extractText',
+              fileData: base64Data,
+              fileType: file.type
+            })
+          })
+          
+          if (!response.ok) {
+            throw new Error('Failed to extract text from file')
+          }
+          
+          const data = await response.json()
+          setContent(data.text)
+          setProcessedContent(data.text)
         }
-        reader.readAsText(file)
-      } else {
-        // Simulate extracting text from other file types
-        setContent(`[Content extracted from ${file.name}]`)
+        else {
+          setError('Unsupported file type. Please upload a text, PDF, or image file.')
+        }
+      } catch (error) {
+        console.error('Error processing file:', error)
+        setError('Failed to process file. Please try again.')
+      } finally {
+        setIsProcessing(false)
       }
     }
   }
   
   const handleTextInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value)
+    const text = e.target.value
+    setContent(text)
+    setProcessedContent(text)
     setFile(null)
+    setError(null)
   }
   
-  const generateStudyTools = () => {
-    if (!content) return
+  const generateStudyTools = async (contentToProcess = processedContent) => {
+    if (!contentToProcess) return
     
     setIsGenerating(true)
+    setError(null)
     
-    // Simulate API call to generate study materials
-    setTimeout(() => {
-      // Mock generated tools for the MVP demo
-      const mockFlashcards: FlashcardType[] = [
-        { id: '1', term: 'Active Recall', definition: 'A study method that involves actively stimulating memory during the learning process. It is one of the most effective study techniques.' },
-        { id: '2', term: 'Spaced Repetition', definition: 'A learning technique that involves reviewing information at increasing intervals to improve long-term retention.' },
-        { id: '3', term: 'Cognitive Load', definition: 'The total amount of mental effort being used in working memory. It affects how well information can be processed and retained.' },
-        { id: '4', term: 'Chunking', definition: 'A memory technique that involves breaking down large amounts of information into smaller, manageable units.' },
-        { id: '5', term: 'Elaborative Encoding', definition: 'The process of connecting new information with existing knowledge to enhance memory retention and recall.' }
-      ]
-      
-      const mockQuiz: QuizQuestionType[] = [
-        { 
-          id: '1', 
-          question: 'Which study technique involves testing yourself on material to strengthen memory?',
-          options: ['Passive Review', 'Highlighting', 'Active Recall', 'Speed Reading'],
-          correctAnswer: 'Active Recall',
-          type: 'multiple'
-        },
-        { 
-          id: '2', 
-          question: 'What is the purpose of spaced repetition?',
-          options: ['To increase study speed', 'To improve long-term retention', 'To reduce eye strain', 'To enhance visual memory'],
-          correctAnswer: 'To improve long-term retention',
-          type: 'multiple'
-        },
-        { 
-          id: '3', 
-          question: 'Explain how chunking helps with memorization.',
-          correctAnswer: 'Chunking helps break down complex information into smaller, more manageable units that are easier to process and remember.',
-          type: 'short'
-        },
-        { 
-          id: '4', 
-          question: 'How does elaborative encoding improve learning?',
-          correctAnswer: 'Elaborative encoding connects new information to existing knowledge, creating multiple pathways for retrieval and improving memory retention.',
-          type: 'short'
-        }
-      ]
-      
-      const mockConcepts: ConceptType[] = [
-        { 
-          id: '1', 
-          title: 'Effective Study Techniques', 
-          summary: 'The most effective study methods include active recall and spaced repetition, which force the brain to retrieve information and strengthen neural pathways.' 
-        },
-        { 
-          id: '2', 
-          title: 'Memory Formation', 
-          summary: 'Memory formation involves encoding, storage, and retrieval processes. Techniques like elaborative encoding and chunking can improve how information moves from short-term to long-term memory.' 
-        },
-        { 
-          id: '3', 
-          title: 'Cognitive Load Theory', 
-          summary: 'The amount of information your working memory can handle is limited. Reducing cognitive load through proper organization and study techniques improves learning efficiency.' 
-        }
-      ]
-      
-      setGeneratedTools({
-        flashcards: mockFlashcards,
-        quiz: mockQuiz,
-        concepts: mockConcepts
+    // Create a new study session
+    const sessionId = `session-${Date.now()}`
+    const newSession = {
+      id: sessionId,
+      title: file ? file.name : `Study Session ${new Date().toLocaleDateString()}`,
+      content: contentToProcess,
+      createdAt: new Date()
+    }
+    
+    // Save to localStorage for persistence
+    localStorage.setItem('studySession', JSON.stringify(newSession))
+    setStudySession(newSession)
+    
+    try {
+      // Call our API to generate study tools
+      const response = await fetch('/api/openai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'generateTools',
+          content: contentToProcess
+        })
       })
       
-      setIsGenerating(false)
+      if (!response.ok) {
+        throw new Error('Failed to generate study tools')
+      }
+      
+      const toolsData = await response.json()
+      setGeneratedTools(toolsData)
       setActiveTab('flashcards')
-    }, 2000)
+    } catch (error) {
+      console.error('Error generating study tools:', error)
+      setError('Failed to generate study tools. Please try again.')
+    } finally {
+      setIsGenerating(false)
+    }
   }
   
-  const handleChatSubmit = (e: React.FormEvent) => {
+  const handleChatSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!chatInput.trim()) return
+    if (!chatInput.trim() || !processedContent) return
     
     const newMessage = { role: 'user' as const, content: chatInput }
     setChatMessages(prev => [...prev, newMessage])
     setChatInput('')
     setIsLoading(true)
+    setError(null)
     
-    // Simulate AI response based on chat mode
-    setTimeout(() => {
-      let response
+    try {
+      // Call our API to get a response from the AI
+      const response = await fetch('/api/openai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'chat',
+          content: processedContent,
+          chatHistory: [...chatMessages, newMessage],
+          mode: chatMode
+        })
+      })
       
-      switch(chatMode) {
-        case 'ask':
-          response = { 
-            role: 'assistant' as const, 
-            content: 'Based on your notes, active recall is one of the most effective study techniques because it forces your brain to retrieve information from memory, strengthening neural pathways.' 
-          }
-          break
-        case 'quiz':
-          response = { 
-            role: 'assistant' as const, 
-            content: 'Here\'s a quiz question for you: What is the purpose of spaced repetition in learning? \n\nA) To increase study speed \nB) To improve long-term retention \nC) To reduce eye strain \nD) To enhance visual memory' 
-          }
-          break
-        case 'explain':
-          response = { 
-            role: 'assistant' as const, 
-            content: 'Let me explain the concept of "chunking" from your notes: Chunking is a memory technique where you break down large amounts of information into smaller, more manageable units or "chunks." This helps reduce cognitive load on your working memory, making the information easier to process and remember. For example, remembering a phone number as three chunks (123)-(456)-(7890) is easier than ten separate digits.' 
-          }
-          break
+      if (!response.ok) {
+        throw new Error('Failed to get response from study buddy')
       }
       
-      setChatMessages(prev => [...prev, response])
-      setIsLoading(false)
+      const data = await response.json()
       
-      // Focus back on input after response
+      // Add assistant's response to chat
+      setChatMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: data.message
+      }])
+    } catch (error) {
+      console.error('Error in chat:', error)
+      setChatMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: "Sorry, I encountered an error. Please try again."
+      }])
+      setError('Failed to communicate with study buddy. Please try again.')
+    } finally {
+      setIsLoading(false)
       if (chatInputRef.current) {
         chatInputRef.current.focus()
       }
-    }, 1500)
+    }
   }
   
   const resetStudySession = () => {
     setFile(null)
     setContent('')
+    setProcessedContent('')
     setGeneratedTools(null)
     setActiveTab('upload')
     setChatMessages([])
     setChatInput('')
+    setStudySession(null)
+    setError(null)
+    localStorage.removeItem('studySession')
   }
   
   // Render UI based on active tab
@@ -205,6 +271,12 @@ export default function StudyCrafterPage() {
       case 'upload':
         return (
           <div className="space-y-6">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 text-red-500 p-4 rounded-lg">
+                {error}
+              </div>
+            )}
+            
             <div className="border-2 border-dashed border-primary/30 rounded-lg p-8">
               <div className="max-w-lg mx-auto text-center">
                 <svg 
@@ -223,26 +295,44 @@ export default function StudyCrafterPage() {
                 
                 <h3 className="text-xl font-bold text-textPrimary mb-2">Upload Your Study Material</h3>
                 <p className="text-textSecondary mb-6">
-                  Upload PDF, Word document, or text files with your notes to generate study tools.
+                  Upload PDF, image, or text files with your notes to generate study tools.
                 </p>
                 
                 <input
                   type="file"
                   ref={fileInputRef}
                   onChange={handleFileChange}
-                  accept=".pdf,.docx,.txt"
+                  accept=".pdf,.txt,.jpg,.jpeg,.png"
                   className="hidden"
                   id="studyFileUpload"
                 />
                 
                 <label 
                   htmlFor="studyFileUpload"
-                  className="inline-block px-6 py-3 bg-primary text-darkBg rounded-md font-medium cursor-pointer hover:bg-primary/90 transition-colors"
+                  className={`inline-block px-6 py-3 ${isProcessing ? 'bg-primary/60' : 'bg-primary'} text-darkBg rounded-md font-medium cursor-pointer hover:bg-primary/90 transition-colors`}
                 >
-                  Choose File
+                  {isProcessing ? (
+                    <div className="flex items-center">
+                      <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                        <circle 
+                          className="opacity-25" 
+                          cx="12" cy="12" r="10" 
+                          stroke="currentColor" 
+                          strokeWidth="4" 
+                          fill="none" 
+                        />
+                        <path 
+                          className="opacity-75" 
+                          fill="currentColor" 
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" 
+                        />
+                      </svg>
+                      Processing...
+                    </div>
+                  ) : "Choose File"}
                 </label>
                 
-                {file && (
+                {file && !isProcessing && (
                   <div className="mt-4 text-textPrimary">
                     Selected: <span className="font-semibold">{file.name}</span>
                   </div>
@@ -257,15 +347,16 @@ export default function StudyCrafterPage() {
                 onChange={handleTextInput}
                 className="w-full h-64 bg-darkBg/40 border border-textSecondary/20 rounded-md p-4 text-textPrimary focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                 placeholder="Paste your study notes, definitions, or content here..."
+                disabled={isProcessing}
               />
             </div>
             
             <div className="flex justify-end">
               <button
-                onClick={generateStudyTools}
-                disabled={!content || isGenerating}
+                onClick={() => generateStudyTools()}
+                disabled={!content || isGenerating || isProcessing}
                 className={`px-6 py-3 bg-primary text-darkBg rounded-md font-medium 
-                          ${(!content || isGenerating) ? 'opacity-70' : 'hover:bg-primary/90'} transition-colors`}
+                          ${(!content || isGenerating || isProcessing) ? 'opacity-70' : 'hover:bg-primary/90'} transition-colors`}
               >
                 {isGenerating ? (
                   <div className="flex items-center">
