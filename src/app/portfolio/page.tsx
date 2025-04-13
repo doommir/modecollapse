@@ -130,7 +130,7 @@ export default function PortfolioPage() {
                 
                 {/* Wrap the entire card in a Link if project has a link */}
                 {project.link ? (
-                  <Link href={project.link} className="block h-full cursor-pointer">
+                  <Link href={project.link} className="block h-full cursor-pointer relative z-10">
                     <motion.div 
                       className="p-6 flex flex-col h-full"
                       whileHover={{ y: -8 }}
@@ -180,12 +180,18 @@ export default function PortfolioPage() {
                           </motion.span>
                         ))}
                       </div>
-                      <div className="mt-4 text-primary text-sm font-medium flex items-center">
-                        View Project
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                      <button 
+                        className="mt-4 text-primary flex items-center bg-primary/10 hover:bg-primary/20 px-4 py-2 rounded-md font-medium transition-colors duration-300 w-full justify-center"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = project.link as string;
+                        }}
+                      >
+                        <span>View Project</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
-                      </div>
+                      </button>
                     </motion.div>
                   </Link>
                 ) : (
@@ -241,7 +247,7 @@ export default function PortfolioPage() {
                 )}
                 
                 {/* Hover effect overlay - additional depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </div>
             ))}
           </ScrollRevealSection>
