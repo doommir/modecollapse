@@ -5,6 +5,7 @@ import SectionDivider from '@/components/SectionDivider'
 import ParallaxBackground from '@/components/ParallaxBackground'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import GlitchText from '@/components/GlitchText'
+import ScrollIndicator from '@/components/ScrollIndicator'
 
 export default function Home() {
   return (
@@ -72,6 +73,9 @@ export default function Home() {
             </motion.a>
           </motion.div>
         </div>
+        
+        {/* Scroll indicator for first section */}
+        <ScrollIndicator />
       </section>
       
       <SectionDivider />
@@ -85,7 +89,7 @@ export default function Home() {
             className="mb-16"
           >
             <h2 className="text-2xl md:text-3xl font-heading text-center text-textPrimary dark:text-textPrimary">
-              How we're advancing AI adoption in education
+              How we&apos;re advancing AI adoption in education
             </h2>
           </ScrollRevealSection>
           

@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
 
 export default function ParallaxBackground() {
   const ref = useRef(null)
@@ -58,7 +58,7 @@ export default function ParallaxBackground() {
 type ParticleProps = {
   count: number;
   maxSize: number;
-  speed: any; // Motion value
+  speed: MotionValue<number>; // Use MotionValue type instead of any
   variant: 'primary' | 'secondary';
 }
 
