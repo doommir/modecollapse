@@ -52,31 +52,10 @@ export async function POST(request: Request) {
         // For PDF files, use GPT-4o directly (it can handle PDFs with base64)
         else if (fileType === 'application/pdf') {
           try {
-            // For PDFs, we'll use GPT-4o directly
-            // Note: This approach might not work with all PDFs, but provides a more reliable solution
-            // than depending on pdf-parse which has dependency issues
-            const extractResponse = await openai.chat.completions.create({
-              model: "gpt-4o",
-              messages: [
-                {
-                  role: "system",
-                  content: "You are an expert at extracting and organizing study content from PDF files. The user will provide a base64-encoded PDF. Extract and organize the content from this PDF in a well-structured format with appropriate headings, bullet points, and paragraphs."
-                },
-                {
-                  role: "user",
-                  content: "This is a PDF document containing study material. Please extract and organize all the content from it in a clear, structured format that preserves the original organization and hierarchy."
-                },
-                {
-                  role: "user",
-                  content: "Due to limitations, I can't directly send you the PDF. Instead, let's treat this as if you've received the PDF, and you should respond with a message indicating that you would extract the content from a PDF, organizing it into a structured study format with headings, bullet points, and proper paragraphs."
-                }
-              ],
-              max_tokens: 4000
-            });
-            
-            // Return a response that simulates PDF extraction
+            // For PDFs, we'll return a clearer message about limitations
+            // This prevents the AI from generating study materials about PDF parsing itself
             return NextResponse.json({ 
-              text: `# Content Extracted from PDF\n\nThe PDF content would be processed and organized here in a structured format with proper headings, sections, and formatting. For the MVP demo, you can copy and paste study content directly in the text area to see the AI tools in action.\n\n## Example Format\n\n### Key Concepts\nThe main concepts from your PDF would be listed and explained here.\n\n### Detailed Notes\nMore detailed information from your PDF would be presented in this section, organized by topic.\n\n### Summary\nA concise summary of the PDF content would appear here.`
+              text: `# Please paste your study content directly\n\nIn this demo version, PDF content extraction is limited. For the best experience, please copy and paste your study content directly into the text box.\n\nAlternatively, you can upload image files (.jpg, .png) which will be processed with OCR.`
             });
           } catch (error: any) {
             console.error("PDF processing error:", error);

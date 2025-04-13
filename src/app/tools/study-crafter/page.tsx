@@ -336,15 +336,18 @@ export default function StudyCrafterPage() {
                 </svg>
                 
                 <h3 className="text-xl font-bold text-textPrimary mb-2">Upload Your Study Material</h3>
-                <p className="text-textSecondary mb-6">
-                  Upload PDF, image, or text files with your notes to generate study tools.
+                <p className="text-textSecondary mb-3">
+                  Upload image files (.jpg, .png) with your notes for OCR processing.
+                </p>
+                <p className="text-amber-400 text-sm mb-6">
+                  <span className="font-bold">Note:</span> PDF extraction is limited in this demo. For best results, paste content directly in the text area below.
                 </p>
                 
                 <input
                   type="file"
                   ref={fileInputRef}
                   onChange={handleFileChange}
-                  accept=".pdf,.txt,.jpg,.jpeg,.png"
+                  accept=".txt,.jpg,.jpeg,.png"
                   className="hidden"
                   id="studyFileUpload"
                 />
