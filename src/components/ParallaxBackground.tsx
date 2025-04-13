@@ -38,7 +38,7 @@ export default function ParallaxBackground() {
       
       {/* Bottom right shape - move at medium speed */}
       <motion.div 
-        className="absolute -bottom-60 -right-40 w-[60vw] h-[60vw] rounded-full bg-secondary/5 blur-3xl dark:bg-secondary/10"
+        className="absolute -bottom-40 right-0 w-[40vw] h-[40vw] rounded-full bg-secondary/5 blur-3xl dark:bg-secondary/10"
         style={{ y: y2 }}
       />
       
@@ -51,6 +51,37 @@ export default function ParallaxBackground() {
       {/* Particles - small dots that move at different speeds */}
       <ParticleLayer count={20} maxSize={4} speed={y3} variant="primary" />
       <ParticleLayer count={15} maxSize={3} speed={y2} variant="secondary" />
+      
+      {/* Bottom indicator - properly positioned */}
+      <div className="w-full flex justify-center">
+        <div className="absolute bottom-6 z-10 flex justify-center w-full">
+          <motion.div
+            className="relative flex items-center justify-center w-10 h-10"
+            animate={{ 
+              y: [0, -6, 0],
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 2,
+              ease: "easeInOut"
+            }}
+          >
+            <div className="w-2 h-2 rounded-full bg-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-neon" />
+            
+            <svg className="w-full h-full text-primary/20" viewBox="0 0 100 100">
+              <circle 
+                cx="50" 
+                cy="50" 
+                r="40" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+                strokeDasharray="6 4" 
+              />
+            </svg>
+          </motion.div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -58,7 +89,7 @@ export default function ParallaxBackground() {
 type ParticleProps = {
   count: number;
   maxSize: number;
-  speed: MotionValue<number>; // Use MotionValue type instead of any
+  speed: MotionValue<number>;
   variant: 'primary' | 'secondary';
 }
 

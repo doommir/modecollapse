@@ -5,7 +5,6 @@ import SectionDivider from '@/components/SectionDivider'
 import ParallaxBackground from '@/components/ParallaxBackground'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import GlitchText from '@/components/GlitchText'
-import ScrollIndicator from '@/components/ScrollIndicator'
 
 export default function Home() {
   return (
@@ -73,9 +72,6 @@ export default function Home() {
             </motion.a>
           </motion.div>
         </div>
-        
-        {/* Scroll indicator for first section */}
-        <ScrollIndicator />
       </section>
       
       <SectionDivider />
