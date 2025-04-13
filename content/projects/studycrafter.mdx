@@ -1,0 +1,111 @@
+---
+title: "StudyCrafter"
+description: "Interactive Study Guides from Your Notes"
+date: "2023-12-02"
+---
+
+# StudyCrafter – Interactive Study Guides from Your Notes
+
+## Overview
+
+**StudyCrafter** transforms user-uploaded notes, PDFs, or study materials into interactive, AI-powered study tools. It generates personalized flashcards, quizzes, and an intelligent chatbot that only draws from the user's content. Designed to be fast, embeddable, and focused — perfect for learners preparing for tests or certifications using their own materials.
+
+---
+
+## Core Goals
+
+- Allow learners to upload raw content and generate smart, active recall tools in seconds.
+- Provide a private, focused AI chatbot that understands *only what the user is studying*.
+- Help learners retain more through self-testing, flashcards, and adaptive practice.
+
+---
+
+## Features (MVP Scope)
+
+### 1. 📥 Upload & Parse Study Material
+- Accept PDFs, DOCX, plain text, or pasted content.
+- Optional: OCR for image-based notes (stretch goal).
+- Extracts clean text, breaks into logical topic chunks.
+
+### 2. 🧠 Auto-Generated Study Tools
+After upload, the app generates:
+- 📚 **Flashcards** (term → definition, Q&A style)
+- ❓ **Practice Quiz** (multiple choice + short answer)
+- 🧩 **Concept Summary** (quick recap for each section)
+- User can edit/save/delete each item.
+
+### 3. 💬 AI Study Buddy (Contextual Chat)
+- GPT-powered assistant trained only on uploaded material.
+- Modes:
+  - **Ask Anything**
+  - **Quiz Me**
+  - **Explain This**
+- Responds only using retrieved snippets from user content.
+
+### 4. 📊 Session Tracker (Lightweight)
+- Logs study sessions (date, duration, material studied).
+- Simple heatmap of sessions per day.
+
+---
+
+## UI/UX Sketch (Embeddable Mode)
+
+- **Left Column**: Study File Upload → List of Generated Tools (Flashcards, Quizzes)
+- **Right Panel**: AI Chat Interface
+- **Bottom Bar**: "Start Study Session" → Logs session + opens flashcard or quiz flow
+
+Design language:
+- Clean, dark-academic palette (navy, forest, parchment)
+- Subtle animations (Framer Motion-style)
+- Accessible, mobile-friendly
+
+---
+
+## User Flow
+
+1. User uploads a PDF of study notes.
+2. App parses the file and shows:
+    - Summary of sections
+    - Generated flashcards and quiz questions
+3. User starts a study session:
+    - Chats with the AI to quiz or explain concepts
+    - Reviews flashcards, answers quiz questions
+4. Session is logged; user can revisit later.
+
+---
+
+## Tech Stack
+
+| Component | Stack |
+|----------|-------|
+| Frontend | React + Tailwind (or low-code: Webflow + Outseta) |
+| Backend | Supabase / Firebase + serverless functions |
+| AI Stack | GPT-4 Turbo + LangChain / LlamaIndex for RAG |
+| File Parsing | Unstructured.io / PDFParse / PyMuPDF |
+| Chat Memory | Lightweight per-session memory (ephemeral) |
+
+---
+
+## Stretch Features (Canvas Upgrade)
+
+- 🧠 Visual Concept Map (auto-generated mind map)
+- 🔁 Spaced Repetition Queue (Anki-style)
+- 📝 Editable Canvas for remixing flashcards + notes
+- 🧪 Teach-Back Mode (user explains to AI, gets feedback)
+
+---
+
+## Ideal Use Cases
+
+- College students prepping for exams
+- Learners using bootcamp or textbook PDFs
+- Certification prep (e.g., MCAT, PMP, AWS)
+- Self-learners organizing dense material
+
+---
+
+## Why It's Different
+
+- Unlike Notion AI or general-purpose tools, this is **narrowly focused on test-prep & active recall**.
+- No need to reformat notes — upload, learn, and interact in minutes.
+- Keeps user data private and the context tight (no hallucinating from outside sources). 

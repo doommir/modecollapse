@@ -32,7 +32,7 @@ export default function PortfolioPage() {
   const headerY = useTransform(scrollYProgress, [0, 0.5], [0, -50])
   const headerOpacity = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0.6])
   
-  // Sample project data
+  // Project data
   const projects: Project[] = [
     {
       id: 1, 
@@ -44,6 +44,14 @@ export default function PortfolioPage() {
     },
     {
       id: 2,
+      title: "StudyCrafter",
+      description: "Transform your notes and study materials into interactive flashcards, quizzes, and an AI-powered study buddy.",
+      tags: ["Education", "Study Tools", "AI"],
+      image: "/images/studycrafter-thumbnail.png",
+      link: "/tools/study-crafter"
+    },
+    {
+      id: 3,
       title: "Restorative Assignment Generator",
       description: "AI-powered tool that helps educators create restorative assignments for students.",
       tags: ["Restorative", "Assignment", "Generator"],
@@ -51,37 +59,37 @@ export default function PortfolioPage() {
       link: "/tools/assignment-generator"
     },
     {
-      id: 3,
+      id: 4,
       title: "AI Teaching Assistant",
       description: "An AI companion that helps teachers grade assignments, answer student questions, and create personalized learning plans.",
       tags: ["Education", "AI", "LLM"]
     },
     {
-      id: 4,
+      id: 5,
       title: "Ethics Framework",
       description: "A comprehensive framework for implementing AI in educational settings with equity and ethical considerations at the forefront.",
       tags: ["Ethics", "Policy", "Guidelines"]
     },
     {
-      id: 5,
+      id: 6,
       title: "Curriculum Builder",
       description: "Tool for educators to build AI-enhanced curriculum materials aligned with educational standards.",
       tags: ["Curriculum", "Planning", "K-12"]
     },
     {
-      id: 6,
+      id: 7,
       title: "Student Analysis Dashboard",
       description: "Data visualization tool that helps identify learning patterns and opportunities for intervention.",
       tags: ["Analytics", "Data", "Dashboard"]
     },
     {
-      id: 7,
+      id: 8,
       title: "AI Literacy Course",
       description: "Online course teaching the fundamentals of AI for educators and administrators with no technical background.",
       tags: ["Course", "Literacy", "Training"]
     },
     {
-      id: 8,
+      id: 9,
       title: "Research Repository",
       description: "Collection of research papers and case studies on the impact of AI in educational settings globally.",
       tags: ["Research", "Papers", "Case Studies"]
