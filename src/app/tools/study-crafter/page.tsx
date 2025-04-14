@@ -198,6 +198,13 @@ export default function StudyCrafterPage() {
     setProcessedContent(text)
     setFile(null)
     setError(null)
+    
+    // Clear existing study session when new text is pasted
+    if (studySession) {
+      setStudySession(null)
+      setGeneratedTools(null)
+      localStorage.removeItem('studySession')
+    }
   }
   
   const generateStudyTools = async (contentToProcess = processedContent) => {
@@ -294,16 +301,18 @@ export default function StudyCrafterPage() {
     }
   }
   
-  const resetStudySession = () => {
+  const resetEverything = () => {
     setFile(null)
     setContent('')
     setProcessedContent('')
+    setError(null)
     setGeneratedTools(null)
     setActiveTab('upload')
-    setChatMessages([])
+    setChatMessages([
+      { role: 'assistant', content: 'I am your study assistant. Ask me any questions about the material you are studying.' }
+    ])
     setChatInput('')
     setStudySession(null)
-    setError(null)
     localStorage.removeItem('studySession')
   }
   
@@ -316,6 +325,25 @@ export default function StudyCrafterPage() {
             {error && (
               <div className="bg-red-500/10 border border-red-500/30 text-red-500 p-4 rounded-lg">
                 {error}
+              </div>
+            )}
+            
+            {studySession && (
+              <div className="mb-4 p-3 bg-blue-50 rounded-md flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-medium text-blue-800">
+                    Using saved session: {studySession.title}
+                  </p>
+                  <p className="text-xs text-blue-600">
+                    Created: {new Date(studySession.createdAt).toLocaleString()}
+                  </p>
+                </div>
+                <button
+                  onClick={resetEverything}
+                  className="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-md text-sm"
+                >
+                  Clear Session
+                </button>
               </div>
             )}
             
@@ -741,7 +769,7 @@ export default function StudyCrafterPage() {
                 
                 <div className="p-4 border-t border-textSecondary/10">
                   <button 
-                    onClick={resetStudySession}
+                    onClick={resetEverything}
                     className="w-full px-3 py-2 bg-darkBg/40 text-textSecondary rounded-md hover:bg-darkBg/60"
                   >
                     <div className="flex items-center justify-center">

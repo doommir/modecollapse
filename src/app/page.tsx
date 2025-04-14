@@ -264,35 +264,35 @@ export default function Home() {
               </div>
             </Link>
             
-            {/* Blog Card 3 - StudyCrafter */}
-            <Link href="/blog/maximizing-productivity-with-studycrafter" className="group">
+            {/* Blog Card 3 - The System Is Already Dead */}
+            <Link href="/blog/the-system-is-already-dead" className="group">
               <div className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg overflow-hidden border border-textSecondary/10 hover:border-primary/30 transition-colors h-full flex flex-col">
                 <div className="h-60 bg-primary/5 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center text-primary/30">
-                    <svg className="w-20 h-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  </div>
+                  <img 
+                    src="/blog/disruptsquare.png" 
+                    alt="The System Is Already Dead"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-darkBg/80 to-transparent opacity-70"></div>
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <div className="flex justify-between items-start mb-2">
                     <span className="text-sm text-primary bg-primary/10 px-2 py-1 rounded-md">
-                      Productivity
+                      Education
                     </span>
                     <span className="text-sm text-textSecondary">
-                      Sep 10, 2023
+                      May 30, 2024
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-textPrimary mb-3 group-hover:text-primary transition-colors">
-                    Maximizing Productivity with StudyCrafter
+                    The System Is Already Dead
                   </h3>
                   <p className="text-textSecondary mb-4 flex-grow">
-                    Tips and tricks to get the most out of the StudyCrafter tool for effective learning.
+                    Why Education As We Know It Will Collapse—and What Comes Next
                   </p>
                   <div className="flex justify-between items-center mt-auto">
                     <span className="text-sm text-textSecondary">
-                      By Alex Johnson
+                      By Matt
                     </span>
                     <span className="text-primary inline-flex items-center group-hover:underline">
                       Read More

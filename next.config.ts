@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: 'storage.googleapis.com',
         pathname: '/assistants.lablab.ai/**',
       },
+      {
+        protocol: 'https',
+        hostname: '*.vercel-blob.com',
+        pathname: '/**',
+      }
     ],
   },
 };
