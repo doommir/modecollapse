@@ -223,35 +223,35 @@ export default function Home() {
               </div>
             </Link>
             
-            {/* Blog Card 2 - AI Tools */}
-            <Link href="/blog/getting-started-with-ai-tools" className="group">
+            {/* Blog Card 2 - Viral Is Easy */}
+            <Link href="/blog/viral-is-easy-vital-is-everything" className="group">
               <div className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg overflow-hidden border border-textSecondary/10 hover:border-primary/30 transition-colors h-full flex flex-col">
                 <div className="h-60 bg-primary/5 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center text-primary/30">
-                    <svg className="w-20 h-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
+                  <img 
+                    src="/blog/viral-vital.jpg" 
+                    alt="Viral Is Easy. Vital Is Everything."
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-darkBg/80 to-transparent opacity-70"></div>
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <div className="flex justify-between items-start mb-2">
                     <span className="text-sm text-primary bg-primary/10 px-2 py-1 rounded-md">
-                      AI
+                      Content Creation
                     </span>
                     <span className="text-sm text-textSecondary">
-                      Oct 15, 2023
+                      May 25, 2024
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-textPrimary mb-3 group-hover:text-primary transition-colors">
-                    Getting Started with AI Tools
+                    Viral Is Easy. Vital Is Everything.
                   </h3>
                   <p className="text-textSecondary mb-4 flex-grow">
-                    A beginner-friendly guide to integrating AI tools into your workflow.
+                    Why Content That Changes Lives &gt; Content That Changes Your Follower Count
                   </p>
                   <div className="flex justify-between items-center mt-auto">
                     <span className="text-sm text-textSecondary">
-                      By Jane Doe
+                      By Matt
                     </span>
                     <span className="text-primary inline-flex items-center group-hover:underline">
                       Read More

@@ -141,7 +141,152 @@ Welcome to Mode Collapse.
 
 —Matt
     `,
-    relatedPosts: ['1', '3']
+    relatedPosts: ['7', '3']
+  },
+  {
+    id: '7',
+    slug: 'viral-is-easy-vital-is-everything',
+    title: 'Viral Is Easy. Vital Is Everything.',
+    excerpt: 'Why Content That Changes Lives > Content That Changes Your Follower Count',
+    date: '2024-05-25',
+    author: 'Matt',
+    category: 'Content Creation',
+    thumbnail: '/blog/viral-vital.jpg',
+    content: `
+# **🔁 Viral Is Easy. Vital Is Everything.**
+
+**Why Content That Changes Lives > Content That Changes Your Follower Count**
+
+---
+
+"Go viral."
+
+That's the dream, right?
+
+You post something.
+It spreads like wildfire.
+Notifications melt your screen.
+You feel like a genius.
+For a minute.
+
+And then?
+
+You post again.
+And again.
+Chasing the same high, with less and less payoff.
+
+Until eventually, you're not creating anymore—
+You're **optimizing.**
+Not for meaning, not for impact…
+But for the _machine_.
+
+---
+
+## **📉 The Viral Trap**
+
+Here's what they don't tell you about going viral:
+
+- Most people who like your viral post never come back.
+    
+- The content that explodes is rarely the content that _matters_.
+    
+- Virality teaches you to play small—to serve the algorithm, not your audience.
+    
+
+It becomes a numbers game. A dopamine treadmill.
+And worst of all?
+
+It **rewards repetition.**
+Like _mode collapse_ in AI models—
+the system starts spitting out the same thing over and over.
+
+You get stuck in a loop.
+And so does your audience.
+
+---
+
+## **🧠 So What's the Alternative?**
+
+**Vital content.**
+
+Content that expands consciousness.
+Content that wakes people up.
+Content that makes someone think, "This just changed how I see the world."
+
+Viral content wins attention.
+**Vital content builds trust.**
+And trust compounds.
+
+Especially in education.
+Especially in a world that's drowning in distraction.
+
+---
+
+## **🎓 For Educators, Creators, and Conscious Humans**
+
+If you're teaching—whether in a classroom or on a timeline—you already know this:
+
+> _The lesson that sticks isn't the flashiest one._
+> _It's the one that lands in the gut._
+
+You don't need 10,000 retweets.
+You need 10 people who **change what they do** because of what you made.
+
+You don't need to be loud.
+You need to be clear.
+And consistent.
+
+That's what makes content _vital_.
+Not how far it spreads. But how deep it sinks.
+
+---
+
+## **💡 Vital Content Looks Like:**
+
+- A tweet that makes someone journal for 20 minutes
+    
+- A video that a teacher rewatches every week before stepping into class
+    
+- A lesson plan that goes beyond test prep—and into _life prep_
+    
+- A blog post that lives in someone's head for months
+    
+
+If your content helps one person change their mind, heal, act, or reflect—
+That's not a loss.
+That's a **miracle** in the age of noise.
+
+---
+
+## **🧪 The Mode Collapse Way**
+
+We're building a system for creators and educators who've had enough of the treadmill.
+This is where we experiment with content that:
+
+- Feels good to make
+    
+- _Means_ something to share
+    
+- Stays with people long after they scroll
+    
+
+This is where we go from **performers** to **pattern-breakers**.
+
+---
+
+## **🔁 Want to Make Something That Lasts?**
+
+Join the Mode Collapse newsletter.
+No fluff. No farming. Just frameworks for _vital thinking in a viral world_.
+
+📡 [Join here](#) and get the free Digital Consciousness Starter Kit.
+
+And next time you hit "Post"—
+Ask yourself:
+
+> Is this viral, or is it **vital**?
+    `,
+    relatedPosts: ['0', '3']
   },
   {
     id: '1',

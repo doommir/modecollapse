@@ -20,6 +20,16 @@ const blogPosts = [
     thumbnail: '/blog/mode-collapse.jpg',
   },
   {
+    id: '7',
+    slug: 'viral-is-easy-vital-is-everything',
+    title: 'Viral Is Easy. Vital Is Everything.',
+    excerpt: 'Why Content That Changes Lives > Content That Changes Your Follower Count',
+    date: '2024-05-25',
+    author: 'Matt',
+    category: 'Content Creation',
+    thumbnail: '/blog/viral-vital.jpg',
+  },
+  {
     id: '1',
     slug: 'getting-started-with-ai-tools',
     title: 'Getting Started with AI Tools',
