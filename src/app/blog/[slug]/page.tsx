@@ -530,9 +530,9 @@ export default function BlogPost() {
             <ScrollRevealSection className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg p-6 mb-12 border border-textSecondary/10">
               <article className="prose prose-invert max-w-none">
                 {post.id === '0' ? (
-                  <div className="w-full h-56 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
+                  <div className="w-full h-72 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
                     <img 
-                      src="/blog/mode-collapse.png" 
+                      src="/blog/optimizedcollapse.png" 
                       alt={post.title}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
