@@ -74,6 +74,36 @@ export default function Nav() {
             </li>
             <li>
               <Link 
+                href="/blog" 
+                className="block py-3 md:py-1 border-b md:border-none border-textSecondary/10 hover:text-primary transition-colors relative group"
+                onClick={() => setIsOpen(false)}
+              >
+                Blog
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 hidden md:block"></span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                href="/images" 
+                className="block py-3 md:py-1 border-b md:border-none border-textSecondary/10 hover:text-primary transition-colors relative group"
+                onClick={() => setIsOpen(false)}
+              >
+                Images
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 hidden md:block"></span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                href="/upload" 
+                className="block py-3 md:py-1 border-b md:border-none border-textSecondary/10 hover:text-primary transition-colors relative group"
+                onClick={() => setIsOpen(false)}
+              >
+                Upload
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 hidden md:block"></span>
+              </Link>
+            </li>
+            <li>
+              <Link 
                 href="/about" 
                 className="block py-3 md:py-1 hover:text-primary transition-colors relative group"
                 onClick={() => setIsOpen(false)}
