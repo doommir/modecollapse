@@ -185,10 +185,12 @@ export default function Home() {
             {/* Blog Card 1 - Mode Collapse Intro */}
             <Link href="/blog/youre-not-broken-the-system-is-optimized-for-collapse" className="group">
               <div className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg overflow-hidden border border-textSecondary/10 hover:border-primary/30 transition-colors h-full flex flex-col">
-                <div className="h-48 bg-darkBg/50 flex items-center justify-center text-primary/30">
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-                  </svg>
+                <div className="h-48 bg-darkBg/50 relative overflow-hidden">
+                  <img 
+                    src="/blog/mode-collapse.png" 
+                    alt="Mode Collapse Blog Post"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
+                  />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <div className="flex justify-between items-start mb-2">

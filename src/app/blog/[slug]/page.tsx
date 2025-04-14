@@ -9,6 +9,141 @@ import SectionDivider from '@/components/SectionDivider'
 // Mock data for blog posts - in a real app, you would fetch this from an API or CMS
 const blogPosts = [
   {
+    id: '0',
+    slug: 'youre-not-broken-the-system-is-optimized-for-collapse',
+    title: 'You\'re Not Broken — The System Is Optimized for Collapse',
+    excerpt: 'Welcome to Mode Collapse: A Digital Lab for Upgrading Consciousness',
+    date: '2024-05-22',
+    author: 'Matt',
+    category: 'Education',
+    thumbnail: '/blog/mode-collapse.jpg',
+    content: `
+# **🧠 You're Not Broken — The System Is Optimized for Collapse**
+
+**Welcome to Mode Collapse: A Digital Lab for Upgrading Consciousness**
+
+---
+
+In the world of AI, there's a failure pattern called **mode collapse**.
+
+It happens when a generative model, instead of producing diverse, creative outputs, begins repeating itself.
+
+The longer it trains on feedback loops, the worse it gets.
+
+Everything starts to look the same.
+
+It gets stuck.
+
+It forgets how to explore.
+
+Sound familiar?
+
+That's not just a machine problem.
+
+That's a human problem.
+
+---
+
+## **📚 The Education System Has a Mode Collapse Problem**
+
+We ask kids to be creative—then measure them by how closely they match a rubric.
+
+We teach critical thinking—but punish those who ask disruptive questions.
+
+We claim to prepare students for the future—while rewarding them for memorizing the past.
+
+In this system, learning isn't about expansion.
+
+It's about repetition.
+
+Like an AI trained on the same dataset over and over, our students—and often, our educators—start to collapse.
+
+Not physically, but cognitively.
+
+**The outputs narrow. The curiosity fades. The spark dies.**
+
+---
+
+## **💡 What If Getting Smarter Isn't About Input, But Escape?**
+
+We're told to "consume more," "read more," "keep up."
+
+But if you're trapped in a loop—consuming more only reinforces it.
+
+Real learning begins when we interrupt the loop.
+
+When we stop optimizing for performance, and start optimizing for **perspective**.
+
+When we stop playing to the algorithm and start asking:
+
+> _What else could this be?_
+
+This blog, Mode Collapse, is dedicated to that question.
+
+---
+
+## **🧠 What You'll Find Here**
+
+Mode Collapse is a lab. A dojo. A resistance.
+
+It's where educators, technologists, and lifelong learners come to:
+- Explore how **AI metaphors** can reshape how we teach and learn
+- Understand the **psychology of algorithms**—and how they train us
+- Build **new systems for thinking** that don't burn us out
+- Reclaim **deep work, creativity, and meaning** in a distracted age
+
+This isn't productivity porn.
+
+It's consciousness engineering.
+
+---
+
+## **🛠️ Why This Matters for Teachers and Learners**
+
+If you're an educator, you're already a system designer.
+
+You shape how kids think.
+
+And yet, most of us were never taught to recognize the hidden algorithms shaping us.
+
+You don't need to teach AI to use Mode Collapse.
+
+You just need to teach like a conscious creator—one who knows how loops form and how to break them.
+
+> Because the real upgrade isn't in the tech.
+>
+> It's in how we _think_ about thinking.
+
+---
+
+## **🚪 Ready to Get Smarter by Getting Freer?**
+
+Here's how to start:
+1. **Follow the blog** — we'll be posting weekly essays + resources
+2. **Sign up for the newsletter** for tools, templates, and community invites
+3. **Share this post** with a fellow educator, creative, or curious friend
+4. **Ask yourself:**
+   > Where am I repeating myself?
+   > 
+   > What might it look like to think differently—on purpose?
+
+---
+
+This is just Day One.
+
+But if you've made it here, you've already begun.
+
+Welcome to the experiment.
+
+Welcome to Mode Collapse.
+
+🧠📡
+
+—Matt
+    `,
+    relatedPosts: ['1', '3']
+  },
+  {
     id: '1',
     slug: 'getting-started-with-ai-tools',
     title: 'Getting Started with AI Tools',
@@ -394,12 +529,22 @@ export default function BlogPost() {
           <div className="lg:col-span-3">
             <ScrollRevealSection className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg p-6 mb-12 border border-textSecondary/10">
               <article className="prose prose-invert max-w-none">
-                <div className="w-full h-56 bg-darkBg/50 rounded-lg mb-8 flex items-center justify-center text-primary/30">
-                  {/* In a real app, you would use an actual image */}
-                  <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
+                {post.id === '0' ? (
+                  <div className="w-full h-56 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
+                    <img 
+                      src="/blog/mode-collapse.png" 
+                      alt={post.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-56 bg-darkBg/50 rounded-lg mb-8 flex items-center justify-center text-primary/30">
+                    {/* In a real app, you would use an actual image */}
+                    <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                )}
                 
                 <div 
                   className="text-textPrimary blog-content"

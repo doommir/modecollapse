@@ -10,6 +10,16 @@ import SectionDivider from '@/components/SectionDivider'
 const POSTS_PER_PAGE = 5
 const blogPosts = [
   {
+    id: '0',
+    slug: 'youre-not-broken-the-system-is-optimized-for-collapse',
+    title: 'You\'re Not Broken — The System Is Optimized for Collapse',
+    excerpt: 'Welcome to Mode Collapse: A Digital Lab for Upgrading Consciousness',
+    date: '2024-05-22',
+    author: 'Matt',
+    category: 'Education',
+    thumbnail: '/blog/mode-collapse.jpg',
+  },
+  {
     id: '1',
     slug: 'getting-started-with-ai-tools',
     title: 'Getting Started with AI Tools',
@@ -157,13 +167,20 @@ export default function BlogPage() {
                       transition={{ duration: 0.2 }}
                     >
                       <div className="grid grid-cols-1 md:grid-cols-4 h-full">
-                        <div className="md:col-span-1 bg-darkBg/50 h-full flex items-center justify-center p-4">
-                          <div className="w-full h-40 md:h-full bg-darkBg/70 rounded-md flex items-center justify-center text-primary/30">
-                            {/* In a real app, you would use an actual image */}
-                            <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                          </div>
+                        <div className="md:col-span-1 bg-darkBg/50 h-full relative overflow-hidden">
+                          {post.id === '0' ? (
+                            <img 
+                              src="/blog/mode-collapse.png" 
+                              alt={post.title}
+                              className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="w-full h-40 md:h-full bg-darkBg/70 rounded-md flex items-center justify-center text-primary/30">
+                              <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                          )}
                         </div>
                         
                         <div className="md:col-span-3 p-6">
