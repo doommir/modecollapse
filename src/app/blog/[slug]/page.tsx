@@ -682,6 +682,14 @@ export default function BlogPost() {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
+                ) : post.id === '7' ? (
+                  <div className="w-full h-72 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
+                    <img 
+                      src="/blog/viitalbeatsviral.png" 
+                      alt={post.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </div>
                 ) : (
                   <div className="w-full h-56 bg-darkBg/50 rounded-lg mb-8 flex items-center justify-center text-primary/30">
                     {/* In a real app, you would use an actual image */}

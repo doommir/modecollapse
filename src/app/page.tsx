@@ -228,7 +228,7 @@ export default function Home() {
               <div className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg overflow-hidden border border-textSecondary/10 hover:border-primary/30 transition-colors h-full flex flex-col">
                 <div className="h-60 bg-primary/5 relative overflow-hidden">
                   <img 
-                    src="/blog/viral-vital.jpg" 
+                    src="/blog/vitalviralsquare.png" 
                     alt="Viral Is Easy. Vital Is Everything."
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

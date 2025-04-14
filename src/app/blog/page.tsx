@@ -184,6 +184,12 @@ export default function BlogPage() {
                               alt={post.title}
                               className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
                             />
+                          ) : post.id === '7' ? (
+                            <img 
+                              src="/blog/vitalviralsquare.png" 
+                              alt={post.title}
+                              className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
+                            />
                           ) : (
                             <div className="w-full h-40 md:h-full bg-darkBg/70 rounded-md flex items-center justify-center text-primary/30">
                               <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
