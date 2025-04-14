@@ -136,7 +136,7 @@ export const blogPosts: BlogPost[] = [
     date: '2024-05-30',
     author: 'Matt',
     category: 'Education',
-    thumbnail: '/blog/system-already-dead.png',
+    thumbnail: '/blog/disruptsquare.png',
     content: `
     <p>The current education system is on life support—and we all know it.</p>
     

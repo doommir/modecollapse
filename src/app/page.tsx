@@ -6,6 +6,7 @@ import ParallaxBackground from '@/components/ParallaxBackground'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import GlitchText from '@/components/GlitchText'
 import Link from 'next/link'
+import NewsletterSignup from '@/components/NewsletterSignup'
 
 export default function Home() {
   return (
@@ -348,6 +349,18 @@ export default function Home() {
           </motion.a>
         </ScrollRevealSection>
       </section>
+      
+      {/* Newsletter Section */}
+      <section className="py-20 px-6">
+        <div className="max-w-3xl mx-auto">
+          <NewsletterSignup />
+        </div>
+      </section>
+      
+      {/* Footer */}
+      <footer className="py-10 px-6 border-t border-textSecondary/10">
+        {/* Footer content */}
+      </footer>
     </>
   );
 }

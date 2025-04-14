@@ -20,6 +20,40 @@ export default function AdminPage() {
           </Link>
         </div>
         
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-darkBg/30 border border-textSecondary/10 rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Blog Posts</h2>
+            <p className="text-textSecondary mb-4">
+              Manage your blog posts, edit content, and publish new articles.
+            </p>
+            <Link 
+              href="#" 
+              className="px-4 py-2 bg-primary text-white rounded-md inline-flex items-center hover:bg-primary/90 transition-colors"
+            >
+              View All Posts
+              <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
+          </div>
+          
+          <div className="bg-darkBg/30 border border-textSecondary/10 rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Newsletter Subscribers</h2>
+            <p className="text-textSecondary mb-4">
+              View and manage your newsletter subscribers list.
+            </p>
+            <Link 
+              href="/admin/subscribers" 
+              className="px-4 py-2 bg-primary text-white rounded-md inline-flex items-center hover:bg-primary/90 transition-colors"
+            >
+              Manage Subscribers
+              <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+        
         <div className="bg-darkBg/30 border border-textSecondary/10 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">All Blog Posts</h2>
           

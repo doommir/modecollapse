@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import SectionDivider from '@/components/SectionDivider'
 import { blogPosts } from '@/data/blogPosts'
+import NewsletterSignup from '@/components/NewsletterSignup'
 
 // Markdown to HTML function (simple version)
 const markdownToHtml = (markdown: string) => {
@@ -80,6 +81,14 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
+                ) : post.id === '8' ? (
+                  <div className="w-full h-72 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
+                    <img 
+                      src="/blog/disruptsquare.png" 
+                      alt={post.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </div>
                 ) : (
                   <div className="w-full h-56 bg-darkBg/50 rounded-lg mb-8 flex items-center justify-center text-primary/30">
                     {/* In a real app, you would use an actual image */}
@@ -150,6 +159,14 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
         </div>
+        
+        {/* Newsletter Signup */}
+        <ScrollRevealSection className="max-w-3xl mx-auto my-16">
+          <NewsletterSignup 
+            title="Enjoyed this article?"
+            description="Subscribe to get more content like this delivered straight to your inbox."
+          />
+        </ScrollRevealSection>
         
         {/* Call to action */}
         <ScrollRevealSection className="mt-16 text-center">

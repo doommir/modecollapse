@@ -2,6 +2,7 @@ import Link from 'next/link'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import SectionDivider from '@/components/SectionDivider'
 import { blogPosts } from '@/data/blogPosts'
+import NewsletterSignup from '@/components/NewsletterSignup'
 
 // Constants
 const POSTS_PER_PAGE = 5
@@ -71,6 +72,12 @@ export default function BlogPage({
                           ) : post.id === '7' ? (
                             <img 
                               src="/blog/vitalviralsquare.png" 
+                              alt={post.title}
+                              className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
+                            />
+                          ) : post.id === '8' ? (
+                            <img 
+                              src="/blog/disruptsquare.png" 
                               alt={post.title}
                               className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
                             />
@@ -231,6 +238,16 @@ export default function BlogPage({
           </div>
         </div>
       </div>
+      
+      {/* Newsletter Section */}
+      <ScrollRevealSection className="py-16">
+        <div className="max-w-3xl mx-auto">
+          <NewsletterSignup 
+            title="Stay Updated" 
+            description="Subscribe to get our latest articles, tools, and resources delivered to your inbox."
+          />
+        </div>
+      </ScrollRevealSection>
     </div>
   )
 } 
