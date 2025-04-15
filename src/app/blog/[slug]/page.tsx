@@ -12,7 +12,8 @@ const markdownToHtml = (markdown: string) => {
     // Configure marked to preserve whitespace
     marked.setOptions({
       breaks: true,
-      gfm: true
+      gfm: true,
+      pedantic: false
     });
     
     return marked(markdown) as string;
