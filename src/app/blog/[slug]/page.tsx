@@ -77,39 +77,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <div className="lg:col-span-3">
             <ScrollRevealSection className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg p-6 mb-12 border border-textSecondary/10">
               <article className="prose prose-invert max-w-none">
-                {post.id === '0' ? (
-                  <div className="w-full h-72 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
-                    <img 
-                      src="/blog/mode-collapse.png" 
-                      alt={post.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </div>
-                ) : post.id === '7' ? (
-                  <div className="w-full h-72 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
-                    <img 
-                      src="/blog/viitalbeatsviral.png" 
-                      alt={post.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </div>
-                ) : post.id === '8' ? (
-                  <div className="w-full h-72 bg-darkBg/50 rounded-lg mb-8 relative overflow-hidden">
-                    <img 
-                      src="/blog/disruptsquare.png" 
-                      alt={post.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-full h-56 bg-darkBg/50 rounded-lg mb-8 flex items-center justify-center text-primary/30">
-                    {/* In a real app, you would use an actual image */}
-                    <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                )}
-                
                 <div className="mt-12">
                   <h1 className="text-4xl font-bold text-center mb-4">{post.title}</h1>
                   <div className="flex items-center justify-center text-textSecondary text-sm mb-12">

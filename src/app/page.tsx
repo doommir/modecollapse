@@ -24,37 +24,19 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="mb-6"
           >
-            {/* Display different text on mobile and desktop */}
-            <div className="block sm:hidden">
-              <GlitchText 
-                text="Upgrading"
-                as="h1"
-                className="font-heading text-4xl md:text-6xl lg:text-7xl text-primary drop-shadow-sm"
-              />
-              <GlitchText 
-                text="Human"
-                as="h1"
-                className="font-heading text-4xl md:text-6xl lg:text-7xl text-primary drop-shadow-sm"
-              />
-              <GlitchText 
-                text="Consciousness"
-                as="h1"
-                className="font-heading text-4xl md:text-6xl lg:text-7xl text-primary drop-shadow-sm"
-              />
-              <GlitchText 
-                text="with AI"
-                as="h1"
-                className="font-heading text-4xl md:text-6xl lg:text-7xl text-primary drop-shadow-sm"
-              />
+            {/* Mobile version with stacked words */}
+            <div className="block sm:hidden space-y-2 mb-4">
+              <div><GlitchText text="Upgrading" as="h1" className="font-heading text-4xl text-primary drop-shadow-sm block w-full" /></div>
+              <div><GlitchText text="Human" as="h1" className="font-heading text-4xl text-primary drop-shadow-sm block w-full" /></div>
+              <div><GlitchText text="Consciousness" as="h1" className="font-heading text-4xl text-primary drop-shadow-sm block w-full" /></div>
+              <div><GlitchText text="with AI" as="h1" className="font-heading text-4xl text-primary drop-shadow-sm block w-full" /></div>
             </div>
             
-            {/* Desktop version */}
+            {/* Desktop version with inline words and explicit spacing */}
             <div className="hidden sm:block">
-              <GlitchText 
-                text="Upgrading Human Consciousness with AI"
-                as="h1"
-                className="font-heading text-4xl md:text-6xl lg:text-7xl text-primary drop-shadow-sm"
-              />
+              <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-primary drop-shadow-sm flex flex-wrap justify-center">
+                <GlitchText text="Upgrading Human Consciousness with AI" className="break-words max-w-full" />
+              </h1>
             </div>
           </motion.div>
 
