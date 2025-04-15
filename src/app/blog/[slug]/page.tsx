@@ -29,17 +29,20 @@ export function generateStaticParams() {
   }))
 }
 
-export default async function BlogPostPage({ 
-  params 
-}: { 
-  params: { slug: string } 
-}) {
-  // Find the post with the matching slug
-  const post = blogPosts.find(post => post.slug === params.slug)
+interface PageProps {
+  params: {
+    slug: string;
+  }
+}
+
+// The main blog post page component
+export default function Page(props: PageProps) {
+  const { params } = props;
+  const post = blogPosts.find(post => post.slug === params.slug);
   
   // If no post is found, return a 404
   if (!post) {
-    notFound()
+    notFound();
   }
   
   // Find related posts
@@ -47,7 +50,7 @@ export default async function BlogPostPage({
     ? post.relatedPosts
         .map(id => blogPosts.find(p => p.id === id))
         .filter((post): post is typeof blogPosts[0] => post !== undefined)
-    : []
+    : [];
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-darkBg to-black text-textPrimary pb-20">
