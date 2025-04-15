@@ -23,8 +23,9 @@ export default function AdminLogin() {
       // Use the environment password in development or the hardcoded one
       // This is still not secure enough for a production app but better than hardcoding
       if (username === adminUsername && password === 'modecollapse123') {
-        // Set a cookie to maintain the session
-        document.cookie = `admin_session=true; path=/; max-age=${60 * 60 * 24 * 7}`; // 1 week
+        // Set a cookie to maintain the session with better security
+        const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
+        document.cookie = `admin_session=true; path=/; max-age=${60 * 60 * 24 * 7}; HttpOnly; SameSite=Strict${secure}`; // 1 week
         router.push('/admin')
       } else {
         setError('Invalid username or password')
