@@ -12,43 +12,13 @@ const markdownToHtml = (markdown: string) => {
     // Configure marked to preserve whitespace
     marked.setOptions({
       breaks: true,
-      gfm: true,
-      pedantic: false
+      gfm: true
     });
     
     return marked(markdown) as string;
   } catch (error) {
     console.error('Error converting markdown to HTML:', error);
     return markdown; // Return original content as fallback
-  }
-}
-
-// Helper function to fetch a blog post from the API
-async function fetchBlogPost(slug: string) {
-  try {
-    // In development, use the local API endpoint
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : process.env.NEXT_PUBLIC_SITE_URL || 'https://modecollapse.vercel.app';
-    
-    const response = await fetch(`${baseUrl}/api/blog?slug=${slug}`, {
-      // Use cache: 'no-store' for always fresh data, or 'force-cache' for static data
-      cache: 'no-store',
-      next: { 
-        // Optional: revalidate every 10 minutes
-        revalidate: 600 
-      }
-    });
-    
-    if (!response.ok) {
-      return null;
-    }
-    
-    const data = await response.json();
-    return data.post;
-  } catch (error) {
-    console.error(`Error fetching blog post (${slug}):`, error);
-    return null;
   }
 }
 
@@ -59,40 +29,21 @@ export function generateStaticParams() {
   }))
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  // Get the slug parameter directly (no need to await it)
-  const slug = params.slug;
-  
-  // Try to fetch the post from the API first
-  let post = await fetchBlogPost(slug);
-  
-  // If the API fails, fall back to static data
-  if (!post) {
-    post = blogPosts.find(post => post.slug === slug);
-  }
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  // Find the post with the matching slug
+  const post = blogPosts.find(post => post.slug === params.slug)
   
   // If no post is found, return a 404
   if (!post) {
-    notFound();
+    notFound()
   }
   
-  // Find related posts - first try from database, then fall back to static data
-  let relatedPosts = post.relatedPosts
-    ? await Promise.all(
-        post.relatedPosts.map(async (id: string) => {
-          // First check if the post exists in static data
-          const staticPost = blogPosts.find(p => p.id === id);
-          if (staticPost) return staticPost;
-          
-          // If not, try to fetch from the API
-          const relatedPost = await fetchBlogPost(id);
-          return relatedPost;
-        })
-      )
-    : [];
-  
-  // Filter out any null values
-  relatedPosts = relatedPosts.filter(post => post !== null);
+  // Find related posts
+  const relatedPosts = post.relatedPosts
+    ? post.relatedPosts
+        .map(id => blogPosts.find(p => p.id === id))
+        .filter((post): post is typeof blogPosts[0] => post !== undefined)
+    : []
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-darkBg to-black text-textPrimary pb-20">

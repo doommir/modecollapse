@@ -21,78 +21,69 @@ export const blogPosts: BlogPost[] = [
     author: 'Matt',
     category: 'Education',
     thumbnail: '/blog/mode-collapse.png',
-    content: `
-    <p>What a strange moment to be alive.</p>
-    
-    <p>Every day, I talk to smart, capable, earnest people who feel:</p>
-    
-    <ul>
-      <li>Lost in their careers</li>
-      <li>Anxious about the future</li>
-      <li>Paralyzed by information overload</li>
-      <li>Inadequate compared to peers</li>
-      <li>Unable to focus on what matters</li>
-    </ul>
-    
-    <p>And here's the thing: <strong>they're not broken</strong>.</p>
-    
-    <p>They're responding normally to a system optimized for collapse - an education and career landscape that:</p>
-    
-    <ul>
-      <li>Trains them for jobs that won't exist</li>
-      <li>Prioritizes credentials over capabilities</li>
-      <li>Rewards conformity over curiosity</li>
-      <li>Values information over transformation</li>
-      <li>Separates learning from living</li>
-    </ul>
-    
-    <h2>The system isn't just broken - it's actively harmful</h2>
-    
-    <p>Our education system was designed for an industrial era that's long gone. Today it's:</p>
-    
-    <ul>
-      <li>Killing creativity</li>
-      <li>Disconnecting us from ourselves</li>
-      <li>Creating dependency instead of autonomy</li>
-      <li>Teaching compliance instead of critical thinking</li>
-      <li>Normalizing anxiety and burnout</li>
-    </ul>
-    
-    <p>But here's the good news:</p>
-    
-    <h2>We don't need to fix the system. We need to create a new one.</h2>
-    
-    <p>That's what Mode Collapse is about.</p>
-    
-    <p>It's a digital laboratory for:</p>
-    
-    <ul>
-      <li>Dismantling outdated approaches to learning</li>
-      <li>Designing tools that enhance rather than replace human intelligence</li>
-      <li>Building new pathways to meaningful work and contribution</li>
-      <li>Connecting people who want to learn differently</li>
-    </ul>
-    
-    <p>In machine learning, "mode collapse" happens when an AI gets stuck generating the same limited outputs over and over, missing the full spectrum of possibilities.</p>
-    
-    <p>Our education system has experienced its own mode collapse—recycling the same approaches despite diminishing returns.</p>
-    
-    <p>I'm creating this space to explore what becomes possible when we break out of that loop.</p>
-    
-    <h2>Here's what you'll find here:</h2>
-    
-    <ul>
-      <li>Tools for thinking better and learning faster</li>
-      <li>Frameworks for navigating information overload</li>
-      <li>Experiments in collaborative sense-making</li>
-      <li>Conversations with people exploring the frontiers of learning and work</li>
-    </ul>
-    
-    <p>If you're feeling stuck, overwhelmed, or unsure where to focus your energy—welcome. You're not broken. And you're not alone.</p>
-    
-    <p>The world is full of people ready to learn differently and build something better.</p>
-    
-    <p>Let's connect.</p>`,
+    content: `# You're Not Broken — The System Is Optimized for Collapse
+
+What a strange moment to be alive.
+
+Every day, I talk to smart, capable, earnest people who feel:
+
+- Lost in their careers
+- Anxious about the future
+- Paralyzed by information overload
+- Inadequate compared to peers
+- Unable to focus on what matters
+
+And here's the thing: **they're not broken**.
+
+They're responding normally to a system optimized for collapse - an education and career landscape that:
+
+- Trains them for jobs that won't exist
+- Prioritizes credentials over capabilities
+- Rewards conformity over curiosity
+- Values information over transformation
+- Separates learning from living
+
+## The system isn't just broken - it's actively harmful
+
+Our education system was designed for an industrial era that's long gone. Today it's:
+
+- Killing creativity
+- Disconnecting us from ourselves
+- Creating dependency instead of autonomy
+- Teaching compliance instead of critical thinking
+- Normalizing anxiety and burnout
+
+But here's the good news:
+
+## We don't need to fix the system. We need to create a new one.
+
+That's what Mode Collapse is about.
+
+It's a digital laboratory for:
+
+- Dismantling outdated approaches to learning
+- Designing tools that enhance rather than replace human intelligence
+- Building new pathways to meaningful work and contribution
+- Connecting people who want to learn differently
+
+In machine learning, "mode collapse" happens when an AI gets stuck generating the same limited outputs over and over, missing the full spectrum of possibilities.
+
+Our education system has experienced its own mode collapse—recycling the same approaches despite diminishing returns.
+
+I'm creating this space to explore what becomes possible when we break out of that loop.
+
+## Here's what you'll find here:
+
+- Tools for thinking better and learning faster
+- Frameworks for navigating information overload
+- Experiments in collaborative sense-making
+- Conversations with people exploring the frontiers of learning and work
+
+If you're feeling stuck, overwhelmed, or unsure where to focus your energy—welcome. You're not broken. And you're not alone.
+
+The world is full of people ready to learn differently and build something better.
+
+Let's connect.`,
     relatedPosts: ['7', '3']
   },
   {
@@ -104,28 +95,29 @@ export const blogPosts: BlogPost[] = [
     author: 'Matt',
     category: 'Content Creation',
     thumbnail: '/blog/vitalviralsquare.png',
-    content: `
-    <p>I've been thinking a lot about what matters on social media lately.</p>
-    
-    <p>There's an overwhelming amount of content creation advice focused on going viral. We're told to follow strict formulas: hook viewers in the first 3 seconds, create artificial stakes, use specific keywords and hashtags.</p>
-    
-    <p>And look—some of it works! I've seen creators implement these tactics and watch their numbers shoot up.</p>
-    
-    <p>But I've been wondering: what's the cost?</p>
-    
-    <p>When we optimize solely for views and engagement, are we creating content that improves lives? Or are we just contributing to the noise?</p>
-    
-    <p>Here's what I've decided:</p>
-    
-    <h2>Viral is easy. Vital is everything.</h2>
-    
-    <p>When we create content that's vital—that genuinely helps people solve problems, gain new perspectives, or feel less alone—we're doing something that matters.</p>
-    
-    <p>Vital content might not always hit the algorithm jackpot, but it creates real impact. And that impact compounds over time.</p>
-    
-    <p>I want to challenge you to ask yourself: "Am I creating content that could genuinely change someone's life for the better?"</p>
-    
-    <p>If the answer is yes, you're on the right track—regardless of what the numbers say.</p>`,
+    content: `# Viral Is Easy. Vital Is Everything.
+
+I've been thinking a lot about what matters on social media lately.
+
+There's an overwhelming amount of content creation advice focused on going viral. We're told to follow strict formulas: hook viewers in the first 3 seconds, create artificial stakes, use specific keywords and hashtags.
+
+And look—some of it works! I've seen creators implement these tactics and watch their numbers shoot up.
+
+But I've been wondering: what's the cost?
+
+When we optimize solely for views and engagement, are we creating content that improves lives? Or are we just contributing to the noise?
+
+Here's what I've decided:
+
+## Viral is easy. Vital is everything.
+
+When we create content that's vital—that genuinely helps people solve problems, gain new perspectives, or feel less alone—we're doing something that matters.
+
+Vital content might not always hit the algorithm jackpot, but it creates real impact. And that impact compounds over time.
+
+I want to challenge you to ask yourself: "Am I creating content that could genuinely change someone's life for the better?"
+
+If the answer is yes, you're on the right track—regardless of what the numbers say.`,
     relatedPosts: ['0', '3']
   },
   {
@@ -137,33 +129,32 @@ export const blogPosts: BlogPost[] = [
     author: 'Matt',
     category: 'Education',
     thumbnail: '/blog/disruptsquare.png',
-    content: `
-    <p>The current education system is on life support—and we all know it.</p>
-    
-    <p>The signs are everywhere:</p>
-    
-    <ul>
-      <li>Skyrocketing student debt with diminishing returns</li>
-      <li>Curriculums teaching skills already automated by AI</li>
-      <li>Employers increasingly valuing portfolios over degrees</li>
-      <li>A growing mental health crisis among students</li>
-    </ul>
-    
-    <p>We're witnessing the slow-motion collapse of a system designed for the industrial age trying to operate in a digital, AI-powered world.</p>
-    
-    <h2>The problems are structural</h2>
-    
-    <p>Our education system was built to create compliant factory workers. Sit in rows. Follow instructions. Memorize information. Complete standardized tests.</p>
-    
-    <p>But today's world demands creativity, critical thinking, and the ability to collaborate with both humans and AI tools—precisely the skills traditional education often suppresses.</p>
-    
-    <h2>What's coming next</h2>
-    
-    <p>I believe we'll see a massive shift toward personalized, project-based learning. Students will build portfolios demonstrating their abilities rather than collecting degrees. Learning will become lifelong, not limited to young adulthood.</p>
-    
-    <p>Most importantly, education will focus on teaching humans to do what only humans can do—think critically, create meaningfully, and connect deeply with others.</p>
-    
-    <p>The system may be dying, but what replaces it will be extraordinary.</p>`,
+    content: `# The System Is Already Dead
+
+The current education system is on life support—and we all know it.
+
+The signs are everywhere:
+
+- Skyrocketing student debt with diminishing returns
+- Curriculums teaching skills already automated by AI
+- Employers increasingly valuing portfolios over degrees
+- A growing mental health crisis among students
+
+We're witnessing the slow-motion collapse of a system designed for the industrial age trying to operate in a digital, AI-powered world.
+
+## The problems are structural
+
+Our education system was built to create compliant factory workers. Sit in rows. Follow instructions. Memorize information. Complete standardized tests.
+
+But today's world demands creativity, critical thinking, and the ability to collaborate with both humans and AI tools—precisely the skills traditional education often suppresses.
+
+## What's coming next
+
+I believe we'll see a massive shift toward personalized, project-based learning. Students will build portfolios demonstrating their abilities rather than collecting degrees. Learning will become lifelong, not limited to young adulthood.
+
+Most importantly, education will focus on teaching humans to do what only humans can do—think critically, create meaningfully, and connect deeply with others.
+
+The system may be dying, but what replaces it will be extraordinary.`,
     relatedPosts: ['0', '7']
   },
   {

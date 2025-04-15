@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
 
 export default function ParallaxBackground() {
@@ -15,6 +15,13 @@ export default function ParallaxBackground() {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 400]) // Medium
   const y3 = useTransform(scrollYProgress, [0, 1], [0, 600]) // Fast
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
+  
+  // Client-side only rendering for particles
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   return (
     <div ref={ref} className="absolute inset-0 overflow-hidden -z-10">
@@ -48,9 +55,13 @@ export default function ParallaxBackground() {
         style={{ y: y3 }}
       />
       
-      {/* Particles - small dots that move at different speeds */}
-      <ParticleLayer count={20} maxSize={4} speed={y3} variant="primary" />
-      <ParticleLayer count={15} maxSize={3} speed={y2} variant="secondary" />
+      {/* Particles - small dots that move at different speeds (client-side only) */}
+      {isClient && (
+        <>
+          <ParticleLayer count={20} maxSize={4} speed={y3} variant="primary" />
+          <ParticleLayer count={15} maxSize={3} speed={y2} variant="secondary" />
+        </>
+      )}
       
       {/* Bottom indicator - properly positioned */}
       <div className="w-full flex justify-center">
@@ -94,15 +105,20 @@ type ParticleProps = {
 }
 
 function ParticleLayer({ count, maxSize, speed, variant }: ParticleProps) {
-  const particles = Array.from({ length: count }).map((_, i) => ({
-    id: i,
-    size: Math.random() * maxSize + 1,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    initialY: Math.random() * 100,
-  }))
+  // Create deterministic particles with a set seed to ensure client/server match
+  const generateParticles = () => {
+    return Array.from({ length: count }).map((_, i) => ({
+      id: i,
+      size: (Math.sin(i * 7919) * 0.5 + 0.5) * maxSize + 1, // Using prime numbers for pseudo-randomness
+      x: (Math.cos(i * 7907) * 0.5 + 0.5) * 100,
+      y: (Math.sin(i * 7901) * 0.5 + 0.5) * 100,
+      initialY: (Math.cos(i * 7883) * 0.5 + 0.5) * 100,
+      opacity: 0.3 + (Math.sin(i * 7879) * 0.5 + 0.5) * 0.7,
+    }));
+  };
   
-  const color = variant === 'primary' ? 'rgba(100, 255, 218, 0.5)' : 'rgba(187, 134, 252, 0.5)'
+  const particles = generateParticles();
+  const color = variant === 'primary' ? 'rgba(100, 255, 218, 0.5)' : 'rgba(187, 134, 252, 0.5)';
   
   return (
     <>
@@ -117,7 +133,7 @@ function ParticleLayer({ count, maxSize, speed, variant }: ParticleProps) {
             top: `${particle.initialY}%`,
             backgroundColor: color,
             y: speed,
-            opacity: 0.3 + Math.random() * 0.7,
+            opacity: particle.opacity,
             boxShadow: `0 0 ${particle.size * 2}px ${color}`
           }}
         />

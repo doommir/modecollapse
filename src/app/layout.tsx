@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import Nav from '@/components/Nav';
-import Footer from '@/components/Footer';
+import Nav from '@/sections/Nav';
+import Footer from '@/sections/Footer';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,6 +17,10 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: 'Modecollapse.io',
   description: 'Upgrading Human Consciousness with AI',
+  icons: {
+    icon: '/images/modecollapsefavicon.png',
+    apple: '/images/modecollapsefavicon.png',
+  }
 };
 
 export default function RootLayout({

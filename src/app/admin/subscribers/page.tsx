@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function SubscribersPage() {
+  const router = useRouter();
   const [emails, setEmails] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -11,6 +13,13 @@ export default function SubscribersPage() {
   useEffect(() => {
     fetchSubscribers();
   }, []);
+  
+  const handleLogout = () => {
+    // Clear the admin session cookie
+    document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    // Redirect to login page
+    router.push('/admin/login');
+  };
   
   const fetchSubscribers = async () => {
     try {
@@ -74,13 +83,19 @@ export default function SubscribersPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Newsletter Subscribers</h1>
-          <div className="space-x-4">
+          <div className="flex space-x-4">
             <Link 
               href="/admin" 
               className="px-4 py-2 bg-primary/20 hover:bg-primary/30 text-primary rounded-md transition-colors"
             >
               Back to Admin
             </Link>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-900/20 hover:bg-red-900/30 text-red-400 rounded-md transition-colors"
+            >
+              Logout
+            </button>
           </div>
         </div>
         

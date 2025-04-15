@@ -1,8 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mode Collapse - Next.js Project
+
+This is the repository for Mode Collapse, a website built with Next.js 15, React 19, and Tailwind CSS.
+
+## Project Structure
+
+```
+modecollapse/
+│
+├── public/                   # Static assets (favicon, robots.txt, etc.)
+│   └── images/               # Place all PNGs, JPEGs, SVGs here
+│
+├── src/                      # Source code
+│   ├── app/                  # Next.js App Router pages
+│   ├── components/           # Reusable UI components 
+│   ├── layouts/              # Page layouts (shared page wrappers)
+│   ├── sections/             # Hero, Footer, Nav, etc.
+│   ├── styles/               # Global CSS or Tailwind utilities
+│   ├── lib/                  # Utility functions, API clients, helpers
+│   ├── data/                 # Static JSON/TS data (testimonials, tools, etc.)
+│   ├── config/               # Site config, SEO defaults, constants
+│   ├── models/               # Database models
+│   └── utils/                # Utility functions
+│
+├── content/                  # Markdown/MDX for blog, news, etc.
+│
+├── .env.local                # Local environment variables
+├── .gitignore
+├── next.config.ts
+├── tailwind.config.js
+├── postcss.config.mjs
+├── tsconfig.json
+├── vercel.json
+├── package.json
+└── README.md
+```
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+Then, copy .env.local.example to .env.local and fill in the required environment variables.
+
+```bash
+cp .env.local.example .env.local
+```
+
+Finally, run the development server:
 
 ```bash
 npm run dev
@@ -10,13 +61,19 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
+
+- `NEXT_PUBLIC_SITE_URL` - Set this to `https://www.modecollapse.io` for production
+
+See .env.local.example for all required environment variables.
+
+## Deployment
+
+This project is deployed on Vercel.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

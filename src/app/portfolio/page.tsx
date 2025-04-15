@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import SectionDivider from '@/components/SectionDivider'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -257,14 +257,29 @@ export default function PortfolioPage() {
 
 // Simple background particle effect component
 function ParticleBackground() {
-  const count = 25
-  const particles = Array.from({ length: count }).map((_, i) => ({
-    id: i,
-    size: Math.random() * 3 + 1,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 20 + 10
-  }))
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Generate deterministic particles with a consistent seed
+  const generateParticles = () => {
+    const count = 25
+    return Array.from({ length: count }).map((_, i) => ({
+      id: i,
+      size: (Math.sin(i * 7919) * 0.5 + 0.5) * 3 + 1, // Using prime numbers for deterministic "random" values
+      x: (Math.cos(i * 7907) * 0.5 + 0.5) * 100,
+      y: (Math.sin(i * 7901) * 0.5 + 0.5) * 100,
+      duration: (Math.cos(i * 7883) * 0.5 + 0.5) * 20 + 10
+    }))
+  }
+  
+  const particles = generateParticles()
+  
+  if (!isClient) {
+    return null; // Return nothing during server-side rendering
+  }
   
   return (
     <div className="absolute inset-0 overflow-hidden">
