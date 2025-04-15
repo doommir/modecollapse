@@ -23,7 +23,7 @@ const markdownToHtml = (markdown: string) => {
 }
 
 // Generate static paths for all blog posts
-export function generateStaticParams() {
+export function generateStaticParams(): { slug: string }[] {
   return blogPosts.map(post => ({
     slug: post.slug,
   }))
