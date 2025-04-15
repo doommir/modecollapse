@@ -4,10 +4,22 @@ import ScrollRevealSection from '@/components/ScrollRevealSection'
 import SectionDivider from '@/components/SectionDivider'
 import { blogPosts } from '@/data/blogPosts'
 import NewsletterSignup from '@/components/NewsletterSignup'
+import { marked } from 'marked'
 
-// Markdown to HTML function (simple version)
+// Convert markdown to HTML
 const markdownToHtml = (markdown: string) => {
-  return markdown
+  try {
+    // Configure marked to preserve whitespace
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
+    
+    return marked(markdown) as string;
+  } catch (error) {
+    console.error('Error converting markdown to HTML:', error);
+    return markdown; // Return original content as fallback
+  }
 }
 
 // Generate static paths for all blog posts
@@ -17,9 +29,10 @@ export function generateStaticParams() {
   }))
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   // Find the post with the matching slug
-  const post = blogPosts.find(post => post.slug === params.slug)
+  const slug = await params.slug
+  const post = blogPosts.find(post => post.slug === slug)
   
   // If no post is found, return a 404
   if (!post) {
@@ -98,10 +111,18 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   </div>
                 )}
                 
-                <div 
-                  className="text-textPrimary blog-content"
-                  dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
-                />
+                <div className="mt-12">
+                  <h1 className="text-4xl font-bold text-center mb-4">{post.title}</h1>
+                  <div className="flex items-center justify-center text-textSecondary text-sm mb-12">
+                    <span>{post.date}</span>
+                    <span className="mx-2">•</span>
+                    <span>{post.author}</span>
+                  </div>
+                  <div 
+                    className="blog-content"
+                    dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
+                  ></div>
+                </div>
               </article>
             </ScrollRevealSection>
             
