@@ -29,15 +29,14 @@ export function generateStaticParams() {
   }))
 }
 
-interface PageProps {
-  params: {
-    slug: string;
-  }
+// Define the standard Next.js PageProps for the App Router
+type PageProps = {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-// The main blog post page component
-export default function Page(props: PageProps) {
-  const { params } = props;
+// The main blog post page component using standard Next.js typing
+export default async function Page({ params, searchParams }: PageProps) {
   const post = blogPosts.find(post => post.slug === params.slug);
   
   // If no post is found, return a 404
