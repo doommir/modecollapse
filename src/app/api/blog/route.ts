@@ -1,86 +1,55 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { BlogPost, blogPosts } from '@/data/blogPosts';
+import { blogPosts } from '@/data/blogPosts';
+import { connectToDatabase, convertDocToObj } from '@/lib/mongodb';
+import BlogPostModel from '@/models/BlogPost';
 
-// Path to store blog posts data
-const BLOG_POSTS_FILE_PATH = path.join(process.cwd(), 'data', 'blog-posts.json');
-
-// Ensure the data directory exists
-const ensureDirectoryExists = (filePath: string) => {
-  const dirname = path.dirname(filePath);
-  if (!fs.existsSync(dirname)) {
-    fs.mkdirSync(dirname, { recursive: true });
-  }
-};
-
-// Check if we're in Vercel production environment
-const isVercelProduction = process.env.VERCEL_ENV === 'production';
-
-// Load existing blog posts (if file exists, otherwise use in-memory data)
-const loadBlogPosts = (): BlogPost[] => {
+// Initialize the database by seeding blog posts if not already present
+const initializeDatabase = async () => {
   try {
-    if (isVercelProduction) {
-      // In Vercel production, we can't write to the filesystem
-      // We'll use the in-memory data from blogPosts.ts
-      return blogPosts;
+    await connectToDatabase();
+    
+    // Check if we already have blog posts in the database
+    const count = await BlogPostModel.countDocuments();
+    
+    if (count === 0) {
+      console.log('Seeding database with initial blog posts...');
+      // No blog posts found, let's seed the database with the static data
+      await BlogPostModel.insertMany(blogPosts);
+      console.log('Database seeded successfully');
     }
-
-    if (!fs.existsSync(BLOG_POSTS_FILE_PATH)) {
-      // If file doesn't exist, create it with initial data
-      saveBlogPosts(blogPosts);
-      return blogPosts;
-    }
-    const data = fs.readFileSync(BLOG_POSTS_FILE_PATH, 'utf8');
-    return JSON.parse(data);
   } catch (error) {
-    console.error('Error loading blog posts:', error);
-    return blogPosts; // Fallback to in-memory data
-  }
-};
-
-// Save blog posts to file
-const saveBlogPosts = (posts: BlogPost[]) => {
-  try {
-    if (isVercelProduction) {
-      // In Vercel production, we just log that we can't save
-      console.log('[Vercel Production] Cannot save blog posts to filesystem');
-      return true; // Return true to prevent errors
-    }
-
-    ensureDirectoryExists(BLOG_POSTS_FILE_PATH);
-    fs.writeFileSync(BLOG_POSTS_FILE_PATH, JSON.stringify(posts, null, 2));
-    return true;
-  } catch (error) {
-    console.error('Error saving blog posts:', error);
-    return false;
+    console.error('Error initializing database:', error);
   }
 };
 
 // GET handler - Retrieve all blog posts or a single post
 export async function GET(request: Request) {
   try {
+    await connectToDatabase();
+    
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get('slug');
     
-    const posts = loadBlogPosts();
-    
     if (slug) {
       // Return a specific post
-      const post = posts.find(p => p.slug === slug);
+      const post = await BlogPostModel.findOne({ slug });
       if (!post) {
         return NextResponse.json({ error: 'Blog post not found' }, { status: 404 });
       }
-      return NextResponse.json({ post });
+      return NextResponse.json({ post: convertDocToObj(post) });
     }
     
     // Return all posts
-    return NextResponse.json({ posts });
+    const posts = await BlogPostModel.find({}).sort({ date: -1 });
+    return NextResponse.json({ posts: posts.map(post => convertDocToObj(post)) });
   } catch (error) {
     console.error('Error retrieving blog posts:', error);
     return NextResponse.json({ error: 'Failed to retrieve blog posts' }, { status: 500 });
   }
 }
+
+// Call initialization during module load
+initializeDatabase().catch(console.error);
 
 // PUT handler - Update a blog post
 export async function PUT(request: Request) {
@@ -98,35 +67,22 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Invalid blog post data' }, { status: 400 });
     }
     
-    // Load existing posts
-    const posts = loadBlogPosts();
+    await connectToDatabase();
     
-    // Find the post index
-    const postIndex = posts.findIndex(p => p.id === post.id);
+    // Find and update the post
+    const updatedPost = await BlogPostModel.findOneAndUpdate(
+      { id: post.id },
+      post,
+      { new: true } // Return the updated document
+    );
     
-    if (postIndex === -1) {
+    if (!updatedPost) {
       return NextResponse.json({ error: 'Blog post not found' }, { status: 404 });
-    }
-    
-    // Update the post
-    posts[postIndex] = {
-      ...posts[postIndex],
-      ...post,
-      // Preserve the id and slug (these shouldn't change)
-      id: posts[postIndex].id,
-      slug: posts[postIndex].slug,
-    };
-    
-    // Save the updated posts
-    const saved = saveBlogPosts(posts);
-    
-    if (!saved) {
-      return NextResponse.json({ error: 'Failed to save blog post' }, { status: 500 });
     }
     
     return NextResponse.json({ 
       message: 'Blog post updated successfully',
-      post: posts[postIndex]
+      post: convertDocToObj(updatedPost)
     });
   } catch (error) {
     console.error('Blog post update error:', error);
@@ -150,13 +106,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid blog post data' }, { status: 400 });
     }
     
-    // Load existing posts
-    const posts = loadBlogPosts();
+    await connectToDatabase();
     
-    // Generate a new ID and slug if not provided
-    const newPost: BlogPost = {
-      id: post.id || String(posts.length),
-      slug: post.slug || post.title.toLowerCase().replace(/[^\w]+/g, '-'),
+    // Generate a new ID if not provided
+    if (!post.id) {
+      const count = await BlogPostModel.countDocuments();
+      post.id = String(count);
+    }
+    
+    // Generate a slug if not provided
+    if (!post.slug) {
+      post.slug = post.title.toLowerCase().replace(/[^\w]+/g, '-');
+    }
+    
+    // Fill in other required fields with defaults if not provided
+    const newPost = {
+      id: post.id,
+      slug: post.slug,
       title: post.title,
       excerpt: post.excerpt || post.title,
       date: post.date || new Date().toISOString().split('T')[0],
@@ -167,19 +133,12 @@ export async function POST(request: Request) {
       relatedPosts: post.relatedPosts || [],
     };
     
-    // Add the new post
-    posts.push(newPost);
-    
-    // Save the updated posts
-    const saved = saveBlogPosts(posts);
-    
-    if (!saved) {
-      return NextResponse.json({ error: 'Failed to save blog post' }, { status: 500 });
-    }
+    // Create the new blog post
+    const createdPost = await BlogPostModel.create(newPost);
     
     return NextResponse.json({ 
       message: 'Blog post created successfully',
-      post: newPost
+      post: convertDocToObj(createdPost)
     }, { status: 201 });
   } catch (error) {
     console.error('Blog post creation error:', error);
@@ -203,24 +162,13 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }
     
-    // Load existing posts
-    const posts = loadBlogPosts();
+    await connectToDatabase();
     
-    // Check if post exists
-    const postIndex = posts.findIndex(p => p.id === id);
+    // Find and delete the post
+    const deletedPost = await BlogPostModel.findOneAndDelete({ id });
     
-    if (postIndex === -1) {
+    if (!deletedPost) {
       return NextResponse.json({ error: 'Blog post not found' }, { status: 404 });
-    }
-    
-    // Remove the post
-    posts.splice(postIndex, 1);
-    
-    // Save the updated posts
-    const saved = saveBlogPosts(posts);
-    
-    if (!saved) {
-      return NextResponse.json({ error: 'Failed to delete blog post' }, { status: 500 });
     }
     
     return NextResponse.json({ message: 'Blog post deleted successfully' });
