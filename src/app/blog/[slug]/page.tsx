@@ -29,7 +29,15 @@ export function generateStaticParams() {
   }))
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+// Define proper props type for Next.js pages
+type BlogPostPageProps = {
+  params: {
+    slug: string;
+  };
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
+export default function BlogPostPage({ params }: BlogPostPageProps) {
   // Find the post with the matching slug
   const post = blogPosts.find(post => post.slug === params.slug)
   
