@@ -5,15 +5,22 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   // Get the pathname of the request
   const { pathname } = request.nextUrl;
+  
+  // Log for debugging
+  console.log(`Middleware processing: ${pathname}`);
 
   // Check if the path starts with /admin but is not the login page
   if (pathname.startsWith('/admin') && 
-      !pathname.startsWith('/admin/login')) {
+      !pathname.startsWith('/admin/login') &&
+      !pathname.startsWith('/admin/test')) { // Allow test page without auth
+    
     // Check if there's a valid session cookie or token
     const adminSession = request.cookies.get('admin_session')?.value;
+    console.log(`Admin session for ${pathname}: ${adminSession ? 'exists' : 'missing'}`);
     
     // If no valid session, redirect to login
     if (!adminSession) {
+      console.log(`Redirecting to login from: ${pathname}`);
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }
