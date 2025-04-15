@@ -29,11 +29,13 @@ export function generateStaticParams(): { slug: string }[] {
   }))
 }
 
-// Use basic inline types, remove async
-export default function Page({
+// Standard Next.js App Router page component typing
+export default async function Page({
   params,
+  searchParams,
 }: {
   params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const post = blogPosts.find(post => post.slug === params.slug);
   
