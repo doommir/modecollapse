@@ -60,8 +60,8 @@ export function generateStaticParams() {
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  // Get the slug parameter
-  const slug = await params.slug;
+  // Get the slug parameter directly (no need to await it)
+  const slug = params.slug;
   
   // Try to fetch the post from the API first
   let post = await fetchBlogPost(slug);
