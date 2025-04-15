@@ -29,8 +29,8 @@ export function generateStaticParams() {
   }))
 }
 
-// Simplified page component with inline types
-export default async function Page({
+// Use basic inline types, remove async
+export default function Page({
   params,
 }: {
   params: { slug: string };
