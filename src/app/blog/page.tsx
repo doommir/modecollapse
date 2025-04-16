@@ -5,37 +5,15 @@ import NewsletterSignup from '@/components/NewsletterSignup'
 import fs from 'fs'
 import path from 'path'
 import { BlogPostMeta } from './types' // Import the shared type
+// Import the new function to get metadata from the lib
+import { getAllPostsMeta } from '@/lib/blog' // Updated path
 
 // Constants
 const POSTS_PER_PAGE = 5
-const BLOG_DIR = path.join(process.cwd(), 'src/app/blog')
+// const BLOG_DIR = path.join(process.cwd(), 'src/app/blog') // Moved to lib
 
-// Function to get all blog post metadata
-async function getAllPostsMeta(): Promise<BlogPostMeta[]> {
-  const entries = await fs.promises.readdir(BLOG_DIR, { withFileTypes: true })
-  const postFolders = entries.filter(entry => entry.isDirectory())
-
-  const allMeta = await Promise.all(
-    postFolders.map(async (folder) => {
-      const metaPath = path.join(BLOG_DIR, folder.name, 'meta.ts')
-      try {
-        // Dynamically import the meta file
-        // NOTE: Dynamic import path needs careful construction for bundlers
-        // A more robust approach might involve a build script or require() if env allows
-        const metaModule = await import(`./${folder.name}/meta.ts`)
-        return metaModule.meta as BlogPostMeta
-      } catch (error) {
-        console.error(`Error reading metadata for ${folder.name}:`, error)
-        return null // Skip posts with errors
-      }
-    })
-  )
-
-  // Filter out nulls and sort by date descending
-  const validMeta = allMeta.filter((meta): meta is BlogPostMeta => meta !== null)
-  validMeta.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  return validMeta
-}
+// Function to get all blog post metadata - MOVED TO LIB
+// async function getAllPostsMeta(): Promise<BlogPostMeta[]> { ... } 
 
 export default async function BlogPage({ 
   searchParams 

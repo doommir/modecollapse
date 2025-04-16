@@ -3,12 +3,34 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { BlogPost, blogPosts } from '@/data/blogPosts'
+// import { BlogPost, blogPosts } from '@/data/blogPosts' // Removed old data import
 import { marked } from 'marked'
+
+// Define BlogPost type locally if needed, or fetch structure from API
+interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  author: string;
+  category: string;
+  thumbnail: string;
+  content: string;
+  relatedPosts?: string[];
+}
 
 export default function EditBlogPost() {
   const params = useParams()
   const router = useRouter()
+
+  // Add null check for params
+  if (!params) {
+    // Handle the case where params are not available, maybe redirect or show error
+    // For now, just return a loading state or minimal component
+    return <div>Loading parameters...</div>; 
+  }
+  
   const slug = params.slug as string
   
   const [post, setPost] = useState<BlogPost | null>(null)
@@ -52,13 +74,15 @@ export default function EditBlogPost() {
   
   const fetchBlogPost = async () => {
     setIsLoading(true);
+    setSaveError(''); // Clear previous errors
     
-    // Check if this is a new post (slug starts with "new-post-")
     const isNew = slug.startsWith('new-post-');
     setIsNewPost(isNew);
     
     if (isNew) {
-      // For new posts, set default values with markdown
+      // Default content for a new post
+      const defaultContent = `# Getting Started\n\nThis is a new blog post. You can use Markdown to format your content.\n\n## What is Markdown?\n\nMarkdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents.\n\n- **Bold text** is created with \`**bold**\`\n- *Italic text* is created with \`*italic*\`\n- [Links](https://modecollapse.io) are created with \`[text](url)\`\n\n### Add more sections\n\nStart writing your content here...`;
+      
       const defaultPost: BlogPost = {
         id: '', // Will be assigned by the API
         slug: slug,
@@ -68,21 +92,7 @@ export default function EditBlogPost() {
         author: 'Admin',
         category: 'Uncategorized',
         thumbnail: '/blog/placeholder.jpg',
-        content: `# Getting Started
-
-This is a new blog post. You can use Markdown to format your content.
-
-## What is Markdown?
-
-Markdown is a lightweight markup language that you can use to add formatting elements to plaintext text documents.
-
-- **Bold text** is created with \`**bold**\`
-- *Italic text* is created with \`*italic*\`
-- [Links](https://modecollapse.io) are created with \`[text](url)\`
-
-### Add more sections
-
-Start writing your content here...`,
+        content: defaultContent,
         relatedPosts: []
       };
       
@@ -96,95 +106,68 @@ Start writing your content here...`,
       return;
     }
     
+    // Fetch existing post from API
     try {
-      // First try to fetch from the API
       const response = await fetch(`/api/blog?slug=${slug}`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        const fetchedPost = data.post;
-        
-        setPost(fetchedPost);
-        setContent(fetchedPost.content);
-        setTitle(fetchedPost.title);
-        setExcerpt(fetchedPost.excerpt);
-        setAuthor(fetchedPost.author);
-        setCategory(fetchedPost.category);
-      } else {
-        // If API fails, fall back to the imported data
-        const foundPost = blogPosts.find(p => p.slug === slug);
-        if (foundPost) {
-          setPost(foundPost);
-          setContent(foundPost.content);
-          setTitle(foundPost.title);
-          setExcerpt(foundPost.excerpt);
-          setAuthor(foundPost.author);
-          setCategory(foundPost.category);
-        }
+      if (!response.ok) {
+        const errorData = await response.text(); // Get text for better debugging
+        throw new Error(`API error: ${response.status} ${response.statusText} - ${errorData}`);
       }
+      
+      const data = await response.json();
+      if (!data || !data.post) {
+        throw new Error('Invalid data received from API');
+      }
+      
+      const fetchedPost = data.post as BlogPost; // Assuming API returns BlogPost structure
+      setPost(fetchedPost);
+      setContent(fetchedPost.content);
+      setTitle(fetchedPost.title);
+      setExcerpt(fetchedPost.excerpt);
+      setAuthor(fetchedPost.author);
+      setCategory(fetchedPost.category);
+      
     } catch (error) {
       console.error('Error fetching blog post:', error);
-      
-      // Fall back to the imported data as a last resort
-      const foundPost = blogPosts.find(p => p.slug === slug);
-      if (foundPost) {
-        setPost(foundPost);
-        setContent(foundPost.content);
-        setTitle(foundPost.title);
-        setExcerpt(foundPost.excerpt);
-        setAuthor(foundPost.author);
-        setCategory(foundPost.category);
-      }
+      setSaveError(`Failed to load blog post data: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsLoading(false);
     }
   };
   
   const handleLogout = () => {
-    // Clear the admin session cookie
     document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    // Redirect to login page
     router.push('/admin/login');
   };
   
   const handleSave = async () => {
-    if (!post) return;
+    if (!post && !isNewPost) return; // Don't save if no post loaded unless it's new
     
     setIsSaving(true);
     setSaveMessage('');
     setSaveError('');
     
     try {
-      // Prepare the updated post object
-      const updatedPost = {
-        ...post,
+      const postDataToSave = {
+        ...(isNewPost ? {} : post), // Spread existing post only if editing
+        id: post?.id || '', // Send ID if available
+        slug: isNewPost 
+          ? title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim() 
+          : post?.slug, // Use generated slug for new, existing slug otherwise
         title,
         excerpt,
         content,
         author,
-        category
+        category,
+        date: post?.date || new Date().toISOString().split('T')[0], // Keep existing date or set new one
+        thumbnail: post?.thumbnail || '/blog/placeholder.jpg', // Keep existing thumb or default
       };
       
-      // For new posts, generate a proper slug from the title
-      if (isNewPost) {
-        // Generate a slug from the title
-        const generatedSlug = title.toLowerCase()
-          .replace(/[^\w\s-]/g, '') // Remove special chars
-          .replace(/\s+/g, '-') // Replace spaces with hyphens
-          .replace(/-+/g, '-') // Remove duplicate hyphens
-          .trim();
-        
-        updatedPost.slug = generatedSlug;
-      }
-      
-      // Send the update request to the API - use POST for new posts, PUT for existing ones
       const method = isNewPost ? 'POST' : 'PUT';
       const response = await fetch('/api/blog', {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ post: updatedPost }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ post: postDataToSave }),
       });
       
       if (!response.ok) {
@@ -193,16 +176,17 @@ Start writing your content here...`,
       }
       
       const data = await response.json();
+      const savedPost = data.post as BlogPost;
       
-      // Update the local state with the returned post
-      setPost(data.post || updatedPost);
-      
+      setPost(savedPost);
       setSaveMessage('Changes saved successfully!');
       
-      // If this was a new post and we got a proper slug back, redirect to the edit page with the real slug
-      if (isNewPost && data.post && data.post.slug !== slug) {
-        router.push(`/admin/edit/${data.post.slug}`);
+      if (isNewPost) {
+        // Redirect to the new slug after successful creation
+        router.push(`/admin/edit/${savedPost.slug}`);
+        setIsNewPost(false); // No longer a new post
       }
+
     } catch (error) {
       console.error('Error saving blog post:', error);
       setSaveError(error instanceof Error ? error.message : 'Error saving changes. Please try again.');
@@ -210,7 +194,9 @@ Start writing your content here...`,
       setIsSaving(false);
     }
   };
-  
+
+  // ----- JSX Rendering ----- 
+  // (Keep the existing JSX structure, including loading/error states and the form)
   if (isLoading) {
     return (
       <div className="min-h-screen bg-darkBg text-textPrimary flex items-center justify-center">
@@ -221,7 +207,23 @@ Start writing your content here...`,
     );
   }
   
-  if (!post) {
+  // Display error if fetching failed and it's not a new post scenario
+  if (saveError && !isLoading && !isNewPost && !post) {
+     return (
+      <div className="min-h-screen bg-darkBg text-textPrimary flex items-center justify-center">
+        <div className="text-center p-6 bg-red-900/20 rounded-lg border border-red-500/30">
+          <h1 className="text-2xl font-bold mb-4 text-red-400">Error Loading Post</h1>
+          <p className="text-red-300 mb-4">{saveError}</p>
+          <Link href="/admin" className="text-primary hover:underline">
+            Return to Admin Dashboard
+          </Link>
+        </div>
+      </div>
+    )
+  }
+  
+  // If it's not loading, not an error state, but still no post (and not a 'new' post), show not found
+  if (!post && !isNewPost && !isLoading) {
     return (
       <div className="min-h-screen bg-darkBg text-textPrimary flex items-center justify-center">
         <div className="text-center">
@@ -234,13 +236,14 @@ Start writing your content here...`,
     )
   }
   
+  // Main Edit Form JSX (copied from original structure)
   return (
     <div className="min-h-screen bg-darkBg text-textPrimary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">{isNewPost ? 'Create New Post' : 'Edit Blog Post'}</h1>
           <div className="flex space-x-4">
-            {!isNewPost && (
+            {!isNewPost && post?.slug && (
               <Link 
                 href={`/blog/${post.slug}`} 
                 className="px-4 py-2 bg-darkBg/50 hover:bg-darkBg/70 text-textPrimary rounded-md transition-colors"
@@ -265,7 +268,8 @@ Start writing your content here...`,
         </div>
         
         <div className="bg-darkBg/30 border border-textSecondary/10 rounded-lg p-6 mb-8">
-          {saveError && (
+          {/* Display save error specific to the save action */}
+          {saveError && isSaving && (
             <div className="mb-6 p-4 bg-red-900/20 border border-red-400/10 rounded-lg text-red-400">
               {saveError}
             </div>
@@ -427,13 +431,13 @@ Start writing your content here...`,
         </div>
         
         <div className="bg-darkBg/30 border border-textSecondary/10 rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Preview</h2>
+          <h2 className="text-xl font-semibold mb-4">Live Preview (Read Only)</h2>
           <div className="border border-textSecondary/10 rounded-lg p-6 bg-darkBg/50">
             <h1 className="text-2xl font-bold mb-2">{title}</h1>
             <div className="flex items-center space-x-4 text-sm text-textSecondary mb-4">
               <span>By {author}</span>
               <span>•</span>
-              <span>{post.date}</span>
+              <span>{post?.date}</span> {/* Use optional chaining for post */} 
               <span>•</span>
               <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs">
                 {category}
@@ -441,12 +445,12 @@ Start writing your content here...`,
             </div>
             <p className="text-textSecondary mb-4">{excerpt}</p>
             <div 
-              className="prose prose-invert max-w-none"
+              className="prose prose-invert max-w-none markdown-preview"
               dangerouslySetInnerHTML={{ __html: htmlPreview }}
             />
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 } 

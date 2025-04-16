@@ -3,13 +3,14 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-
-// Import the blog posts - in a real app this would be fetched from an API
-import { blogPosts } from '@/data/blogPosts'
+// Import the new function to get metadata from the lib
+import { getAllPostsMeta } from '@/lib/blog' // Updated path
+import { BlogPostMeta } from '../blog/types' // Import the shared type
 
 export default function AdminPage() {
   const router = useRouter()
-  const [posts, setPosts] = useState(blogPosts)
+  // Use BlogPostMeta type for state
+  const [posts, setPosts] = useState<BlogPostMeta[]>([]) 
   const [loading, setLoading] = useState(true)
   
   useEffect(() => {
@@ -19,51 +20,51 @@ export default function AdminPage() {
   const fetchBlogPosts = async () => {
     setLoading(true)
     try {
-      const response = await fetch('/api/blog')
-      if (response.ok) {
-        const data = await response.json()
-        setPosts(data.posts || blogPosts)
-      }
+      // Use the new function to get posts
+      const fetchedPosts = await getAllPostsMeta()
+      setPosts(fetchedPosts)
+      // Remove old API fetch logic
+      // const response = await fetch('/api/blog')
+      // if (response.ok) {
+      //   const data = await response.json()
+      //   setPosts(data.posts || blogPosts)
+      // }
     } catch (error) {
       console.error('Error fetching blog posts:', error)
+      // Handle error appropriately, maybe show a message
     } finally {
       setLoading(false)
     }
   }
   
   const handleLogout = () => {
-    // Clear the admin session cookie
     document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    // Redirect to login page
     router.push('/admin/login');
   };
   
   const handleCreateNewPost = () => {
-    // Generate a temporary unique ID and slug for the new post
-    const newPostId = String(posts.length + 1);
+    // Logic for creating a new post slug for the edit page
+    // This doesn't create the file, just navigates to the editor
     const newPostSlug = `new-post-${Date.now()}`;
-    
-    // Create a new post with default values
-    const newPost = {
-      id: newPostId,
-      slug: newPostSlug,
-      title: 'New Blog Post',
-      excerpt: 'A brief description of your new post',
-      date: new Date().toISOString().split('T')[0],
-      author: 'Admin',
-      category: 'Uncategorized',
-      thumbnail: '/blog/placeholder.jpg',
-      content: '<p>Start writing your blog post here...</p>',
-      relatedPosts: []
-    };
-    
-    // Add the new post to the array (temporary)
-    setPosts([...posts, newPost]);
-    
-    // Navigate to the edit page for the new post
     router.push(`/admin/edit/${newPostSlug}`);
+    // // Old logic for creating in-memory post removed
+    // const newPostId = String(posts.length + 1);
+    // const newPost = {
+    //   id: newPostId, // ID is no longer relevant here
+    //   slug: newPostSlug,
+    //   title: 'New Blog Post',
+    //   excerpt: 'A brief description of your new post',
+    //   date: new Date().toISOString().split('T')[0],
+    //   author: 'Admin',
+    //   category: 'Uncategorized',
+    //   thumbnail: '/blog/placeholder.jpg',
+    //   // Content should be handled by the editor/MDX file
+    // };
+    // setPosts([...posts, newPost]); // Don't add to local state here
   };
   
+  // ----- JSX Rendering ----- 
+  // (Keep the main structure, update table to use BlogPostMeta fields)
   return (
     <div className="min-h-screen bg-darkBg text-textPrimary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -141,7 +142,8 @@ export default function AdminPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-textSecondary/10">
-                  <th className="px-4 py-2 text-left">ID</th>
+                  {/* Remove ID column as it's less relevant now */}
+                  {/* <th className="px-4 py-2 text-left">ID</th> */}
                   <th className="px-4 py-2 text-left">Title</th>
                   <th className="px-4 py-2 text-left">Author</th>
                   <th className="px-4 py-2 text-left">Date</th>
@@ -151,8 +153,9 @@ export default function AdminPage() {
               </thead>
               <tbody>
                 {posts.map(post => (
-                  <tr key={post.id} className="border-b border-textSecondary/10 hover:bg-darkBg/50">
-                    <td className="px-4 py-3">{post.id}</td>
+                  // Use slug as key
+                  <tr key={post.slug} className="border-b border-textSecondary/10 hover:bg-darkBg/50">
+                    {/* <td className="px-4 py-3">{post.id}</td> */}
                     <td className="px-4 py-3">{post.title}</td>
                     <td className="px-4 py-3">{post.author}</td>
                     <td className="px-4 py-3">{post.date}</td>
@@ -186,5 +189,5 @@ export default function AdminPage() {
         </div>
       </div>
     </div>
-  )
+  );
 } 
