@@ -7,6 +7,7 @@ import path from 'path'
 import { BlogPostMeta } from './types' // Import the shared type
 // Import the new function to get metadata from the lib
 import { getAllPostsMeta } from '@/lib/blog' // Updated path
+import React from 'react'
 
 // Constants
 const POSTS_PER_PAGE = 5
@@ -15,32 +16,65 @@ const POSTS_PER_PAGE = 5
 // Function to get all blog post metadata - MOVED TO LIB
 // async function getAllPostsMeta(): Promise<BlogPostMeta[]> { ... } 
 
-export default async function BlogPage({ 
+export default function BlogPage({ 
   searchParams 
 }: { 
-  searchParams?: { category?: string; page?: string } // Make searchParams optional
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  // Fetch all post metadata
-  const allPosts = await getAllPostsMeta()
-  
-  // Get unique categories
+  // Fetch all post metadata - Needs to be done differently without async
+  // This now needs to be fetched client-side or passed from a parent Server Component
+  // For now, let's fetch client-side for simplicity, though this impacts SEO/SSR
+  const [allPosts, setAllPosts] = React.useState<BlogPostMeta[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      try {
+        // We need an API route to fetch this data now, as we can't use fs here
+        const response = await fetch('/api/admin/posts'); // Reuse admin API route for now
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+        const data = await response.json();
+        setAllPosts(data.posts || []);
+      } catch (error) {
+        console.error("Failed to fetch blog posts:", error);
+        setAllPosts([]); // Set empty on error
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  // Get unique categories - derived from fetched state
   const categories = Array.from(new Set(allPosts.map(post => post.category)))
 
-  // Parse search params
+  // Parse search params - Keep this logic
   const selectedCategory = searchParams?.category || null
   const currentPage = Number(searchParams?.page) || 1
   
-  // Filter posts by category
+  // Filter posts by category - Use state
   const filteredPosts = selectedCategory
     ? allPosts.filter(post => post.category === selectedCategory)
     : allPosts
   
-  // Calculate pagination
+  // Calculate pagination - Use filtered state
   const indexOfLastPost = currentPage * POSTS_PER_PAGE
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost)
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
   
+  // Add loading state to JSX
+  if (loading) {
+     return (
+      <div className="min-h-screen bg-gradient-to-b from-darkBg to-black text-textPrimary flex justify-center items-center">
+        <p>Loading posts...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-darkBg to-black text-textPrimary">
       {/* Header Section */}
