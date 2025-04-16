@@ -1,28 +1,61 @@
 import Link from 'next/link'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import SectionDivider from '@/components/SectionDivider'
-import { blogPosts } from '@/data/blogPosts'
 import NewsletterSignup from '@/components/NewsletterSignup'
+import fs from 'fs'
+import path from 'path'
+import { BlogPostMeta } from './types' // Import the shared type
 
 // Constants
 const POSTS_PER_PAGE = 5
+const BLOG_DIR = path.join(process.cwd(), 'src/app/blog')
 
-// Get unique categories
-const categories = Array.from(new Set(blogPosts.map(post => post.category)))
+// Function to get all blog post metadata
+async function getAllPostsMeta(): Promise<BlogPostMeta[]> {
+  const entries = await fs.promises.readdir(BLOG_DIR, { withFileTypes: true })
+  const postFolders = entries.filter(entry => entry.isDirectory())
 
-export default function BlogPage({ 
+  const allMeta = await Promise.all(
+    postFolders.map(async (folder) => {
+      const metaPath = path.join(BLOG_DIR, folder.name, 'meta.ts')
+      try {
+        // Dynamically import the meta file
+        // NOTE: Dynamic import path needs careful construction for bundlers
+        // A more robust approach might involve a build script or require() if env allows
+        const metaModule = await import(`./${folder.name}/meta.ts`)
+        return metaModule.meta as BlogPostMeta
+      } catch (error) {
+        console.error(`Error reading metadata for ${folder.name}:`, error)
+        return null // Skip posts with errors
+      }
+    })
+  )
+
+  // Filter out nulls and sort by date descending
+  const validMeta = allMeta.filter((meta): meta is BlogPostMeta => meta !== null)
+  validMeta.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  return validMeta
+}
+
+export default async function BlogPage({ 
   searchParams 
 }: { 
-  searchParams: { category?: string; page?: string } 
+  searchParams?: { category?: string; page?: string } // Make searchParams optional
 }) {
+  // Fetch all post metadata
+  const allPosts = await getAllPostsMeta()
+  
+  // Get unique categories
+  const categories = Array.from(new Set(allPosts.map(post => post.category)))
+
   // Parse search params
-  const selectedCategory = searchParams.category || null
-  const currentPage = Number(searchParams.page) || 1
+  const selectedCategory = searchParams?.category || null
+  const currentPage = Number(searchParams?.page) || 1
   
   // Filter posts by category
   const filteredPosts = selectedCategory
-    ? blogPosts.filter(post => post.category === selectedCategory)
-    : blogPosts
+    ? allPosts.filter(post => post.category === selectedCategory)
+    : allPosts
   
   // Calculate pagination
   const indexOfLastPost = currentPage * POSTS_PER_PAGE
@@ -57,27 +90,15 @@ export default function BlogPage({
             {currentPosts.length > 0 ? (
               <div className="space-y-8">
                 {currentPosts.map(post => (
-                  <Link href={`/blog/${post.slug}`} key={post.id} className="group block">
+                  <Link href={`/blog/${post.slug}`} key={post.slug} className="group block">
                     <div 
                       className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg overflow-hidden border border-textSecondary/10 hover:border-primary/30 transition-colors group"
                     >
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
                         <div className="md:col-span-1 bg-darkBg/50 h-full relative overflow-hidden">
-                          {post.id === '0' ? (
+                          {post.thumbnail ? (
                             <img 
-                              src="/blog/mode-collapse.png" 
-                              alt={post.title}
-                              className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
-                            />
-                          ) : post.id === '7' ? (
-                            <img 
-                              src="/blog/vitalviralsquare.png" 
-                              alt={post.title}
-                              className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
-                            />
-                          ) : post.id === '8' ? (
-                            <img 
-                              src="/blog/disruptsquare.png" 
+                              src={post.thumbnail} 
                               alt={post.title}
                               className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
                             />
@@ -102,7 +123,7 @@ export default function BlogPage({
                             {post.title}
                           </h2>
                           <p className="text-textSecondary mb-4">
-                            {post.excerpt}
+                            {post.description}
                           </p>
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-textSecondary">
@@ -225,8 +246,8 @@ export default function BlogPage({
             <div className="bg-darkBg/30 dark:bg-darkBg/30 rounded-lg p-6 border border-textSecondary/10">
               <h3 className="text-lg font-bold mb-4">Recent Posts</h3>
               <div className="space-y-4">
-                {blogPosts.slice(0, 3).map(post => (
-                  <Link href={`/blog/${post.slug}`} key={post.id} className="block group">
+                {allPosts.slice(0, 3).map(post => (
+                  <Link href={`/blog/${post.slug}`} key={post.slug} className="block group">
                     <h4 className="font-medium group-hover:text-primary transition-colors">
                       {post.title}
                     </h4>

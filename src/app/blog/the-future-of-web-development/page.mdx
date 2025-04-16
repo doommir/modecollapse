@@ -1,0 +1,57 @@
+import Image from "next/image"
+import { Metadata } from "next"
+import { H1, H2, H3, P } from "@/components/typography"
+
+export const metadata: Metadata = {
+  title: "The Future of Web Development",
+  description: "Exploring trends and technologies shaping the next generation of web applications.",
+  openGraph: {
+    title: "The Future of Web Development",
+    images: ["/blog/the-future-of-web-development/banner.jpg"], // Assuming banner
+  },
+}
+
+export default function BlogPost() {
+  return (
+    <>
+      {/* <Image
+        src="/blog/the-future-of-web-development/banner.jpg"
+        alt="Blog banner"
+        width={1200}
+        height={600}
+        className="rounded-2xl shadow-xl mb-8"
+      /> */}
+
+      <H1>The Future of Web Development</H1>
+
+      <P>
+        Web development continues to evolve at a rapid pace, with new technologies, 
+        frameworks, and methodologies emerging regularly. As we look to the future, 
+        several key trends and technologies are poised to shape the next generation of web applications.
+      </P>
+
+      <H2>Current Trends Shaping the Future</H2>
+
+      <H3>1. Progressive Web Apps (PWAs)</H3>
+      <P>
+        Progressive Web Apps combine the best of web and mobile apps, offering offline functionality, 
+        push notifications, and app-like experiences without requiring users to visit an app store. 
+        As mobile usage continues to dominate, PWAs represent a significant evolution in how we build web applications.
+      </P>
+
+      <H3>2. Jamstack Architecture</H3>
+      <P>
+        The Jamstack approach (JavaScript, APIs, and Markup) separates the front-end from the backend services, 
+        pre-rendering pages for better performance. This architecture offers improved security, scalability, 
+        and developer experience, making it increasingly popular for modern web projects.
+      </P>
+
+      <H3>3. Headless CMSs</H3>
+      <P>
+        Headless content management systems separate content creation from presentation, allowing developers 
+        to use any front-end technology while content editors work in a familiar environment. 
+        This decoupling provides greater flexibility and enables omnichannel content delivery.
+      </P>
+    </>
+  )
+} 

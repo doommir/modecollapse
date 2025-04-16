@@ -1,0 +1,54 @@
+import Image from "next/image"
+import { Metadata } from "next"
+import { H1, H2, H3, P, UL, LI } from "@/components/typography"
+
+export const metadata: Metadata = {
+  title: "Maximizing Productivity with StudyCrafter",
+  description: "Tips and tricks to get the most out of the StudyCrafter tool for effective learning.",
+  openGraph: {
+    title: "Maximizing Productivity with StudyCrafter",
+    images: ["/blog/maximizing-productivity-with-studycrafter/banner.jpg"], // Assuming banner
+  },
+}
+
+export default function BlogPost() {
+  return (
+    <>
+      {/* <Image
+        src="/blog/maximizing-productivity-with-studycrafter/banner.jpg"
+        alt="Blog banner"
+        width={1200}
+        height={600}
+        className="rounded-2xl shadow-xl mb-8"
+      /> */}
+
+      <H1>Maximizing Productivity with StudyCrafter</H1>
+
+      <P>
+        StudyCrafter is a powerful AI-driven study tool designed to transform your learning experience. 
+        Whether you're a student preparing for exams, a professional acquiring new skills, or a lifelong learner, 
+        StudyCrafter can help you study more effectively and efficiently. 
+        This guide will show you how to get the most out of this innovative tool.
+      </P>
+
+      <H2>Understanding StudyCrafter's Core Features</H2>
+
+      <H3>1. Content Extraction and Organization</H3>
+      <P>StudyCrafter can extract text from various sources, including:</P>
+      <UL>
+        <LI>Images of notes or textbooks</LI>
+        <LI>PDF documents</LI>
+        <LI>Plain text</LI>
+      </UL>
+      <P>The AI organizes this information into a structured format, making it easier to process and study.</P>
+
+      <H3>2. Automated Study Materials</H3>
+      <P>Once your content is processed, StudyCrafter automatically generates:</P>
+      <UL>
+        <LI><strong>Flashcards</strong>: For quick review of key terms and concepts</LI>
+        <LI><strong>Quizzes</strong>: To test your understanding with multiple-choice and short-answer questions</LI>
+        <LI><strong>Concept Summaries</strong>: Concise explanations of main ideas</LI>
+      </UL>
+    </>
+  )
+} 

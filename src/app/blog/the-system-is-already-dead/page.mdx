@@ -1,0 +1,55 @@
+import Image from "next/image"
+import { Metadata } from "next"
+import { H1, H2, P, UL, LI } from "@/components/typography"
+
+export const metadata: Metadata = {
+  title: "The System Is Already Dead",
+  description: "Why Education As We Know It Will Collapse—and What Comes Next",
+  openGraph: {
+    title: "The System Is Already Dead",
+    images: ["/blog/the-system-is-already-dead/banner.jpg"],
+  },
+}
+
+export default function BlogPost() {
+  return (
+    <>
+      {/* <Image
+        src="/blog/the-system-is-already-dead/banner.jpg"
+        alt="Blog banner"
+        width={1200}
+        height={600}
+        className="rounded-2xl shadow-xl mb-8"
+      /> */}
+
+      <H1>The System Is Already Dead</H1>
+
+      <P>The current education system is on life support—and we all know it.</P>
+
+      <P>The signs are everywhere:</P>
+
+      <UL>
+        <LI>Skyrocketing student debt with diminishing returns</LI>
+        <LI>Curriculums teaching skills already automated by AI</LI>
+        <LI>Employers increasingly valuing portfolios over degrees</LI>
+        <LI>A growing mental health crisis among students</LI>
+      </UL>
+
+      <P>We're witnessing the slow-motion collapse of a system designed for the industrial age trying to operate in a digital, AI-powered world.</P>
+
+      <H2>The problems are structural</H2>
+
+      <P>Our education system was built to create compliant factory workers. Sit in rows. Follow instructions. Memorize information. Complete standardized tests.</P>
+
+      <P>But today's world demands creativity, critical thinking, and the ability to collaborate with both humans and AI tools—precisely the skills traditional education often suppresses.</P>
+
+      <H2>What's coming next</H2>
+
+      <P>I believe we'll see a massive shift toward personalized, project-based learning. Students will build portfolios demonstrating their abilities rather than collecting degrees. Learning will become lifelong, not limited to young adulthood.</P>
+
+      <P>Most importantly, education will focus on teaching humans to do what only humans can do—think critically, create meaningfully, and connect deeply with others.</P>
+
+      <P>The system may be dying, but what replaces it will be extraordinary.</P>
+    </>
+  )
+} 

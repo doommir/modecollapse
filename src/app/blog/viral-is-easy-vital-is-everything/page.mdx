@@ -1,0 +1,51 @@
+import Image from "next/image"
+import { Metadata } from "next"
+import { H1, H2, P } from "@/components/typography"
+
+export const metadata: Metadata = {
+  title: "Viral Is Easy. Vital Is Everything.",
+  description: "Why Content That Changes Lives > Content That Changes Your Follower Count",
+  openGraph: {
+    title: "Viral Is Easy. Vital Is Everything.",
+    images: ["/blog/viral-is-easy-vital-is-everything/banner.jpg"],
+  },
+}
+
+export default function BlogPost() {
+  return (
+    <>
+      {/* <Image
+        src="/blog/viral-is-easy-vital-is-everything/banner.jpg"
+        alt="Blog banner"
+        width={1200}
+        height={600}
+        className="rounded-2xl shadow-xl mb-8"
+      /> */}
+
+      <H1>Viral Is Easy. Vital Is Everything.</H1>
+
+      <P>I've been thinking a lot about what matters on social media lately.</P>
+
+      <P>There's an overwhelming amount of content creation advice focused on going viral. We're told to follow strict formulas: hook viewers in the first 3 seconds, create artificial stakes, use specific keywords and hashtags.</P>
+
+      <P>And look—some of it works! I've seen creators implement these tactics and watch their numbers shoot up.</P>
+
+      <P>But I've been wondering: what's the cost?</P>
+
+      <P>When we optimize solely for views and engagement, are we creating content that improves lives? Or are we just contributing to the noise?</P>
+
+      <P>Here's what I've decided:</P>
+
+      <H2>Viral is easy. Vital is everything.</H2>
+
+      <P>When we create content that's vital—that genuinely helps people solve problems, gain new perspectives, or feel less alone—we're doing something that matters.</P>
+
+      <P>Vital content might not always hit the algorithm jackpot, but it creates real impact. And that impact compounds over time.</P>
+
+      <P>I want to challenge you to ask yourself: "Am I creating content that could genuinely change someone's life for the better?"</P>
+
+      <P>If the answer is yes, you're on the right track—regardless of what the numbers say.</P>
+
+    </>
+  )
+} 
