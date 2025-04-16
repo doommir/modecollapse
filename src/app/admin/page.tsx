@@ -191,9 +191,9 @@ export default function AdminPage() {
                 </tbody>
               </table>
             </div>
-          )} {/* End conditional rendering for table */} 
-        </div> {/* Close the main content container (table section) */} 
-      </div> {/* Close the max-w-7xl container */} 
-    </div> {/* Close the root div */} 
+          )}
+        </div> 
+      </div> 
+    </div> 
   );
 } 
