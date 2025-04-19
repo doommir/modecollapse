@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
 
 // Initialize OpenAI with API key if available
 const openai = process.env.OPENAI_API_KEY 
@@ -64,10 +65,11 @@ export async function POST(request: Request) {
             return NextResponse.json({ 
               text: `# Please paste your study content directly\n\nIn this demo version, PDF content extraction is limited. For the best experience, please copy and paste your study content directly into the text box.\n\nAlternatively, you can upload image files (.jpg, .png) which will be processed with OCR.`
             });
-          } catch (error: any) {
+          } catch (error: unknown) {
             console.error("PDF processing error:", error);
+            const message = error instanceof Error ? error.message : 'Unknown error';
             return NextResponse.json({ 
-              error: `Failed to process PDF: ${error.message}` 
+              error: `Failed to process PDF: ${message}` 
             }, { status: 500 });
           }
         }
@@ -113,10 +115,11 @@ export async function POST(request: Request) {
           // Parse the JSON response
           const toolsData = JSON.parse(toolsResponse.choices[0].message.content || "{}");
           return NextResponse.json(toolsData);
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error("Error generating study tools:", error);
+          const message = error instanceof Error ? error.message : 'Unknown error';
           return NextResponse.json({ 
-            error: `Failed to generate study tools: ${error.message}` 
+            error: `Failed to generate study tools: ${message}` 
           }, { status: 500 });
         }
 
@@ -145,7 +148,7 @@ export async function POST(request: Request) {
 
         try {
           // Format chat history for API call
-          const formattedHistory = chatHistory.map((msg: any) => ({
+          const formattedHistory: ChatCompletionMessageParam[] = chatHistory.map((msg: { role: 'user' | 'assistant'; content: string }) => ({
             role: msg.role,
             content: msg.content
           }));
@@ -164,18 +167,20 @@ export async function POST(request: Request) {
           return NextResponse.json({ 
             message: chatResponse.choices[0].message.content 
           });
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error("Error in chat:", error);
+          const message = error instanceof Error ? error.message : 'Unknown error';
           return NextResponse.json({ 
-            error: `Chat error: ${error.message}` 
+            error: `Chat error: ${message}` 
           }, { status: 500 });
         }
 
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('OpenAI API error:', error);
-    return NextResponse.json({ error: error.message || 'An error occurred' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'An error occurred';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 } 

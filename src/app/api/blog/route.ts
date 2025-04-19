@@ -102,8 +102,8 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Invalid blog post data' }, { status: 400 });
     }
     
-    // Load existing posts
-    let posts = loadBlogPosts();
+    // Load existing posts (array reference isn't reassigned, so const is safe)
+    const posts = loadBlogPosts();
     
     // Find the post index
     const postIndex = posts.findIndex(p => p.id === post.id);
@@ -151,8 +151,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid blog post data' }, { status: 400 });
     }
     
-    // Load existing posts
-    let posts = loadBlogPosts();
+    // Load existing posts (array reference isn't reassigned, so const is safe)
+    const posts = loadBlogPosts();
     
     // Generate a new ID (simple increment or UUID)
     const newId = String(posts.length > 0 ? Math.max(...posts.map(p => parseInt(p.id, 10))) + 1 : 0);
@@ -208,8 +208,8 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }
     
-    // Load existing posts
-    let posts = loadBlogPosts();
+    // Load existing posts (array reference isn't reassigned, so const is safe)
+    const posts = loadBlogPosts();
     
     // Check if post exists
     const postIndex = posts.findIndex(p => p.id === id);

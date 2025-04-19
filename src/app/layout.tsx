@@ -20,7 +20,11 @@ export const metadata: Metadata = {
   icons: {
     icon: '/images/modecollapsefavicon.png',
     apple: '/images/modecollapsefavicon.png',
-  }
+  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default function RootLayout({

@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { BlogPostMeta } from '@/app/blog/types' // Adjust path relative to lib
 
-const BLOG_DIR = path.join(process.cwd(), 'src/app/blog')
+const BLOG_DIR = path.join(process.cwd(), 'content/blog')
 
 // Function to get all blog post metadata by reading file content
 export async function getAllPostsMeta(): Promise<BlogPostMeta[]> {
@@ -11,34 +11,39 @@ export async function getAllPostsMeta(): Promise<BlogPostMeta[]> {
   const postFolders = entries.filter(entry => entry.isDirectory())
 
   const allMetaPromises = postFolders.map(async (folder) => {
-    const metaPath = path.join(BLOG_DIR, folder.name, 'meta.ts')
+    // Prefer JSON metadata if available for safety and simplicity
+    const jsonMetaPath = path.join(BLOG_DIR, folder.name, 'meta.json')
+    const tsMetaPath = path.join(BLOG_DIR, folder.name, 'meta.ts')
+
     try {
-      if (!fs.existsSync(metaPath)) {
-        console.warn(`meta.ts not found in ${folder.name}`)
-        return null
+      if (fs.existsSync(jsonMetaPath)) {
+        // Parse JSON directly
+        const jsonContent = await fs.promises.readFile(jsonMetaPath, 'utf8')
+        const metaObject = JSON.parse(jsonContent)
+        return { ...metaObject, slug: folder.name } as BlogPostMeta
       }
 
-      const fileContent = await fs.promises.readFile(metaPath, 'utf8')
-      
-      // Basic parsing: find the export const meta = { ... }; block
-      // WARNING: This is fragile and depends on exact formatting.
-      const metaMatch = fileContent.match(/export const meta:?.*?= (\{[\s\S]*?\});/)
-      
-      if (metaMatch && metaMatch[1]) {
-        // Use Function constructor for safer evaluation than direct eval
-        // This assumes the object literal is valid JavaScript
-        try {
-          const metaObject = new Function(`return (${metaMatch[1]});`)()
-          // Add slug derived from folder name
-          return { ...metaObject, slug: folder.name } as BlogPostMeta
-        } catch (evalError) {
-          console.error(`Error evaluating meta object in ${metaPath}:`, evalError)
+      // Fallback to legacy meta.ts parsing while migration is in progress
+      if (fs.existsSync(tsMetaPath)) {
+        const fileContent = await fs.promises.readFile(tsMetaPath, 'utf8')
+        const metaMatch = fileContent.match(/export const meta:?.*?= (\{[\s\S]*?\});/)
+
+        if (metaMatch && metaMatch[1]) {
+          try {
+            const metaObject = new Function(`return (${metaMatch[1]});`)()
+            return { ...metaObject, slug: folder.name } as BlogPostMeta
+          } catch (evalError) {
+            console.error(`Error evaluating meta object in ${tsMetaPath}:`, evalError)
+            return null
+          }
+        } else {
+          console.warn(`Could not parse meta export in ${tsMetaPath}`)
           return null
         }
-      } else {
-        console.warn(`Could not parse meta export in ${metaPath}`)
-        return null
       }
+
+      console.warn(`No metadata file found in ${folder.name}`)
+      return null
     } catch (error) {
       console.error(`Error reading or processing metadata for ${folder.name}:`, error)
       return null // Skip posts with errors

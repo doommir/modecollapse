@@ -21,17 +21,11 @@ interface BlogPost {
 }
 
 export default function EditBlogPost() {
-  const params = useParams()
+  const params = useParams<{ slug?: string }>()
   const router = useRouter()
 
-  // Add null check for params
-  if (!params) {
-    // Handle the case where params are not available, maybe redirect or show error
-    // For now, just return a loading state or minimal component
-    return <div>Loading parameters...</div>; 
-  }
-  
-  const slug = params.slug as string
+  // Derive slug safely (can be empty string on first render)
+  const slug = typeof params?.slug === 'string' ? params.slug : ''
   
   const [post, setPost] = useState<BlogPost | null>(null)
   const [content, setContent] = useState('')
@@ -69,7 +63,13 @@ export default function EditBlogPost() {
   }, [content]);
   
   useEffect(() => {
+    if (!slug) {
+      // No slug yet; stop loading indicator so UI can render
+      setIsLoading(false)
+      return
+    }
     fetchBlogPost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
   
   const fetchBlogPost = async () => {
