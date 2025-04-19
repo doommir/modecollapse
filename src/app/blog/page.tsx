@@ -3,12 +3,9 @@ import Link from 'next/link'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import SectionDivider from '@/components/SectionDivider'
 import NewsletterSignup from '@/components/NewsletterSignup'
-import fs from 'fs'
-import path from 'path'
-import { BlogPostMeta } from './types' // Import the shared type
-// Import the new function to get metadata from the lib
-import { getAllPostsMeta } from '@/lib/blog' // Updated path
+import { BlogPostMeta } from './types'
 import React from 'react'
+import { useSearchParams } from 'next/navigation'
 
 // Constants
 const POSTS_PER_PAGE = 5
@@ -17,11 +14,8 @@ const POSTS_PER_PAGE = 5
 // Function to get all blog post metadata - MOVED TO LIB
 // async function getAllPostsMeta(): Promise<BlogPostMeta[]> { ... } 
 
-export default function BlogPage({ 
-  searchParams 
-}: { 
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+export default function BlogPage() {
+  const searchParams = useSearchParams();
   // Fetch all post metadata - Needs to be done differently without async
   // This now needs to be fetched client-side or passed from a parent Server Component
   // For now, let's fetch client-side for simplicity, though this impacts SEO/SSR
@@ -53,8 +47,8 @@ export default function BlogPage({
   const categories = Array.from(new Set(allPosts.map(post => post.category)))
 
   // Parse search params - Keep this logic
-  const selectedCategory = searchParams?.category || null
-  const currentPage = Number(searchParams?.page) || 1
+  const selectedCategory = searchParams.get('category') || null;
+  const currentPage = Number(searchParams.get('page') || 1);
   
   // Filter posts by category - Use state
   const filteredPosts = selectedCategory
