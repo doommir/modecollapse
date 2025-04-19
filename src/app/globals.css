@@ -206,6 +206,10 @@
     box-shadow: 0 0 0 1px theme('colors.primary / 0.45'), 0 0 6px theme('colors.primary / 0.35'), 0 0 18px theme('colors.primary / 0.2');
   }
 
+  .shadow-neon-sm {
+    box-shadow: 0 0 0 1px theme('colors.primary / 0.35'), 0 0 4px theme('colors.primary / 0.25');
+  }
+
   .scrollbar-hide {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
