@@ -3,8 +3,8 @@ import path from 'path'
 import fs from 'fs'
 
 // Dynamic Blog Post Page
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+export default async function BlogPostPage({ params }: any) {
+  const { slug } = params.slug ? params : await params
   const mdxPath = path.join(process.cwd(), 'content', 'blog', slug, 'page.mdx')
 
   // Verify file exists otherwise 404

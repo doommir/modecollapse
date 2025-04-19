@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import ScrollRevealSection from '@/components/ScrollRevealSection'
 import SectionDivider from '@/components/SectionDivider'
