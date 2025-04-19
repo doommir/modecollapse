@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 
 // Dynamic Blog Post Page
-export default async function BlogPostPage({ params }: any) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const mdxPath = path.join(process.cwd(), 'content', 'blog', slug, 'page.mdx')
 
