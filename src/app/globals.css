@@ -199,4 +199,18 @@
 
 .markdown-preview strong {
   font-weight: bold;
+}
+
+@layer utilities {
+  .shadow-neon {
+    box-shadow: 0 0 0 1px theme('colors.primary / 0.45'), 0 0 6px theme('colors.primary / 0.35'), 0 0 18px theme('colors.primary / 0.2');
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome / Safari */
+  }
 } 
