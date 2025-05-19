@@ -1,0 +1,51 @@
+import Image from "next/image"
+import { Metadata } from "next"
+import { H1, H2, P, UL, LI } from "@/components/typography"
+
+export const metadata = {
+  title: "Perspective Prism: Multi-Lens Viewpoints",
+  description: "Introducing a blueprint for an AI-powered app that refracts any idea into five distinct lenses.",
+  openGraph: {
+    title: "Perspective Prism: Multi-Lens Viewpoints",
+    images: ["/blog/mode-collapse.png"],
+  },
+}
+
+export default function BlogPost() {
+  return (
+    <>
+      {/* <Image
+        src="/blog/mode-collapse.png"
+        alt="Blog banner"
+        width={1200}
+        height={600}
+        className="rounded-2xl shadow-xl mb-8"
+      /> */}
+
+      <H1>Perspective Prism Architecture</H1>
+
+      <P>
+        This blueprint outlines an AI-powered web app that transforms any tweet, article, or prompt into a set of five contrasting viewpoints. The goal is to surface hidden assumptions and spark deeper discussion.
+      </P>
+
+      <H2>Core Stack</H2>
+      <UL>
+        <LI>Next.js 15 frontend with Tailwind UI</LI>
+        <LI>FastAPI backend for orchestration</LI>
+        <LI>LangGraph pipeline generating the five personas</LI>
+        <LI>Postgres and Qdrant for data and embeddings</LI>
+        <LI>RQ workers for background generation tasks</LI>
+      </UL>
+
+      <H2>Pipeline Overview</H2>
+      <P>
+        A retriever pulls the source material and summarizes it. Five persona agents—skeptic, optimist, historian, futurist, and neutral—then provide their takes. These are critiqued and packaged into final lenses before being saved to the database.
+      </P>
+
+      <H2>APIs and Deployment</H2>
+      <P>
+        Clients create prisms via REST or WebSocket endpoints. The project ships using Fly.io and GitHub Actions for CI/CD.
+      </P>
+    </>
+  )
+}

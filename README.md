@@ -69,7 +69,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - `NEXT_PUBLIC_SITE_URL` - Set this to `https://www.modecollapse.io` for production
 
-See .env.local.example for all required environment variables.
+The application uses OpenAI for certain features. Set `OPENAI_API_KEY` in your
+`.env.local` file to enable AI functionality.
+
+See `.env.local.example` for all required environment variables.
+
+## Perspective Prism
+
+Navigate to `/prism` in the running app to experiment with the Perspective
+Prism demo. Enter any text and the page will call OpenAI to generate five
+short viewpoints: **skeptic**, **optimist**, **historian**, **futurist**, and a
+**neutral** summary.
 
 ## Deployment
 
