@@ -68,8 +68,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Environment Variables
 
 - `NEXT_PUBLIC_SITE_URL` - Set this to `https://www.modecollapse.io` for production
+- `STRIPE_SECRET_KEY` - Your Stripe secret key for paid subscriptions
+- `STRIPE_PRICE_ID` - The price ID for the premium newsletter plan
 
-See .env.local.example for all required environment variables.
+See .env.example for all required environment variables.
+
+## Premium Newsletter
+
+The `/premium-newsletter` page lets visitors subscribe to a paid newsletter via Stripe Checkout. Successful payments are recorded in `data/premium-subscribers.json`.
 
 ## Deployment
 

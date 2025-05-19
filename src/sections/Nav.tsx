@@ -103,12 +103,22 @@ export default function Nav() {
               </Link>
             </li>
             <li>
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="block py-3 md:py-1 hover:text-primary transition-colors relative group"
                 onClick={() => setIsOpen(false)}
               >
                 About
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 hidden md:block"></span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/premium-newsletter"
+                className="block py-3 md:py-1 hover:text-primary transition-colors relative group"
+                onClick={() => setIsOpen(false)}
+              >
+                Premium
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300 hidden md:block"></span>
               </Link>
             </li>
