@@ -11,24 +11,29 @@ export default function AdminLogin() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USER
+  const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     setLoading(true)
 
     try {
-      // This is a simple implementation - in a real app, you'd call an API endpoint
-      // Hard-coded credentials for demo purposes only
-      // In production, use an auth service and store credentials securely
-      if (username === 'admin' && password === 'modecollapse123') {
+      if (!ADMIN_USER || !ADMIN_PASSWORD) {
+        throw new Error('Admin credentials are not configured')
+      }
+
+      if (username === ADMIN_USER && password === ADMIN_PASSWORD) {
         // Set a cookie to maintain the session
-        document.cookie = `admin_session=true; path=/; max-age=${60 * 60 * 24 * 7}`; // 1 week
+        document.cookie = `admin_session=true; path=/; max-age=${60 * 60 * 24 * 7}` // 1 week
         router.push('/admin')
       } else {
         setError('Invalid username or password')
       }
     } catch (err) {
-      setError('An error occurred during login')
+      const message = err instanceof Error ? err.message : 'An error occurred during login'
+      setError(message)
       console.error(err)
     } finally {
       setLoading(false)

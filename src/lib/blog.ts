@@ -13,7 +13,6 @@ export async function getAllPostsMeta(): Promise<BlogPostMeta[]> {
   const allMetaPromises = postFolders.map(async (folder) => {
     // Prefer JSON metadata if available for safety and simplicity
     const jsonMetaPath = path.join(BLOG_DIR, folder.name, 'meta.json')
-    const tsMetaPath = path.join(BLOG_DIR, folder.name, 'meta.ts')
 
     try {
       if (fs.existsSync(jsonMetaPath)) {
@@ -23,24 +22,7 @@ export async function getAllPostsMeta(): Promise<BlogPostMeta[]> {
         return { ...metaObject, slug: folder.name } as BlogPostMeta
       }
 
-      // Fallback to legacy meta.ts parsing while migration is in progress
-      if (fs.existsSync(tsMetaPath)) {
-        const fileContent = await fs.promises.readFile(tsMetaPath, 'utf8')
-        const metaMatch = fileContent.match(/export const meta:?.*?= (\{[\s\S]*?\});/)
-
-        if (metaMatch && metaMatch[1]) {
-          try {
-            const metaObject = new Function(`return (${metaMatch[1]});`)()
-            return { ...metaObject, slug: folder.name } as BlogPostMeta
-          } catch (evalError) {
-            console.error(`Error evaluating meta object in ${tsMetaPath}:`, evalError)
-            return null
-          }
-        } else {
-          console.warn(`Could not parse meta export in ${tsMetaPath}`)
-          return null
-        }
-      }
+      // Legacy meta.ts files are no longer supported for security reasons
 
       console.warn(`No metadata file found in ${folder.name}`)
       return null
