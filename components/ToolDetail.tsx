@@ -11,7 +11,14 @@ export default function ToolDetail({ tool }: ToolDetailProps) {
   const consciousnessStars = Array.from({ length: 5 }, (_, i) => i < tool.consciousnessScore);
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    }
+  };
+
+  const handleCopyClick = (e: React.MouseEvent, text: string) => {
+    e.preventDefault();
+    copyToClipboard(text);
   };
 
   return (
@@ -116,7 +123,7 @@ export default function ToolDetail({ tool }: ToolDetailProps) {
                       {tip.snippet}
                     </code>
                     <button
-                      onClick={() => copyToClipboard(tip.snippet)}
+                      onClick={(e) => handleCopyClick(e, tip.snippet)}
                       className="absolute top-2 right-2 p-2 text-gray-400 hover:text-white transition-colors"
                       title="Copy to clipboard"
                     >
