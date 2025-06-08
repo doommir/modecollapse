@@ -40,11 +40,10 @@ export default function ToolPage({ params }: PageProps) {
   return <ToolDetail tool={tool} />;
 }
 
-export async function generateStaticParams() {
-  // This will pre-generate pages for all tools at build time
-  const tools = await import('@/lib/tools').then(module => module.getAllTools());
-  
-  return tools.map((tool) => ({
-    slug: tool.slug,
-  }));
-}
+// Temporarily disabled static generation to resolve build issues
+// export async function generateStaticParams() {
+//   const tools = await import('@/lib/tools').then(module => module.getAllTools());
+//   return tools.map((tool) => ({
+//     slug: tool.slug,
+//   }));
+// }
