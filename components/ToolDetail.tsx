@@ -1,3 +1,5 @@
+'use client';
+
 import { Tool } from '@/lib/tools';
 import { ExternalLink, Copy, Brain, Star } from 'lucide-react';
 
