@@ -70,4 +70,4 @@ interface Tool {
 
 ---
 
-*Breaking free from the algorithmic prison, one consciousness-expanding tool at a time.*
+*Breaking free from the algorithmic prison, one consciousness-expanding tool at a time.* 🧠
