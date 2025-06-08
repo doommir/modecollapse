@@ -1,6 +1,11 @@
+'use client';
+
 import { notFound } from 'next/navigation';
 import { getToolBySlug } from '@/lib/tools';
 import ToolDetail from '@/components/ToolDetail';
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: {
