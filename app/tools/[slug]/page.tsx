@@ -2,7 +2,7 @@
 
 import { notFound } from 'next/navigation';
 import { getToolBySlug } from '@/lib/tools';
-import ToolDetail from '@/components/ToolDetail';
+import ToolDetailSimple from '@/components/ToolDetailSimple';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -42,7 +42,7 @@ export default function ToolPage({ params }: PageProps) {
     );
   }
 
-  return <ToolDetail tool={tool} />;
+  return <ToolDetailSimple tool={tool} />;
 }
 
 // Temporarily disabled static generation to resolve build issues
