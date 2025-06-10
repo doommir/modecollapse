@@ -59,8 +59,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-deep-purple text-white">
-      {/* Logo in top right */}
-      <div className="absolute top-6 right-6 z-50">
+      {/* Logo in top left */}
+      <div className="absolute top-6 left-6 z-50">
         <Link href="/" className="block">
           <Image
             src="/mode-collapse-logo.svg"
