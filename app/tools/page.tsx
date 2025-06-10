@@ -218,21 +218,8 @@ export default function ToolsPage() {
 
   return (
     <div className="min-h-screen bg-deep-purple text-white">
-      {/* Header */}
-      <header className="border-b border-cyber-purple/20 bg-deep-purple/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center gap-4">
-            <Brain className="w-8 h-8 text-electric-blue" />
-            <div>
-              <h1 className="font-geometric text-2xl font-bold">AI Tool Directory</h1>
-              <p className="text-white/60 text-sm">Consciousness-expanding tools for the awakened</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Sticky Filter Bar */}
-      <div className="sticky top-0 z-40 bg-dark-purple/90 backdrop-blur-sm border-b border-cyber-purple/20">
+      <div className="sticky top-16 z-40 bg-dark-purple/90 backdrop-blur-sm border-b border-cyber-purple/20">
         <div className="max-w-7xl mx-auto px-6 py-4">
           {/* Search and Sort */}
           <div className="flex flex-col lg:flex-row gap-4 mb-4">

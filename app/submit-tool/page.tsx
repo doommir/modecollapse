@@ -7,16 +7,6 @@ import { ToolSubmitForm } from "@/components/ToolSubmitForm"
 export default function SubmitToolPage() {
   return (
     <div className="min-h-screen bg-deep-purple text-white">
-      {/* Header */}
-      <div className="border-b border-cyber-purple/20 bg-dark-purple/30">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <Link href="/" className="flex items-center gap-2 text-white hover:text-electric-blue transition-colors">
-            <Brain className="w-6 h-6" />
-            <span className="font-geometric text-lg font-bold">Mode Collapse</span>
-          </Link>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="text-center mb-12">

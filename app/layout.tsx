@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Navigation } from '@/components/Navigation'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'Mode Collapse - AI Tools Directory',
+  description: 'The smartest AI tools. Curated by humans. Powered by consciousness.',
+  generator: 'Next.js',
 }
 
 export default function RootLayout({
@@ -14,7 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navigation />
+        <main className="pt-16">
+          {children}
+        </main>
+      </body>
     </html>
   )
 }
