@@ -7,12 +7,17 @@ import { Badge } from "@/components/ui/badge"
 import { NewsletterModal } from "@/components/newsletter-modal"
 import { ToolSearchBar } from "@/components/ToolSearchBar"
 import { SubmitToolCTA } from "@/components/SubmitToolCTA"
-import { Brain, Zap, Sparkles, Code, Palette, MessageSquare, ExternalLink, Linkedin, TrendingUp } from "lucide-react"
+import { getFeaturedGoogleTools } from "@/lib/tools"
+import { Brain, Zap, Sparkles, Code, Palette, MessageSquare, ExternalLink, Linkedin, TrendingUp, Star } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function HomePage() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
   const [filteredTools, setFilteredTools] = useState<any[]>([])
+
+  // Get Google I/O tools
+  const featuredGoogleTools = getFeaturedGoogleTools()
 
   const featuredTools = [
     {
@@ -129,6 +134,78 @@ export default function HomePage() {
           className="absolute bottom-40 left-20 w-1.5 h-1.5 bg-cyber-purple rounded-full animate-float"
           style={{ animationDelay: "2s" }}
         ></div>
+      </section>
+
+      {/* Featured by Google I/O 2025 */}
+      <section className="py-16 px-6 bg-gradient-to-r from-dark-purple/30 to-cyber-purple/10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-electric-blue/20 to-neon-magenta/20 border border-electric-blue/30 rounded-full px-6 py-2 mb-4">
+              <Star className="w-4 h-4 text-electric-blue fill-current" />
+              <span className="text-electric-blue font-medium text-sm">Featured by Google I/O 2025</span>
+            </div>
+            <h2 className="font-geometric text-3xl md:text-4xl font-bold mb-4">
+              The{" "}
+              <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
+                Next Evolution
+              </span>
+            </h2>
+            <p className="text-white/70 text-lg max-w-2xl mx-auto">
+              Google's latest AI breakthroughs that are reshaping how we interact with technology
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {featuredGoogleTools.map((tool, index) => (
+              <Card
+                key={tool.slug}
+                className="bg-dark-purple/70 border-2 border-transparent bg-gradient-to-r from-electric-blue/10 to-neon-magenta/10 hover:from-electric-blue/20 hover:to-neon-magenta/20 transition-all duration-300 group hover:scale-[1.02] relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/5 to-neon-magenta/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <CardContent className="p-0 relative z-10">
+                  {/* Thumbnail */}
+                  <div className="relative aspect-video overflow-hidden rounded-t-lg">
+                    <Image
+                      src={tool.screenshotUrl || "/placeholder.svg"}
+                      alt={`${tool.name} screenshot`}
+                      width={400}
+                      height={240}
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 right-3">
+                      <div className="bg-gradient-to-r from-electric-blue to-neon-magenta rounded-full p-1">
+                        <Star className="w-3 h-3 text-white fill-current" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3 className="font-geometric font-bold text-lg mb-3 group-hover:text-electric-blue transition-colors">
+                      {tool.name}
+                    </h3>
+                    
+                    <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-3">
+                      {tool.summary}
+                    </p>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-electric-blue hover:text-white hover:bg-electric-blue/20 p-0 h-auto font-medium group/btn"
+                      asChild
+                    >
+                      <Link href={`/tools/${tool.slug}`} className="flex items-center gap-2">
+                        Learn More 
+                        <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Featured Tools Grid */}
