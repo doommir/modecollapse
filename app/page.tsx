@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { NewsletterModal } from "@/components/newsletter-modal"
 import { Brain, Zap, Sparkles, Code, Palette, MessageSquare, ExternalLink, Linkedin, TrendingUp } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function HomePage() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
@@ -58,6 +59,19 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-deep-purple text-white">
+      {/* Logo in top right */}
+      <div className="absolute top-6 right-6 z-50">
+        <Link href="/" className="block">
+          <Image
+            src="/mode-collapse-logo.svg"
+            alt="Mode Collapse Logo"
+            width={200}
+            height={60}
+            className="opacity-80 hover:opacity-100 transition-opacity duration-300"
+          />
+        </Link>
+      </div>
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center particle-bg overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-deep-purple/50 to-deep-purple"></div>
