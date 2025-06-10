@@ -104,6 +104,16 @@ export default function HomePage() {
             The smartest AI tools. Curated by humans. Powered by consciousness.
           </p>
 
+          {/* Hero Search Bar */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <ToolSearchBar 
+              tools={featuredTools} 
+              onFilter={setFilteredTools}
+              placeholder="Search AI tools... Try 'coding', 'creative', or 'research'"
+              className="w-full"
+            />
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
@@ -138,22 +148,12 @@ export default function HomePage() {
       {/* Featured Tools Grid */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-geometric text-3xl md:text-4xl font-bold text-center mb-8">
+          <h2 className="font-geometric text-3xl md:text-4xl font-bold text-center mb-12">
             Featured{" "}
             <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
               AI Tools
             </span>
           </h2>
-
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-12">
-            <ToolSearchBar 
-              tools={featuredTools} 
-              onFilter={setFilteredTools}
-              placeholder="Search featured tools..."
-              className="w-full"
-            />
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTools.map((tool, index) => (

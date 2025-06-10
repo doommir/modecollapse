@@ -66,7 +66,7 @@ export function ToolSearchBar({
           placeholder={placeholder}
           value={searchQuery}
           onChange={handleSearchChange}
-          className="pl-12 pr-12 py-3 bg-cyber-purple/20 border-cyber-purple/40 text-white placeholder:text-white/50 focus:border-electric-blue focus:ring-electric-blue/50 focus:ring-2 transition-all duration-200 text-lg"
+          className="pl-12 pr-12 py-4 bg-cyber-purple/30 border-cyber-purple/50 text-white placeholder:text-white/50 focus:border-electric-blue focus:ring-electric-blue/50 focus:ring-2 transition-all duration-200 text-lg shadow-lg backdrop-blur-sm"
         />
         {searchQuery && (
           <Button
