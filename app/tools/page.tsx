@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ToolCard } from "@/components/ToolCard"
 import {
   Brain,
   Zap,
@@ -37,6 +38,7 @@ interface Tool {
   href: string
   isEditorsPick?: boolean
   dateAdded: string
+  screenshotUrl?: string
 }
 
 const allTools: Tool[] = [
@@ -49,6 +51,7 @@ const allTools: Tool[] = [
     href: "#",
     isEditorsPick: true,
     dateAdded: "2024-01-15",
+    screenshotUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=240&fit=crop",
   },
   {
     id: "2",
@@ -59,6 +62,7 @@ const allTools: Tool[] = [
     href: "#",
     isEditorsPick: true,
     dateAdded: "2024-01-10",
+    screenshotUrl: "https://images.unsplash.com/photo-1547394765-185e1e68f34e?w=400&h=240&fit=crop",
   },
   {
     id: "3",
@@ -68,6 +72,7 @@ const allTools: Tool[] = [
     tags: ["Coding", "Automation", "Subscription"],
     href: "#",
     dateAdded: "2024-01-08",
+    screenshotUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=240&fit=crop",
   },
   {
     id: "4",
@@ -77,6 +82,7 @@ const allTools: Tool[] = [
     tags: ["GPT-4o", "Research", "Subscription"],
     href: "#",
     dateAdded: "2024-01-05",
+    screenshotUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=240&fit=crop",
   },
   {
     id: "5",
@@ -87,6 +93,7 @@ const allTools: Tool[] = [
     href: "#",
     isEditorsPick: true,
     dateAdded: "2024-01-12",
+    screenshotUrl: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=240&fit=crop",
   },
   {
     id: "6",
@@ -96,6 +103,7 @@ const allTools: Tool[] = [
     tags: ["Coding", "Automation", "Subscription"],
     href: "#",
     dateAdded: "2024-01-03",
+    screenshotUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=240&fit=crop",
   },
   {
     id: "7",
@@ -105,6 +113,7 @@ const allTools: Tool[] = [
     tags: ["Audio", "Creative", "Subscription"],
     href: "#",
     dateAdded: "2024-01-14",
+    screenshotUrl: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&h=240&fit=crop",
   },
   {
     id: "8",
@@ -114,6 +123,7 @@ const allTools: Tool[] = [
     tags: ["Writing", "Free", "Automation"],
     href: "#",
     dateAdded: "2024-01-07",
+    screenshotUrl: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=240&fit=crop",
   },
   {
     id: "9",
@@ -123,6 +133,7 @@ const allTools: Tool[] = [
     tags: ["Creative", "Free", "Image Gen"],
     href: "#",
     dateAdded: "2024-01-11",
+    screenshotUrl: "https://images.unsplash.com/photo-1547394765-185e1e68f34e?w=400&h=240&fit=crop",
   },
   {
     id: "10",
@@ -133,6 +144,7 @@ const allTools: Tool[] = [
     href: "#",
     isEditorsPick: true,
     dateAdded: "2024-01-13",
+    screenshotUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=240&fit=crop",
   },
   {
     id: "11",
@@ -142,6 +154,7 @@ const allTools: Tool[] = [
     tags: ["GPT-4o", "Research", "Free"],
     href: "#",
     dateAdded: "2024-01-09",
+    screenshotUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=240&fit=crop",
   },
   {
     id: "12",
@@ -151,6 +164,7 @@ const allTools: Tool[] = [
     tags: ["Coding", "Free", "Automation"],
     href: "#",
     dateAdded: "2024-01-06",
+    screenshotUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=240&fit=crop",
   },
 ]
 
@@ -282,60 +296,26 @@ export default function ToolsPage() {
             {/* Tool Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredAndSortedTools.map((tool) => (
-                <Card
+                <ToolCard
                   key={tool.id}
-                  className={`bg-dark-purple/50 border-cyber-purple/30 hover:border-electric-blue/50 transition-all duration-300 group hover:scale-[1.02] ${
-                    tool.isEditorsPick ? "ring-1 ring-neon-magenta/30 shadow-lg shadow-neon-magenta/10" : ""
-                  }`}
-                >
-                  <CardContent className="p-6">
-                    <Link
-                      href={`/tools/${tool.name
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")
-                        .replace(/[^a-z0-9-]/g, "")}`}
-                      className="block"
-                    >
-                      {/* Header */}
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="text-electric-blue group-hover:text-neon-magenta transition-colors">
-                            {tool.icon}
-                          </div>
-                          <h3 className="font-geometric font-semibold text-lg">{tool.name}</h3>
-                        </div>
-                        {tool.isEditorsPick && (
-                          <div className="flex items-center gap-1 text-neon-magenta">
-                            <Star className="w-4 h-4 fill-current" />
-                            <span className="text-xs font-medium">Pick</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-white/70 mb-4 text-sm leading-relaxed">{tool.description}</p>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {tool.tags.slice(0, 4).map((tag, tagIndex) => (
-                          <Badge
-                            key={tagIndex}
-                            variant="secondary"
-                            className="bg-cyber-purple/20 text-cyber-purple border-cyber-purple/30 text-xs"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-
-                      {/* Action */}
-                      <div className="text-electric-blue hover:text-white font-medium group/btn flex items-center">
-                        Learn More
-                        <ExternalLink className="w-3 h-3 ml-1 group-hover/btn:translate-x-0.5 transition-transform" />
-                      </div>
-                    </Link>
-                  </CardContent>
-                </Card>
+                  tool={{
+                    slug: tool.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+                    name: tool.name,
+                    summary: tool.description,
+                    description: tool.description,
+                    url: tool.href,
+                    tags: tool.tags,
+                    consciousnessScore: 4,
+                    curatorNote: "",
+                    promptTips: [],
+                    screenshotUrl: tool.screenshotUrl,
+                    icon: tool.icon,
+                    isEditorsPick: tool.isEditorsPick,
+                    href: `/tools/${tool.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`
+                  }}
+                  showThumbnail={true}
+                  variant="default"
+                />
               ))}
             </div>
 

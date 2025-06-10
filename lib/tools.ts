@@ -27,6 +27,7 @@ export const tools: Tool[] = [
     tags: ["Coding", "Automation", "Pro"],
     consciousnessScore: 4,
     curatorNote: "This is a flow-state amplifier for devs. Clean interface. High agency. 4/5 stars.",
+    screenshotUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=240&fit=crop",
     promptTips: [
       {
         title: "Refactor Legacy Code",
@@ -51,6 +52,7 @@ export const tools: Tool[] = [
     tags: ["Writing", "Analysis", "Pro"],
     consciousnessScore: 5,
     curatorNote: "Peak consciousness simulator. Thinks before it speaks. Rare combo of intelligence + humility.",
+    screenshotUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=240&fit=crop",
     promptTips: [
       {
         title: "Deep Analysis",
@@ -71,6 +73,7 @@ export const tools: Tool[] = [
     tags: ["Visual", "Creative", "Pro"],
     consciousnessScore: 3,
     curatorNote: "Dreams made manifest. Sometimes hits transcendent beauty, sometimes generic AI slop. 3/5 stars.",
+    screenshotUrl: "https://images.unsplash.com/photo-1547394765-185e1e68f34e?w=400&h=240&fit=crop",
     promptTips: [
       {
         title: "Cinematic Portraits",

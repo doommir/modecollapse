@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { NewsletterModal } from "@/components/newsletter-modal"
 import { ToolSearchBar } from "@/components/ToolSearchBar"
 import { SubmitToolCTA } from "@/components/SubmitToolCTA"
+import { ToolCard } from "@/components/ToolCard"
 import { getFeaturedGoogleTools } from "@/lib/tools"
 import { Brain, Zap, Sparkles, Code, Palette, MessageSquare, ExternalLink, Linkedin, TrendingUp, Star } from "lucide-react"
 import Link from "next/link"
@@ -156,53 +157,13 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            {featuredGoogleTools.map((tool, index) => (
-              <Card
+            {featuredGoogleTools.map((tool) => (
+              <ToolCard
                 key={tool.slug}
-                className="bg-dark-purple/70 border-2 border-transparent bg-gradient-to-r from-electric-blue/10 to-neon-magenta/10 hover:from-electric-blue/20 hover:to-neon-magenta/20 transition-all duration-300 group hover:scale-[1.02] relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-electric-blue/5 to-neon-magenta/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <CardContent className="p-0 relative z-10">
-                  {/* Thumbnail */}
-                  <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src={tool.screenshotUrl || "/placeholder.svg"}
-                      alt={`${tool.name} screenshot`}
-                      width={400}
-                      height={240}
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-3 right-3">
-                      <div className="bg-gradient-to-r from-electric-blue to-neon-magenta rounded-full p-1">
-                        <Star className="w-3 h-3 text-white fill-current" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6">
-                    <h3 className="font-geometric font-bold text-lg mb-3 group-hover:text-electric-blue transition-colors">
-                      {tool.name}
-                    </h3>
-                    
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-3">
-                      {tool.summary}
-                    </p>
-
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-electric-blue hover:text-white hover:bg-electric-blue/20 p-0 h-auto font-medium group/btn"
-                      asChild
-                    >
-                      <Link href={`/tools/${tool.slug}`} className="flex items-center gap-2">
-                        Learn More 
-                        <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                tool={tool}
+                variant="featured"
+                showThumbnail={true}
+              />
             ))}
           </div>
         </div>
@@ -220,44 +181,20 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTools.map((tool, index) => (
-              <Card
+              <ToolCard
                 key={index}
-                className="bg-dark-purple/50 border-cyber-purple/30 hover:border-electric-blue/50 transition-all duration-300 group"
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="text-electric-blue group-hover:text-neon-magenta transition-colors">
-                      {tool.icon}
-                    </div>
-                    <h3 className="font-geometric font-semibold text-lg">{tool.name}</h3>
-                  </div>
-
-                  <p className="text-white/70 mb-4 text-sm">{tool.description}</p>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {tool.tags.map((tag: string, tagIndex: number) => (
-                      <Badge
-                        key={tagIndex}
-                        variant="secondary"
-                        className="bg-cyber-purple/20 text-cyber-purple border-cyber-purple/30 text-xs"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-electric-blue hover:text-white hover:bg-electric-blue/20 p-0 h-auto font-medium"
-                    asChild
-                  >
-                    <Link href={`/tools/${tool.name.toLowerCase().replace(/\s+/g, "-")}`}>
-                      Learn More <ExternalLink className="w-3 h-3 ml-1" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                tool={{
+                  ...tool,
+                  slug: tool.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+                  url: tool.href || `#`,
+                  description: tool.description,
+                  consciousnessScore: 4,
+                  curatorNote: "",
+                  promptTips: []
+                }}
+                showThumbnail={false}
+                variant="default"
+              />
             ))}
           </div>
         </div>
