@@ -172,7 +172,7 @@ export default function HomePage() {
                   <p className="text-white/70 mb-4 text-sm">{tool.description}</p>
 
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {tool.tags.map((tag, tagIndex) => (
+                    {tool.tags.map((tag: string, tagIndex: number) => (
                       <Badge
                         key={tagIndex}
                         variant="secondary"
