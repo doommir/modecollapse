@@ -1,0 +1,209 @@
+{
+  "name": "AI Tools Screenshot Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "b5c7e1c4-8f3a-4e2b-9d6f-1a2b3c4d5e6f",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "airtableTokenApi",
+        "operation": "list",
+        "application": "app5uaiaf6Kyced64",
+        "table": "Mode Collapse Tools",
+        "options": {
+          "filterByFormula": "IF({screenshotUrl} = BLANK(), TRUE(), FALSE())"
+        }
+      },
+      "id": "a1b2c3d4-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
+      "name": "Get Tools Without Screenshots",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "airtable-credentials-id",
+          "name": "Airtable API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const puppeteer = require('puppeteer');\nconst fs = require('fs');\nconst path = require('path');\n\n// Get all input items\nconst tools = $input.all();\nconst output = [];\n\n// Screenshots directory path\nconst screenshotsDir = '/Users/dada/Desktop/modecollapse-new/public/screenshots';\n\n// Ensure screenshots directory exists\nif (!fs.existsSync(screenshotsDir)) {\n  fs.mkdirSync(screenshotsDir, { recursive: true });\n}\n\nfor (const item of tools) {\n  const fields = item.json.fields;\n  const { name, url } = fields;\n  \n  // Create slug from name if not present\n  let slug = fields.slug || name.toLowerCase()\n    .replace(/[^a-z0-9\\s-]/g, '')\n    .replace(/\\s+/g, '-')\n    .replace(/-+/g, '-')\n    .trim();\n  \n  const filename = `${slug}.png`;\n  const filePath = path.join(screenshotsDir, filename);\n  const publicUrl = `/screenshots/${filename}`;\n  \n  console.log(`Processing: ${name} (${url})`);\n  \n  try {\n    // Skip if screenshot already exists\n    if (fs.existsSync(filePath)) {\n      console.log(`Screenshot already exists for ${name}`);\n      output.push({\n        json: {\n          recordId: item.json.id,\n          slug,\n          name,\n          url,\n          screenshotUrl: publicUrl,\n          status: 'exists'\n        }\n      });\n      continue;\n    }\n    \n    // Launch Puppeteer browser\n    const browser = await puppeteer.launch({\n      headless: 'new',\n      args: [\n        '--no-sandbox',\n        '--disable-setuid-sandbox',\n        '--disable-dev-shm-usage',\n        '--disable-web-security',\n        '--disable-features=VizDisplayCompositor'\n      ]\n    });\n    \n    const page = await browser.newPage();\n    \n    // Set viewport and user agent\n    await page.setViewport({ \n      width: 1280, \n      height: 720,\n      deviceScaleFactor: 1\n    });\n    \n    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');\n    \n    // Navigate to the URL with timeout\n    await page.goto(url, { \n      waitUntil: 'domcontentloaded', \n      timeout: 15000 \n    });\n    \n    // Wait a bit for dynamic content to load\n    await page.waitForTimeout(2000);\n    \n    // Hide cookie banners and overlays if possible\n    await page.evaluate(() => {\n      const selectors = [\n        '[class*=\"cookie\"]',\n        '[class*=\"banner\"]',\n        '[class*=\"popup\"]',\n        '[class*=\"modal\"]',\n        '[id*=\"cookie\"]',\n        '[data-testid*=\"cookie\"]'\n      ];\n      \n      selectors.forEach(selector => {\n        const elements = document.querySelectorAll(selector);\n        elements.forEach(el => {\n          if (el.style) el.style.display = 'none';\n        });\n      });\n    });\n    \n    // Take screenshot\n    await page.screenshot({ \n      path: filePath,\n      fullPage: false,\n      type: 'png',\n      quality: 90\n    });\n    \n    await browser.close();\n    \n    console.log(`Screenshot saved: ${filename}`);\n    \n    output.push({\n      json: {\n        recordId: item.json.id,\n        slug,\n        name,\n        url,\n        screenshotUrl: publicUrl,\n        status: 'success'\n      }\n    });\n    \n  } catch (error) {\n    console.error(`Failed to screenshot ${name}: ${error.message}`);\n    \n    output.push({\n      json: {\n        recordId: item.json.id,\n        slug,\n        name,\n        url,\n        screenshotUrl: null,\n        error: error.message,\n        status: 'error'\n      }\n    });\n  }\n  \n  // Small delay between requests to be respectful\n  await new Promise(resolve => setTimeout(resolve, 1000));\n}\n\nconsole.log(`Processed ${output.length} tools`);\nreturn output;"
+      },
+      "id": "c2d3e4f5-6g7h-8i9j-0k1l-2m3n4o5p6q7r",
+      "name": "Capture Screenshots",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "screenshot-success",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "success",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d3e4f5g6-7h8i-9j0k-1l2m-3n4o5p6q7r8s",
+      "name": "Filter Successful Screenshots",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "airtableTokenApi",
+        "operation": "update",
+        "application": "app5uaiaf6Kyced64",
+        "table": "Mode Collapse Tools",
+        "updateAllFields": false,
+        "fields": {
+          "screenshotUrl": "={{ $json.screenshotUrl }}"
+        },
+        "options": {},
+        "id": "={{ $json.recordId }}"
+      },
+      "id": "e4f5g6h7-8i9j-0k1l-2m3n-4o5p6q7r8s9t",
+      "name": "Update Airtable Screenshots",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "airtable-credentials-id",
+          "name": "Airtable API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "none",
+        "requestMethod": "POST",
+        "url": "http://localhost:5678/webhook/screenshot-complete",
+        "options": {
+          "bodyContentType": "json"
+        },
+        "bodyParametersJson": "{\n  \"message\": \"Screenshot automation completed\",\n  \"processed\": {{ $('Capture Screenshots').all().length }},\n  \"successful\": {{ $('Filter Successful Screenshots').all().length }},\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}"
+      },
+      "id": "f5g6h7i8-9j0k-1l2m-3n4o-5p6q7r8s9t0u",
+      "name": "Notify Completion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1340,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Tools Without Screenshots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tools Without Screenshots": {
+      "main": [
+        [
+          {
+            "node": "Capture Screenshots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture Screenshots": {
+      "main": [
+        [
+          {
+            "node": "Filter Successful Screenshots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Successful Screenshots": {
+      "main": [
+        [
+          {
+            "node": "Update Airtable Screenshots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Airtable Screenshots": {
+      "main": [
+        [
+          {
+            "node": "Notify Completion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "screenshot-automation-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "id": "screenshot-automation-workflow",
+  "tags": []
+}
