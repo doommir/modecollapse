@@ -1,61 +1,75 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { NewsletterModal } from "@/components/newsletter-modal"
+import { ToolSearchBar } from "@/components/ToolSearchBar"
+import { SubmitToolCTA } from "@/components/SubmitToolCTA"
 import { Brain, Zap, Sparkles, Code, Palette, MessageSquare, ExternalLink, Linkedin, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
 export default function HomePage() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
+  const [filteredTools, setFilteredTools] = useState<any[]>([])
 
   const featuredTools = [
     {
       icon: <Brain className="w-6 h-6" />,
       name: "Claude Artifacts",
+      summary: "Interactive code generation with real-time preview",
       description: "Interactive code generation with real-time preview",
       tags: ["GPT-4o", "Free", "Coding"],
-      href: "#",
+      href: "/tools/claude-artifacts",
     },
     {
       icon: <Palette className="w-6 h-6" />,
       name: "Midjourney Alpha",
+      summary: "Next-gen image synthesis for visual storytelling",
       description: "Next-gen image synthesis for visual storytelling",
       tags: ["Image Gen", "Premium", "Creative"],
-      href: "#",
+      href: "/tools/midjourney-alpha",
     },
     {
       icon: <Zap className="w-6 h-6" />,
       name: "Cursor AI",
+      summary: "AI-powered code editor that thinks with you",
       description: "AI-powered code editor that thinks with you",
       tags: ["Coding", "Automation", "Pro"],
-      href: "#",
+      href: "/tools/cursor-ai",
     },
     {
       icon: <MessageSquare className="w-6 h-6" />,
       name: "Perplexity Pro",
+      summary: "Research assistant that cites real sources",
       description: "Research assistant that cites real sources",
       tags: ["Research", "GPT-4", "Premium"],
-      href: "#",
+      href: "/tools/perplexity-pro",
     },
     {
       icon: <Sparkles className="w-6 h-6" />,
       name: "RunwayML Gen-3",
+      summary: "Video generation from text and images",
       description: "Video generation from text and images",
       tags: ["Video", "Creative", "Beta"],
-      href: "#",
+      href: "/tools/runwayml-gen3",
     },
     {
       icon: <Code className="w-6 h-6" />,
       name: "GitHub Copilot",
+      summary: "Your AI pair programmer for faster development",
       description: "Your AI pair programmer for faster development",
       tags: ["Coding", "GitHub", "Subscription"],
-      href: "#",
+      href: "/tools/github-copilot",
     },
   ]
+
+  // Initialize filteredTools with all tools on component mount
+  useEffect(() => {
+    setFilteredTools(featuredTools)
+  }, [])
 
   return (
     <div className="min-h-screen bg-deep-purple text-white">
@@ -124,15 +138,25 @@ export default function HomePage() {
       {/* Featured Tools Grid */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-geometric text-3xl md:text-4xl font-bold text-center mb-12">
+          <h2 className="font-geometric text-3xl md:text-4xl font-bold text-center mb-8">
             Featured{" "}
             <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
               AI Tools
             </span>
           </h2>
 
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto mb-12">
+            <ToolSearchBar 
+              tools={featuredTools} 
+              onFilter={setFilteredTools}
+              placeholder="Search featured tools..."
+              className="w-full"
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredTools.map((tool, index) => (
+            {filteredTools.map((tool, index) => (
               <Card
                 key={index}
                 className="bg-dark-purple/50 border-cyber-purple/30 hover:border-electric-blue/50 transition-all duration-300 group"
@@ -215,6 +239,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Submit Tool CTA */}
+      <SubmitToolCTA />
 
       {/* CTA Banner */}
       <section className="py-20 px-6">
