@@ -69,7 +69,7 @@ export default function HomePage() {
   // Initialize filteredTools with all tools on component mount
   useEffect(() => {
     setFilteredTools(featuredTools)
-  }, [])
+  }, [featuredTools])
 
   return (
     <div className="min-h-screen bg-deep-purple text-white">

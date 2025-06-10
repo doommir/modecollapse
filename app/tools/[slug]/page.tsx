@@ -8,13 +8,14 @@ import ToolDetailSimple from '@/components/ToolDetailSimple';
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function ToolPage({ params }: PageProps) {
-  const tool = getToolBySlug(params.slug);
+export default async function ToolPage({ params }: PageProps) {
+  const { slug } = await params;
+  const tool = getToolBySlug(slug);
 
   if (!tool) {
     return (
