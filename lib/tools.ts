@@ -1,4 +1,5 @@
 import { Tool, PromptTip, PricingModel } from '@/types';
+import { getToolsFromAirtable, getToolBySlugFromAirtable } from './airtable';
 
 export const tools: Tool[] = [
   {
@@ -199,6 +200,32 @@ export function getToolBySlug(slug: string): Tool | undefined {
 
 export function getAllTools(): Tool[] {
   return tools;
+}
+
+// New Airtable-powered functions
+export async function getAllToolsAsync(): Promise<Tool[]> {
+  try {
+    const airtableTools = await getToolsFromAirtable();
+    // If Airtable returns tools, use them; otherwise fall back to static tools
+    return airtableTools.length > 0 ? airtableTools : tools;
+  } catch (error) {
+    console.error('Failed to fetch from Airtable, using static data:', error);
+    return tools;
+  }
+}
+
+export async function getToolBySlugAsync(slug: string): Promise<Tool | undefined> {
+  try {
+    const airtableTool = await getToolBySlugFromAirtable(slug);
+    if (airtableTool) {
+      return airtableTool;
+    }
+    // Fall back to static data
+    return tools.find(tool => tool.slug === slug);
+  } catch (error) {
+    console.error('Failed to fetch tool from Airtable, using static data:', error);
+    return tools.find(tool => tool.slug === slug);
+  }
 }
 
 export function getFeaturedGoogleTools(): Tool[] {

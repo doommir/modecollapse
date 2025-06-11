@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Star, ChevronUp, ChevronDown, AlertTriangle, Sparkles, Gift } from "lucide-react"
+import { ToolImage } from "./ToolImage"
 import type { ToolCardProps } from "@/types"
 
 export function ToolCard({ tool, showThumbnail = true, variant = "default", onVote }: ToolCardProps) {
@@ -59,12 +60,16 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
         {showThumbnail && (
           <Link href={href} className="block">
             <div className="relative aspect-video overflow-hidden rounded-t-lg">
-              <Image
-                src={tool.screenshotUrl || fallbackImage}
-                alt={`${tool.name} screenshot`}
+              <ToolImage
+                tool={{
+                  name: tool.name,
+                  screenshotUrl: tool.screenshotUrl,
+                  url: tool.url,
+                  tags: tool.tags
+                }}
+                className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                 width={400}
                 height={240}
-                className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
               />
               
               {/* Overlay Elements */}
