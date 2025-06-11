@@ -24,7 +24,9 @@
       "Bash(mv:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "mcp__puppeteer__puppeteer_screenshot",
+      "Bash(curl:*)"
     ],
     "deny": []
   }

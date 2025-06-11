@@ -1,0 +1,27 @@
+{
+  "markdown": "# Submit A Tool\n\nIs there a tool missing from this site that we should know about?\n\nShare it below!\n\n### Please Read Before Submitting:\n\n1. Please do a search on the site before submitting your tool to ensure that we don't already have it listed.\n2. We do review every tool manually before publishing it on the site. Do not submit your affiliate link to a tool. It will not be approved. Don't waste your time. We will also not click on bit.ly links or similar. Direct URLs only please!\n3. We do not curate newsletters on this site. Only tools. Do not submit your newsletter.\n4. Don't forget to put \"https://\" with your URL otherwise your site will not be reviewed.\n5. We are currently not accepting tools that are in \"waitlist\" only unless otherwise discussed with Matt first.\n\nWe have gotten much more strict with the tools that we approve on the site. Do not expect that your submission will be approved. **Submission does not entitle you to automatic listing**! We are looking for novel tools and new use-cases of AI. Poorly built websites, tools that have been created a thousand times already, new tool aggregators, sites with adult content, custom GPTs, and spammy looking websites will not be approved. Please [read the FAQ](https://www.futuretools.io/faq) if you have questions about your submission.\n\n**Do NOT use bots or similar methods to cheat the upvoting system.** We watch closely and flag websites that try to cheat the system! Don't believe me? Sort by upvoted and scroll to the bottom of the list to see the tools that have been sandboxed for trying. You've been warned.\n\nWith all that out of the way, show me what you got!\n\nYour NameYour Email AddressTool NameTool URLTool TagsPricing ModelSelect one...FreeFreemiumPaidOpen SourceGoogle CollabGitHubTool DescriptionAny Other Details You'd Like To Share?\n\n### Thank You!\n\nThank you for your submission! We manually review every submission and add them to the database once they've been verified. If we need any more information, we'll be in touch.\n\nOops! Something went wrong while submitting the form.\n\n© 2025 FutureTools.io. All rights reserved\n\n[Built by Matt Wolfe](https://x.com/mreflow) [Terms Of Use](https://app.termly.io/document/terms-of-use-for-website/e9e30fa0-42fc-4d01-8def-22f74cf7096f) [Privacy Policy](https://app.termly.io/document/privacy-policy/5667009e-9755-48de-ba93-4a0fe61528d7)",
+  "metadata": {
+    "ogTitle": "Submit A Tool To Future Tools",
+    "description": "Submit an AI tool for inclusion on FutureTools.io",
+    "twitter:card": "summary_large_image",
+    "og:type": "website",
+    "ogDescription": "Submit an AI tool for inclusion on FutureTools.io",
+    "ogImage": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
+    "og:description": "Submit an AI tool for inclusion on FutureTools.io",
+    "twitter:description": "Submit an AI tool for inclusion on FutureTools.io",
+    "title": "Submit A Tool To Future Tools",
+    "og:image": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
+    "favicon": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/6407c9f2d378177ef3675436_favicon.png",
+    "og:title": "Submit A Tool To Future Tools",
+    "viewport": "width=device-width, initial-scale=1",
+    "twitter:image": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
+    "twitter:title": "Submit A Tool To Future Tools",
+    "scrapeId": "494c6710-51aa-4284-bd90-3eeb7a3331b6",
+    "sourceURL": "https://www.futuretools.io/submit-a-tool",
+    "url": "https://www.futuretools.io/submit-a-tool",
+    "statusCode": 200,
+    "contentType": "text/html",
+    "proxyUsed": "basic"
+  },
+  "warning": "This scrape job was throttled at your current concurrency limit. If you'd like to scrape faster, you can upgrade your plan."
+}

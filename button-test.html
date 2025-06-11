@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Button Test</title>
+    <script>
+        function testAlert() {
+            alert('Button clicked!');
+        }
+        
+        window.onload = function() {
+            console.log('Page loaded, testing buttons...');
+            
+            // Test if JavaScript is working
+            const testBtn = document.getElementById('test-btn');
+            if (testBtn) {
+                testBtn.addEventListener('click', function() {
+                    console.log('Button clicked!');
+                    alert('JavaScript buttons working!');
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Button Functionality Test</h1>
+    
+    <p>Test different button types:</p>
+    
+    <!-- Basic HTML button -->
+    <button onclick="alert('HTML onclick working!')">HTML onclick Button</button><br><br>
+    
+    <!-- JavaScript event listener button -->
+    <button id="test-btn">JavaScript Event Button</button><br><br>
+    
+    <!-- Function call button -->
+    <button onclick="testAlert()">Function Call Button</button><br><br>
+    
+    <!-- Link button -->
+    <a href="#" onclick="alert('Link onclick working!'); return false;">Link Button</a><br><br>
+    
+    <p>If any of these don't work, there may be a JavaScript or browser issue.</p>
+</body>
+</html>

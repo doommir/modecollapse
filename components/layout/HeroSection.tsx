@@ -31,7 +31,7 @@ export function HeroSection({ featuredTools, onFilter, onNewsletterOpen }: HeroS
         </p>
 
         {/* Hero Search Bar */}
-        <div className="max-w-2xl mx-auto mb-8">
+        <div className="max-w-2xl mx-auto mb-8 relative z-20">
           <ToolSearchBar 
             tools={featuredTools} 
             onFilter={onFilter}
@@ -40,19 +40,20 @@ export function HeroSection({ featuredTools, onFilter, onNewsletterOpen }: HeroS
           />
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-cyber-purple to-glow-blue hover:from-cyber-purple/80 hover:to-glow-blue/80 text-white font-medium px-8 py-4 rounded-xl animate-pulse-glow"
-            asChild
-          >
-            <Link href="/tools">Browse Tools</Link>
-          </Button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-20">
+          <Link href="/tools">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-cyber-purple to-glow-blue hover:from-cyber-purple/80 hover:to-glow-blue/80 text-white font-medium px-8 py-4 rounded-xl animate-pulse-glow w-full sm:w-auto"
+            >
+              Browse Tools
+            </Button>
+          </Link>
           <Button
             size="lg"
             variant="outline"
             onClick={onNewsletterOpen}
-            className="border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-deep-purple font-medium px-8 py-4 rounded-xl"
+            className="border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-deep-purple font-medium px-8 py-4 rounded-xl w-full sm:w-auto relative z-20"
           >
             Join the Movement
           </Button>
