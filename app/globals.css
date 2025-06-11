@@ -1,30 +1,59 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 220 13% 5%;
-    --foreground: 220 13% 95%;
-    --card: 220 13% 8%;
-    --card-foreground: 220 13% 95%;
-    --popover: 220 13% 8%;
-    --popover-foreground: 220 13% 95%;
-    --primary: 220 100% 50%;
-    --primary-foreground: 220 13% 5%;
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 220 13% 95%;
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 13% 65%;
-    --accent: 220 13% 15%;
-    --accent-foreground: 220 13% 95%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 220 13% 95%;
-    --border: 220 13% 20%;
-    --input: 220 13% 20%;
-    --ring: 220 100% 50%;
-    --radius: 0.75rem;
-  }
+@theme {
+  --color-deep-purple: #0a0a0f;
+  --color-dark-purple: #1a1a2e;
+  --color-electric-blue: #00d4ff;
+  --color-neon-magenta: #ff006e;
+  --color-cyber-purple: #8b5cf6;
+  --color-glow-blue: #3b82f6;
+  
+  --color-background: 220 13% 5%;
+  --color-foreground: 220 13% 95%;
+  --color-card: 220 13% 8%;
+  --color-card-foreground: 220 13% 95%;
+  --color-popover: 220 13% 8%;
+  --color-popover-foreground: 220 13% 95%;
+  --color-primary: 220 100% 50%;
+  --color-primary-foreground: 220 13% 5%;
+  --color-secondary: 220 13% 15%;
+  --color-secondary-foreground: 220 13% 95%;
+  --color-muted: 220 13% 15%;
+  --color-muted-foreground: 220 13% 65%;
+  --color-accent: 220 13% 15%;
+  --color-accent-foreground: 220 13% 95%;
+  --color-destructive: 0 62.8% 30.6%;
+  --color-destructive-foreground: 220 13% 95%;
+  --color-border: 220 13% 20%;
+  --color-input: 220 13% 20%;
+  --color-ring: 220 100% 50%;
+  
+  --radius: 0.75rem;
+  
+  --font-family-geometric: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite alternate;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glitch: glitch 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+  100% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
 }
 
 @layer base {
