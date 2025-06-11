@@ -6,7 +6,7 @@ import { ToolSubmitForm } from "@/components/forms"
 
 export default function SubmitToolPage() {
   return (
-    <div className="min-h-screen bg-deep-purple text-white">
+    <div className="min-h-screen text-white" style={{ backgroundColor: '#0a0a0f', background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%)' }}>
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="text-center mb-12">

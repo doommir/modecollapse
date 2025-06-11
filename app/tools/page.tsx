@@ -250,7 +250,7 @@ export default function ToolsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-deep-purple text-white">
+    <div className="min-h-screen text-white" style={{ backgroundColor: '#0a0a0f', background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%)' }}>
       {/* Sticky Filter Bar */}
       <div className="sticky top-16 z-40 bg-dark-purple/90 backdrop-blur-sm border-b border-cyber-purple/20">
         <div className="max-w-7xl mx-auto px-6 py-4">
