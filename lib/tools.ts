@@ -1,21 +1,4 @@
-export interface PromptTip {
-  title: string;
-  snippet: string;
-}
-
-export interface Tool {
-  slug: string;
-  name: string;
-  summary: string;
-  description: string;
-  url: string;
-  tags: string[];
-  consciousnessScore: number;
-  curatorNote: string;
-  promptTips: PromptTip[];
-  featured?: boolean;
-  screenshotUrl?: string;
-}
+import { Tool, PromptTip } from '@/types';
 
 export const tools: Tool[] = [
   {

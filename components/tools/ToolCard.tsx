@@ -6,17 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Star } from "lucide-react"
-import type { Tool } from "@/lib/tools"
-
-interface ToolCardProps {
-  tool: Tool & {
-    icon?: React.ReactNode
-    isEditorsPick?: boolean
-    href?: string
-  }
-  showThumbnail?: boolean
-  variant?: "default" | "featured"
-}
+import type { ToolCardProps } from "@/types"
 
 export function ToolCard({ tool, showThumbnail = true, variant = "default" }: ToolCardProps) {
   const href = tool.href || `/tools/${tool.slug || 'unknown'}`

@@ -2,7 +2,7 @@
 
 import { notFound } from 'next/navigation';
 import { getToolBySlug } from '@/lib/tools';
-import ToolDetailSimple from '@/components/ToolDetailSimple';
+import { ToolDetailSimple } from '@/components/tools';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';

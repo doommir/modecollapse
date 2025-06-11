@@ -2,7 +2,7 @@
 
 import { Brain } from "lucide-react"
 import Link from "next/link"
-import { ToolSubmitForm } from "@/components/ToolSubmitForm"
+import { ToolSubmitForm } from "@/components/forms"
 
 export default function SubmitToolPage() {
   return (

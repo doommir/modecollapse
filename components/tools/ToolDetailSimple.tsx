@@ -1,25 +1,14 @@
 'use client';
 
-import { Tool } from '@/lib/tools';
-import { ExternalLink, Copy, Brain, Star } from 'lucide-react';
+import type { Tool } from '@/types';
+import { ExternalLink, Brain, Star } from 'lucide-react';
 
 interface ToolDetailProps {
   tool: Tool;
 }
 
-export default function ToolDetail({ tool }: ToolDetailProps) {
+export function ToolDetailSimple({ tool }: ToolDetailProps) {
   const consciousnessStars = Array.from({ length: 5 }, (_, i) => i < tool.consciousnessScore);
-
-  const copyToClipboard = (text: string) => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(text);
-    }
-  };
-
-  const handleCopyClick = (e: React.MouseEvent, text: string) => {
-    e.preventDefault();
-    copyToClipboard(text);
-  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -105,7 +94,7 @@ export default function ToolDetail({ tool }: ToolDetailProps) {
           </p>
         </div>
 
-        {/* Prompt Tips */}
+        {/* Prompt Tips - SIMPLIFIED WITHOUT ONCLICK */}
         {tool.promptTips.length > 0 && (
           <div>
             <h2 className="text-2xl font-bold mb-6">Prompt Tips</h2>
@@ -122,13 +111,7 @@ export default function ToolDetail({ tool }: ToolDetailProps) {
                     <code className="block text-sm text-gray-300 bg-black/50 p-4 rounded border border-gray-700 font-mono leading-relaxed">
                       {tip.snippet}
                     </code>
-                    <button
-                      onClick={(e) => handleCopyClick(e, tip.snippet)}
-                      className="absolute top-2 right-2 p-2 text-gray-400 hover:text-white transition-colors"
-                      title="Copy to clipboard"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </button>
+                    {/* NO COPY BUTTON - AVOIDING ONCLICK ENTIRELY */}
                   </div>
                 </div>
               ))}

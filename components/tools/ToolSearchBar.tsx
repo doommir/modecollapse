@@ -5,12 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-interface ToolSearchBarProps {
-  tools: any[]
-  onFilter: (filteredTools: any[]) => void
-  placeholder?: string
-  className?: string
-}
+import type { ToolSearchBarProps } from "@/types"
 
 export function ToolSearchBar({ 
   tools, 

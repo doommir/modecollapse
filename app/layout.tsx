@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { Navigation } from '@/components/Navigation'
+import { Navigation } from '@/components/layout'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   title: 'Mode Collapse - AI Tools Directory',
@@ -19,6 +20,7 @@ export default function RootLayout({
         <Navigation />
         <main className="pt-16">
           {children}
+          <SpeedInsights />
         </main>
       </body>
     </html>
