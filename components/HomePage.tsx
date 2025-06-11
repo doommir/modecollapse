@@ -4,24 +4,28 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { 
   Footer 
 } from "@/components/layout"
 import { SubmitToolCTA } from "@/components/SubmitToolCTA"
 import { NewsletterModal } from "@/components/newsletter-modal"
-import { sortToolsByVotes } from "@/lib/tools"
+import { sortToolsByVotes, sortToolsByDate, sortToolsByConsciousness } from "@/lib/tools"
 import { ToolCard } from "@/components/tools"
-import { Search, X } from "lucide-react"
+import { Search, X, BarChart3 } from "lucide-react"
 import { Tool } from "@/types"
 
 interface HomePageProps {
   initialTools: Tool[]
 }
 
+type SortOption = 'votes' | 'newest' | 'oldest' | 'name-asc' | 'name-desc' | 'consciousness'
+
 export default function HomePage({ initialTools }: HomePageProps) {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const [sortBy, setSortBy] = useState<SortOption>('votes')
   const [toolVotes, setToolVotes] = useState<Record<string, { upvotes: number; downvotes: number; userVote?: 'up' | 'down' | null }>>({})
 
   // Get all unique tags for filtering
@@ -85,8 +89,23 @@ export default function HomePage({ initialTools }: HomePageProps) {
       )
     }
 
-    return sortToolsByVotes(filtered)
-  }, [initialTools, searchQuery, activeFilters, toolVotes])
+    // Apply sorting
+    switch (sortBy) {
+      case 'newest':
+        return sortToolsByDate(filtered, 'newest')
+      case 'oldest':
+        return sortToolsByDate(filtered, 'oldest')
+      case 'name-asc':
+        return [...filtered].sort((a, b) => a.name.localeCompare(b.name))
+      case 'name-desc':
+        return [...filtered].sort((a, b) => b.name.localeCompare(a.name))
+      case 'consciousness':
+        return sortToolsByConsciousness(filtered)
+      case 'votes':
+      default:
+        return sortToolsByVotes(filtered)
+    }
+  }, [initialTools, searchQuery, activeFilters, toolVotes, sortBy])
 
   // Get top 3 featured tools (highest voted)
   const featuredTools = useMemo(() => {
@@ -161,36 +180,73 @@ export default function HomePage({ initialTools }: HomePageProps) {
       {/* Search and Filters */}
       <section className="pb-8 px-6">
         <div className="max-w-6xl mx-auto">
-          {/* Search Bar */}
-          <div className="relative mb-6">
-            <div className="relative group">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5 group-focus-within:text-electric-blue transition-colors pointer-events-none" />
-              <Input
-                type="text"
-                placeholder="Search AI tools..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-12 py-4 bg-cyber-purple/30 border-cyber-purple/50 text-white placeholder:text-white/50 focus:border-electric-blue focus:ring-electric-blue/50 focus:ring-2 transition-all duration-200 text-lg shadow-lg backdrop-blur-sm"
-              />
-              {searchQuery && (
+          {/* Search Bar and Sort */}
+          <div className="flex flex-col lg:flex-row gap-4 mb-6">
+            <div className="relative flex-1">
+              <div className="relative group">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5 group-focus-within:text-electric-blue transition-colors pointer-events-none" />
+                <Input
+                  type="text"
+                  placeholder="Search AI tools..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 pr-12 py-4 bg-cyber-purple/30 border-cyber-purple/50 text-white placeholder:text-white/50 focus:border-electric-blue focus:ring-electric-blue/50 focus:ring-2 transition-all duration-200 text-lg shadow-lg backdrop-blur-sm"
+                />
+                {searchQuery && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/40 hover:text-white hover:bg-cyber-purple/30 p-1 h-8 w-8"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+            
+            {/* Sort Dropdown */}
+            <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+              <SelectTrigger className="w-full lg:w-56 bg-cyber-purple/30 border-cyber-purple/50 text-white h-14">
+                <BarChart3 className="w-4 h-4 mr-2" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-dark-purple border-cyber-purple/50">
+                <SelectItem value="votes" className="text-white hover:bg-cyber-purple/20">Most Upvoted</SelectItem>
+                <SelectItem value="newest" className="text-white hover:bg-cyber-purple/20">Newest First</SelectItem>
+                <SelectItem value="consciousness" className="text-white hover:bg-cyber-purple/20">Highest Consciousness</SelectItem>
+                <SelectItem value="name-asc" className="text-white hover:bg-cyber-purple/20">Name (A-Z)</SelectItem>
+                <SelectItem value="name-desc" className="text-white hover:bg-cyber-purple/20">Name (Z-A)</SelectItem>
+                <SelectItem value="oldest" className="text-white hover:bg-cyber-purple/20">Oldest First</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Tool Count and Search Results */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="text-white/60 text-sm">
+                Showing {filteredTools.length} of {initialTools.length} tools
+              </div>
+              {(searchQuery || activeFilters.length > 0) && (
                 <Button
-                  type="button"
                   variant="ghost"
                   size="sm"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/40 hover:text-white hover:bg-cyber-purple/30 p-1 h-8 w-8"
+                  onClick={() => {
+                    setSearchQuery("")
+                    setActiveFilters([])
+                  }}
+                  className="text-electric-blue hover:text-white hover:bg-electric-blue/20 text-xs"
                 >
-                  <X className="w-4 h-4" />
+                  Clear all
                 </Button>
               )}
             </div>
             
             {searchQuery && (
-              <div className="mt-2 text-sm text-white/60">
-                Found {filteredTools.length} tool{filteredTools.length !== 1 ? 's' : ''} 
-                {searchQuery && (
-                  <span> matching "{searchQuery}"</span>
-                )}
+              <div className="text-sm text-white/60">
+                Results for "{searchQuery}"
               </div>
             )}
           </div>

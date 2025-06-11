@@ -20,6 +20,14 @@ export interface VoteStats {
   userVote?: 'up' | 'down' | null;
 }
 
+export interface SpecialOffer {
+  code: string;
+  description: string;
+  url?: string;
+  expiryDate?: string;
+  discount?: string;
+}
+
 export interface Tool {
   slug: string;
   name: string;
@@ -36,13 +44,13 @@ export interface Tool {
   pricingModel: PricingModel;
   dateAdded: string;
   isCuratorPick?: boolean;
-  specialOffer?: {
-    code: string;
-    description: string;
-    url?: string;
-  };
+  specialOffer?: SpecialOffer;
   consciousnessWarning?: ConsciousnessWarning;
   votes: VoteStats;
+  // Additional FutureTools-like features
+  lastUpdated?: string;
+  isVerified?: boolean;
+  toolCount?: number; // For aggregator tools
 }
 
 // UI component props

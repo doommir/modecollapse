@@ -15,6 +15,12 @@ export const tools: Tool[] = [
     pricingModel: "Freemium" as PricingModel,
     dateAdded: "2024-12-15",
     isCuratorPick: true,
+    specialOffer: {
+      code: "CONSCIOUSNESS25",
+      description: "Get 25% off Cursor Pro for awakened developers",
+      discount: "25% off",
+      expiryDate: "2025-01-31"
+    },
     votes: { upvotes: 47, downvotes: 3, userVote: null },
     promptTips: [
       {
@@ -70,8 +76,8 @@ export const tools: Tool[] = [
     dateAdded: "2024-12-05",
     consciousnessWarning: {
       level: "medium",
-      message: "Potential for mindless content generation",
-      reason: "While powerful for creativity, can encourage dependency over developing personal artistic vision."
+      message: "⚠️ Potential for mindless content generation",
+      reason: "While powerful for creativity, can encourage dependency over developing personal artistic vision. Use mindfully to enhance rather than replace your creative process."
     },
     votes: { upvotes: 34, downvotes: 12, userVote: null },
     promptTips: [
@@ -266,4 +272,12 @@ export function sortToolsByDate(tools: Tool[], direction: 'newest' | 'oldest' = 
 
 export function sortToolsByConsciousness(tools: Tool[]): Tool[] {
   return [...tools].sort((a, b) => b.consciousnessScore - a.consciousnessScore);
+}
+
+export function getAllUniqueTagsFromTools(tools: Tool[]): string[] {
+  const tags = new Set<string>();
+  tools.forEach(tool => {
+    tool.tags.forEach(tag => tags.add(tag));
+  });
+  return Array.from(tags).sort();
 }

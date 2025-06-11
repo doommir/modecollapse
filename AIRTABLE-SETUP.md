@@ -31,6 +31,8 @@ Create a table called "Tools" with these fields:
 | Special Offer Code | Single line text | Promo codes |
 | Special Offer Description | Long text | Offer details |
 | Special Offer URL | URL | Offer link |
+| Special Offer Discount | Single line text | Discount amount (e.g., "50% off") |
+| Special Offer Expiry | Date | When offer expires |
 | Consciousness Warning Level | Single select | Options: low, medium, high |
 | Consciousness Warning Message | Single line text | Warning text |
 | Consciousness Warning Reason | Long text | Warning explanation |
@@ -105,10 +107,16 @@ npm run dev
 ### ✅ What Works:
 - **Dynamic tool loading** from Airtable
 - **Fallback to static data** if Airtable is unavailable
+- **Advanced sorting options**: Most upvoted, newest, consciousness score, A-Z, etc.
+- **Tool count display**: Shows "X of Y tools" with clear filtering feedback
 - **Voting system** with localStorage persistence  
 - **Search and filtering** across all tool data
+- **Prominent "Visit Tool" buttons** on each card
+- **Special offers system** with promo codes and exclusive deals
 - **Tool submission** (can be configured to add to Airtable)
 - **Rich content management** through Airtable's interface
+- **Consciousness warnings** for tools that may reduce awareness
+- **Mobile-responsive design** optimized for all devices
 
 ### 🔄 Vote Sync (Optional):
 To sync votes back to Airtable, votes are currently stored locally. You can extend this by:

@@ -140,20 +140,30 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
 
           {/* Special Offer Banner */}
           {tool.specialOffer && (
-            <div className="mb-3 p-2 bg-gradient-to-r from-neon-magenta/10 to-electric-blue/10 border border-neon-magenta/30 rounded-lg">
-              <div className="flex items-center gap-2">
-                <Gift className="w-3 h-3 text-neon-magenta" />
-                <span className="text-xs text-neon-magenta font-medium">
-                  {tool.specialOffer.description}
-                </span>
-              </div>
-              {tool.specialOffer.code && (
-                <div className="mt-1">
-                  <code className="text-xs bg-neon-magenta/20 text-neon-magenta px-2 py-1 rounded">
-                    {tool.specialOffer.code}
-                  </code>
+            <div className="mb-3 p-3 bg-gradient-to-r from-neon-magenta/10 to-electric-blue/10 border border-neon-magenta/30 rounded-lg">
+              <div className="flex items-start gap-2">
+                <Gift className="w-4 h-4 text-neon-magenta mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="text-xs text-neon-magenta font-semibold mb-1">
+                    🔥 EXCLUSIVE OFFER
+                  </div>
+                  <div className="text-xs text-white/90 leading-relaxed">
+                    {tool.specialOffer.description}
+                  </div>
+                  {tool.specialOffer.code && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <code className="text-xs bg-neon-magenta/20 text-neon-magenta px-2 py-1 rounded font-mono">
+                        {tool.specialOffer.code}
+                      </code>
+                      {tool.specialOffer.discount && (
+                        <span className="text-xs text-electric-blue font-medium">
+                          {tool.specialOffer.discount}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           )}
 
@@ -220,15 +230,14 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
               </Button>
             </div>
 
-            {/* Learn More Button */}
+            {/* Visit Tool Button */}
             <Button
-              variant="ghost"
               size="sm"
-              className="text-electric-blue hover:text-white hover:bg-electric-blue/20 px-3 h-8 font-medium group/btn"
+              className="bg-gradient-to-r from-electric-blue to-neon-magenta hover:from-electric-blue/80 hover:to-neon-magenta/80 text-white font-medium px-4 h-8 group/btn"
               asChild
             >
-              <Link href={href} className="flex items-center gap-2">
-                View
+              <Link href={tool.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                Visit Tool
                 <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
               </Link>
             </Button>
