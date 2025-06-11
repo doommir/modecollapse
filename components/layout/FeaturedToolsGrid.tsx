@@ -31,7 +31,7 @@ export function FeaturedToolsGrid({ filteredTools }: FeaturedToolsGridProps) {
                 curatorNote: "",
                 promptTips: []
               }}
-              showThumbnail={false}
+              showThumbnail={true}
               variant="default"
             />
           ))}

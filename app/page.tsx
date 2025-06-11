@@ -11,6 +11,7 @@ import {
 import { SubmitToolCTA } from "@/components/SubmitToolCTA"
 import { NewsletterModal } from "@/components/newsletter-modal"
 import { getAllTools, getCuratorPicks } from "@/lib/tools"
+import { ToolCard } from "@/components/tools"
 import { Brain, Zap, Sparkles, Code, Palette, MessageSquare } from "lucide-react"
 
 
@@ -58,31 +59,12 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {curatorPicks.slice(0, 6).map((tool) => (
-              <div key={tool.slug} className="bg-gradient-to-br from-dark-purple/50 to-cyber-purple/20 rounded-xl p-6 border border-cyber-purple/30 hover:border-electric-blue/50 transition-all duration-300 hover:scale-105">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="p-2 bg-electric-blue/20 rounded-lg">
-                    <Brain className="w-6 h-6 text-electric-blue" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-geometric text-lg font-semibold text-white mb-2">{tool.name}</h3>
-                    <p className="text-white/70 text-sm mb-3">{tool.summary}</p>
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {tool.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className="px-2 py-1 bg-cyber-purple/30 text-cyber-purple text-xs rounded-full">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <a 
-                      href={`/tools/${tool.slug}`}
-                      className="inline-flex items-center gap-2 text-electric-blue hover:text-neon-magenta transition-colors text-sm"
-                    >
-                      Explore Tool
-                      <span className="text-xs">→</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <ToolCard
+                key={tool.slug}
+                tool={tool}
+                showThumbnail={true}
+                variant="featured"
+              />
             ))}
           </div>
         </div>
