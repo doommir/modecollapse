@@ -35,12 +35,6 @@ export function Navigation() {
               Home
             </Link>
             <Link
-              href="/tools"
-              className="text-white/80 hover:text-electric-blue transition-colors font-medium"
-            >
-              Tools
-            </Link>
-            <Link
               href="/submit-tool"
               className="text-white/80 hover:text-electric-blue transition-colors font-medium"
             >
@@ -80,13 +74,6 @@ export function Navigation() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
-              </Link>
-              <Link
-                href="/tools"
-                className="block px-3 py-2 text-white/80 hover:text-electric-blue hover:bg-cyber-purple/20 rounded-md transition-colors font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Tools
               </Link>
               <Link
                 href="/submit-tool"

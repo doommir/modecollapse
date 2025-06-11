@@ -195,32 +195,23 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
 
           {/* Bottom section with voting and action */}
           <div className="flex items-center justify-between">
-            {/* Voting system */}
-            <div className="flex items-center gap-1">
+            {/* Voting system - Upvote only */}
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => handleVote('up')}
                 disabled={isVoting}
-                className={`h-8 w-8 p-0 ${tool.votes?.userVote === 'up' ? 'text-electric-blue bg-electric-blue/20' : 'text-white/60 hover:text-electric-blue hover:bg-electric-blue/10'}`}
+                className={`h-8 px-3 flex items-center gap-1 ${
+                  tool.votes?.userVote === 'up' 
+                    ? 'text-electric-blue bg-electric-blue/20' 
+                    : 'text-white/60 hover:text-electric-blue hover:bg-electric-blue/10'
+                }`}
               >
                 <ChevronUp className="w-4 h-4" />
-              </Button>
-              
-              <span className={`text-sm font-medium min-w-[2rem] text-center ${
-                netVotes > 0 ? 'text-electric-blue' : netVotes < 0 ? 'text-red-400' : 'text-white/60'
-              }`}>
-                {netVotes}
-              </span>
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleVote('down')}
-                disabled={isVoting}
-                className={`h-8 w-8 p-0 ${tool.votes?.userVote === 'down' ? 'text-red-400 bg-red-400/20' : 'text-white/60 hover:text-red-400 hover:bg-red-400/10'}`}
-              >
-                <ChevronDown className="w-4 h-4" />
+                <span className="text-sm font-medium">
+                  {tool.votes?.upvotes || 0}
+                </span>
               </Button>
             </div>
 
