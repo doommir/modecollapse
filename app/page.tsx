@@ -4,14 +4,13 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { 
   HeroSection, 
-  GoogleIOSection, 
   FeaturedToolsGrid, 
   AboutSection, 
   Footer 
 } from "@/components/layout"
 import { SubmitToolCTA } from "@/components/SubmitToolCTA"
 import { NewsletterModal } from "@/components/newsletter-modal"
-import { getFeaturedGoogleTools } from "@/lib/tools"
+import { getAllTools, getCuratorPicks } from "@/lib/tools"
 import { Brain, Zap, Sparkles, Code, Palette, MessageSquare } from "lucide-react"
 
 
@@ -19,65 +18,14 @@ export default function HomePage() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
   const [filteredTools, setFilteredTools] = useState<any[]>([])
 
-  // Get Google I/O tools
-  const featuredGoogleTools = getFeaturedGoogleTools()
-
-  // Featured tools data - TODO: Move to lib/tools.ts or data source
-  const featuredTools = useMemo(() => [
-    {
-      icon: <Brain className="w-6 h-6" />,
-      name: "Claude Artifacts",
-      summary: "Interactive code generation with real-time preview",
-      description: "Interactive code generation with real-time preview",
-      tags: ["GPT-4o", "Free", "Coding"],
-      href: "/tools/claude-artifacts",
-    },
-    {
-      icon: <Palette className="w-6 h-6" />,
-      name: "Midjourney Alpha",
-      summary: "Next-gen image synthesis for visual storytelling",
-      description: "Next-gen image synthesis for visual storytelling",
-      tags: ["Image Gen", "Premium", "Creative"],
-      href: "/tools/midjourney-alpha",
-    },
-    {
-      icon: <Zap className="w-6 h-6" />,
-      name: "Cursor AI",
-      summary: "AI-powered code editor that thinks with you",
-      description: "AI-powered code editor that thinks with you",
-      tags: ["Coding", "Automation", "Pro"],
-      href: "/tools/cursor-ai",
-    },
-    {
-      icon: <MessageSquare className="w-6 h-6" />,
-      name: "Perplexity Pro",
-      summary: "Research assistant that cites real sources",
-      description: "Research assistant that cites real sources",
-      tags: ["Research", "GPT-4", "Premium"],
-      href: "/tools/perplexity-pro",
-    },
-    {
-      icon: <Sparkles className="w-6 h-6" />,
-      name: "RunwayML Gen-3",
-      summary: "Video generation from text and images",
-      description: "Video generation from text and images",
-      tags: ["Video", "Creative", "Beta"],
-      href: "/tools/runwayml-gen3",
-    },
-    {
-      icon: <Code className="w-6 h-6" />,
-      name: "GitHub Copilot",
-      summary: "Your AI pair programmer for faster development",
-      description: "Your AI pair programmer for faster development",
-      tags: ["Coding", "GitHub", "Subscription"],
-      href: "/tools/github-copilot",
-    },
-  ], [])
+  // Get all tools from the data source
+  const allTools = getAllTools()
+  const curatorPicks = getCuratorPicks()
 
   // Initialize filteredTools with all tools on component mount
   useEffect(() => {
-    setFilteredTools(featuredTools)
-  }, [featuredTools])
+    setFilteredTools(allTools)
+  }, [allTools])
 
   // Memoize the filter callback to prevent infinite re-renders
   const handleFilter = useCallback((filteredTools: any[]) => {
@@ -88,15 +36,59 @@ export default function HomePage() {
     <div className="min-h-screen text-white" style={{ backgroundColor: '#0a0a0f', background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%)' }}>
       {/* Hero Section */}
       <HeroSection
-        featuredTools={featuredTools}
+        featuredTools={allTools}
         onFilter={handleFilter}
         onNewsletterOpen={() => setIsNewsletterOpen(true)}
       />
 
-      {/* Featured by Google I/O 2025 */}
-      <GoogleIOSection featuredGoogleTools={featuredGoogleTools} />
+      {/* Featured Tools Section */}
+      <section className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-geometric text-3xl md:text-4xl font-bold mb-4 text-white">
+              Featured{" "}
+              <span className="gradient-text-primary" style={{ background: 'linear-gradient(135deg, #00d4ff 0%, #ff006e 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                AI Tools
+              </span>
+            </h2>
+            <p className="text-white/70 text-lg max-w-2xl mx-auto">
+              Curated consciousness-expanding tools tested by humans who understand AI mastery
+            </p>
+          </div>
 
-      {/* Featured Tools Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {curatorPicks.slice(0, 6).map((tool) => (
+              <div key={tool.slug} className="bg-gradient-to-br from-dark-purple/50 to-cyber-purple/20 rounded-xl p-6 border border-cyber-purple/30 hover:border-electric-blue/50 transition-all duration-300 hover:scale-105">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="p-2 bg-electric-blue/20 rounded-lg">
+                    <Brain className="w-6 h-6 text-electric-blue" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-geometric text-lg font-semibold text-white mb-2">{tool.name}</h3>
+                    <p className="text-white/70 text-sm mb-3">{tool.summary}</p>
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {tool.tags.slice(0, 3).map((tag) => (
+                        <span key={tag} className="px-2 py-1 bg-cyber-purple/30 text-cyber-purple text-xs rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <a 
+                      href={`/tools/${tool.slug}`}
+                      className="inline-flex items-center gap-2 text-electric-blue hover:text-neon-magenta transition-colors text-sm"
+                    >
+                      Explore Tool
+                      <span className="text-xs">→</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* All Tools Grid */}
       <FeaturedToolsGrid filteredTools={filteredTools} />
 
       {/* About Section */}

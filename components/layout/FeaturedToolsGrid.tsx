@@ -12,7 +12,7 @@ export function FeaturedToolsGrid({ filteredTools }: FeaturedToolsGridProps) {
     <section className="py-20 px-6">
       <div className="max-w-6xl mx-auto">
         <h2 className="font-geometric text-3xl md:text-4xl font-bold text-center mb-12">
-          Featured{" "}
+          All{" "}
           <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
             AI Tools
           </span>
