@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -40,7 +40,7 @@ export function ToolSearchBar({
   }, [tools, searchQuery])
 
   // Call onFilter whenever filtered results change
-  useMemo(() => {
+  useEffect(() => {
     onFilter(filteredTools)
   }, [filteredTools, onFilter])
 

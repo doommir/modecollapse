@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { 
   HeroSection, 
@@ -23,7 +23,7 @@ export default function HomePage() {
   const featuredGoogleTools = getFeaturedGoogleTools()
 
   // Featured tools data - TODO: Move to lib/tools.ts or data source
-  const featuredTools = [
+  const featuredTools = useMemo(() => [
     {
       icon: <Brain className="w-6 h-6" />,
       name: "Claude Artifacts",
@@ -72,11 +72,16 @@ export default function HomePage() {
       tags: ["Coding", "GitHub", "Subscription"],
       href: "/tools/github-copilot",
     },
-  ]
+  ], [])
 
   // Initialize filteredTools with all tools on component mount
   useEffect(() => {
     setFilteredTools(featuredTools)
+  }, [featuredTools])
+
+  // Memoize the filter callback to prevent infinite re-renders
+  const handleFilter = useCallback((filteredTools: any[]) => {
+    setFilteredTools(filteredTools)
   }, [])
 
   return (
@@ -84,7 +89,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <HeroSection
         featuredTools={featuredTools}
-        onFilter={setFilteredTools}
+        onFilter={handleFilter}
         onNewsletterOpen={() => setIsNewsletterOpen(true)}
       />
 
