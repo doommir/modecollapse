@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import type { Tool } from '@/types';
-import { ExternalLink, Brain, Star } from 'lucide-react';
+import { ExternalLink, Brain, Star, Copy, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ToolDetailProps {
   tool: Tool;
@@ -9,6 +11,13 @@ interface ToolDetailProps {
 
 export function ToolDetailSimple({ tool }: ToolDetailProps) {
   const consciousnessStars = Array.from({ length: 5 }, (_, i) => i < tool.consciousnessScore);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+  const copyToClipboard = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -108,10 +117,21 @@ export function ToolDetailSimple({ tool }: ToolDetailProps) {
                     {tip.title}
                   </h3>
                   <div className="relative">
-                    <code className="block text-sm text-gray-300 bg-black/50 p-4 rounded border border-gray-700 font-mono leading-relaxed">
+                    <code className="block text-sm text-gray-300 bg-black/50 p-4 pr-12 rounded border border-gray-700 font-mono leading-relaxed">
                       {tip.snippet}
                     </code>
-                    {/* NO COPY BUTTON - AVOIDING ONCLICK ENTIRELY */}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="absolute top-2 right-2 text-gray-400 hover:text-white"
+                      onClick={() => copyToClipboard(tip.snippet, index)}
+                    >
+                      {copiedIndex === index ? (
+                        <Check className="w-4 h-4" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </Button>
                   </div>
                 </div>
               ))}

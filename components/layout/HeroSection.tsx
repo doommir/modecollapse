@@ -14,7 +14,7 @@ interface HeroSectionProps {
 export function HeroSection({ featuredTools, onFilter, onNewsletterOpen }: HeroSectionProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center particle-bg overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-deep-purple/50 to-deep-purple"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-deep-purple/50 to-deep-purple pointer-events-none"></div>
 
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
         <div className="animate-float">
@@ -41,14 +41,15 @@ export function HeroSection({ featuredTools, onFilter, onNewsletterOpen }: HeroS
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-20">
-          <Link href="/tools">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-cyber-purple to-glow-blue hover:from-cyber-purple/80 hover:to-glow-blue/80 text-white font-medium px-8 py-4 rounded-xl animate-pulse-glow w-full sm:w-auto"
-            >
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-cyber-purple to-glow-blue hover:from-cyber-purple/80 hover:to-glow-blue/80 text-white font-medium px-8 py-4 rounded-xl animate-pulse-glow w-full sm:w-auto"
+            asChild
+          >
+            <Link href="/tools">
               Browse Tools
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <Button
             size="lg"
             variant="outline"
@@ -61,13 +62,13 @@ export function HeroSection({ featuredTools, onFilter, onNewsletterOpen }: HeroS
       </div>
 
       {/* Floating particles */}
-      <div className="absolute top-20 left-10 w-2 h-2 bg-electric-blue rounded-full animate-float"></div>
+      <div className="absolute top-20 left-10 w-2 h-2 bg-electric-blue rounded-full animate-float pointer-events-none"></div>
       <div
-        className="absolute top-40 right-20 w-1 h-1 bg-neon-magenta rounded-full animate-float"
+        className="absolute top-40 right-20 w-1 h-1 bg-neon-magenta rounded-full animate-float pointer-events-none"
         style={{ animationDelay: "1s" }}
       ></div>
       <div
-        className="absolute bottom-40 left-20 w-1.5 h-1.5 bg-cyber-purple rounded-full animate-float"
+        className="absolute bottom-40 left-20 w-1.5 h-1.5 bg-cyber-purple rounded-full animate-float pointer-events-none"
         style={{ animationDelay: "2s" }}
       ></div>
     </section>

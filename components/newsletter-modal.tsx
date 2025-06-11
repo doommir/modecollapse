@@ -16,16 +16,36 @@ interface NewsletterModalProps {
 export function NewsletterModal({ isOpen, onClose }: NewsletterModalProps) {
   const [email, setEmail] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Handle newsletter signup
-    setIsSubmitted(true)
-    setTimeout(() => {
-      setIsSubmitted(false)
-      onClose()
-      setEmail("")
-    }, 2000)
+    setError("")
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address")
+      return
+    }
+    
+    try {
+      // Store in localStorage for now (can be replaced with API call)
+      const subscribers = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]')
+      if (!subscribers.includes(email)) {
+        subscribers.push(email)
+        localStorage.setItem('newsletter_subscribers', JSON.stringify(subscribers))
+      }
+      
+      setIsSubmitted(true)
+      setTimeout(() => {
+        setIsSubmitted(false)
+        onClose()
+        setEmail("")
+      }, 2000)
+    } catch (err) {
+      setError("Failed to subscribe. Please try again.")
+    }
   }
 
   return (
@@ -54,6 +74,9 @@ export function NewsletterModal({ isOpen, onClose }: NewsletterModalProps) {
                 required
                 className="bg-deep-purple border-cyber-purple/50 text-white placeholder:text-white/50"
               />
+              {error && (
+                <p className="text-red-400 text-sm mt-2">{error}</p>
+              )}
             </div>
             <Button
               type="submit"

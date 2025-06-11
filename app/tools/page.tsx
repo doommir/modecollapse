@@ -194,6 +194,8 @@ export default function ToolsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [activeFilters, setActiveFilters] = useState<string[]>([])
   const [sortBy, setSortBy] = useState("relevance")
+  const [sidebarEmail, setSidebarEmail] = useState("")
+  const [isSubscribed, setIsSubscribed] = useState(false)
 
   const filteredAndSortedTools = useMemo(() => {
     const filtered = allTools.filter((tool) => {
@@ -228,6 +230,23 @@ export default function ToolsPage() {
 
   const toggleFilter = (filter: string) => {
     setActiveFilters((prev) => (prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]))
+  }
+
+  const handleSidebarEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (sidebarEmail && sidebarEmail.includes('@')) {
+      // Store in localStorage
+      const subscribers = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]')
+      if (!subscribers.includes(sidebarEmail)) {
+        subscribers.push(sidebarEmail)
+        localStorage.setItem('newsletter_subscribers', JSON.stringify(subscribers))
+      }
+      setIsSubscribed(true)
+      setTimeout(() => {
+        setIsSubscribed(false)
+        setSidebarEmail("")
+      }, 3000)
+    }
   }
 
   return (
@@ -383,15 +402,26 @@ export default function ToolsPage() {
                 <p className="text-white/70 text-sm mb-4">
                   Want new tools every week? Join the list and stay ahead of the algorithmic curve.
                 </p>
-                <div className="space-y-3">
-                  <Input
-                    placeholder="Enter your email"
-                    className="bg-deep-purple border-cyber-purple/50 text-white placeholder:text-white/40"
-                  />
-                  <Button className="w-full bg-gradient-to-r from-electric-blue to-neon-magenta hover:from-electric-blue/80 hover:to-neon-magenta/80 text-white">
-                    Join the Awakening
-                  </Button>
-                </div>
+                {!isSubscribed ? (
+                  <form onSubmit={handleSidebarEmailSubmit} className="space-y-3">
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      value={sidebarEmail}
+                      onChange={(e) => setSidebarEmail(e.target.value)}
+                      className="bg-deep-purple border-cyber-purple/50 text-white placeholder:text-white/40"
+                      required
+                    />
+                    <Button type="submit" className="w-full bg-gradient-to-r from-electric-blue to-neon-magenta hover:from-electric-blue/80 hover:to-neon-magenta/80 text-white">
+                      Join the Awakening
+                    </Button>
+                  </form>
+                ) : (
+                  <div className="text-center py-4">
+                    <div className="text-electric-blue text-xl mb-2">✨</div>
+                    <p className="text-white/80 text-sm">Welcome to the awakening!</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </aside>

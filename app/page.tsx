@@ -14,6 +14,7 @@ import { NewsletterModal } from "@/components/newsletter-modal"
 import { getFeaturedGoogleTools } from "@/lib/tools"
 import { Brain, Zap, Sparkles, Code, Palette, MessageSquare } from "lucide-react"
 
+
 export default function HomePage() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
   const [filteredTools, setFilteredTools] = useState<any[]>([])
@@ -115,6 +116,7 @@ export default function HomePage() {
             <Button
               size="lg"
               className="bg-gradient-to-r from-neon-magenta to-electric-blue hover:from-neon-magenta/80 hover:to-electric-blue/80 text-white font-medium px-8 py-4 rounded-xl"
+              onClick={() => setIsNewsletterOpen(true)}
             >
               Join the Workshop Waitlist
             </Button>
