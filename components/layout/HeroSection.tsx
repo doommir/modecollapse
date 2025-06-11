@@ -18,9 +18,9 @@ export function HeroSection({ featuredTools, onFilter, onNewsletterOpen }: HeroS
 
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
         <div className="animate-float">
-          <h1 className="font-geometric text-5xl md:text-7xl font-bold mb-6 glow-text">
+          <h1 className="font-geometric text-5xl md:text-7xl font-bold mb-6 glow-text text-white">
             Escape the{" "}
-            <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
+            <span className="gradient-text-primary" style={{ background: 'linear-gradient(135deg, #00d4ff 0%, #ff006e 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Algorithmic Trance
             </span>
           </h1>

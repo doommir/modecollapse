@@ -17,9 +17,9 @@ export function GoogleIOSection({ featuredGoogleTools }: GoogleIOSectionProps) {
             <Star className="w-4 h-4 text-electric-blue fill-current" />
             <span className="text-electric-blue font-medium text-sm">Featured by Google I/O 2025</span>
           </div>
-          <h2 className="font-geometric text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="font-geometric text-3xl md:text-4xl font-bold mb-4 text-white">
             The{" "}
-            <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
+            <span className="gradient-text-primary" style={{ background: 'linear-gradient(135deg, #00d4ff 0%, #ff006e 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Next Evolution
             </span>
           </h2>

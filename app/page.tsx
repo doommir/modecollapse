@@ -111,7 +111,7 @@ export default function HomePage() {
           <div className="bg-gradient-to-r from-dark-purple to-cyber-purple/20 rounded-2xl p-8 md:p-12 border border-cyber-purple/30">
             <h2 className="font-geometric text-3xl md:text-4xl font-bold mb-6">
               Want to build your own{" "}
-              <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
+              <span className="gradient-text-primary" style={{ background: 'linear-gradient(135deg, #00d4ff 0%, #ff006e 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 AI shovels?
               </span>
             </h2>

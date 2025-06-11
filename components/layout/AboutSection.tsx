@@ -8,9 +8,9 @@ export function AboutSection() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="font-geometric text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="font-geometric text-3xl md:text-4xl font-bold mb-6 text-white">
               Break the{" "}
-              <span className="bg-gradient-to-r from-neon-magenta to-electric-blue bg-clip-text text-transparent">
+              <span className="gradient-text-alt" style={{ background: 'linear-gradient(135deg, #ff006e 0%, #00d4ff 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 Loop
               </span>
             </h2>

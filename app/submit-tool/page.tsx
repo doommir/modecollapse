@@ -10,9 +10,9 @@ export default function SubmitToolPage() {
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
-          <h1 className="font-geometric text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="font-geometric text-4xl md:text-5xl font-bold mb-4 text-white">
             Submit an{" "}
-            <span className="bg-gradient-to-r from-electric-blue to-neon-magenta bg-clip-text text-transparent">
+            <span className="gradient-text-primary" style={{ background: 'linear-gradient(135deg, #00d4ff 0%, #ff006e 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               AI Tool
             </span>
           </h1>
