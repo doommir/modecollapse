@@ -19,8 +19,13 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool, showThumbnail = true, variant = "default" }: ToolCardProps) {
-  const href = tool.href || `/tools/${tool.slug}`
+  const href = tool.href || `/tools/${tool.slug || 'unknown'}`
   const fallbackImage = "/placeholder.svg"
+  
+  // Safety checks for required properties
+  if (!tool || !tool.name) {
+    return null
+  }
   
   return (
     <Card
@@ -48,12 +53,6 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default" }: To
                 width={400}
                 height={240}
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement
-                  if (target.src !== fallbackImage) {
-                    target.src = fallbackImage
-                  }
-                }}
               />
               
               {/* Overlay Elements */}
@@ -111,7 +110,7 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default" }: To
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
-            {tool.tags.slice(0, 4).map((tag, tagIndex) => (
+            {(tool.tags || []).slice(0, 4).map((tag, tagIndex) => (
               <Badge
                 key={tagIndex}
                 variant="secondary"
