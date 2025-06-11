@@ -1,4 +1,4 @@
-import { Tool, PromptTip } from '@/types';
+import { Tool, PromptTip, PricingModel } from '@/types';
 
 export const tools: Tool[] = [
   {
@@ -10,7 +10,11 @@ export const tools: Tool[] = [
     tags: ["Coding", "Automation", "Pro"],
     consciousnessScore: 4,
     curatorNote: "This is a flow-state amplifier for devs. Clean interface. High agency. 4/5 stars.",
-    screenshotUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/cursor-ai.png",
+    pricingModel: "Freemium" as PricingModel,
+    dateAdded: "2024-12-15",
+    isCuratorPick: true,
+    votes: { upvotes: 47, downvotes: 3, userVote: null },
     promptTips: [
       {
         title: "Refactor Legacy Code",
@@ -35,7 +39,11 @@ export const tools: Tool[] = [
     tags: ["Writing", "Analysis", "Pro"],
     consciousnessScore: 5,
     curatorNote: "Peak consciousness simulator. Thinks before it speaks. Rare combo of intelligence + humility.",
-    screenshotUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/claude-ai.png",
+    pricingModel: "Freemium" as PricingModel,
+    dateAdded: "2024-12-10",
+    isCuratorPick: true,
+    votes: { upvotes: 89, downvotes: 2, userVote: null },
     promptTips: [
       {
         title: "Deep Analysis",
@@ -56,7 +64,15 @@ export const tools: Tool[] = [
     tags: ["Visual", "Creative", "Pro"],
     consciousnessScore: 3,
     curatorNote: "Dreams made manifest. Sometimes hits transcendent beauty, sometimes generic AI slop. 3/5 stars.",
-    screenshotUrl: "https://images.unsplash.com/photo-1547394765-185e1e68f34e?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/midjourney.png",
+    pricingModel: "Paid" as PricingModel,
+    dateAdded: "2024-12-05",
+    consciousnessWarning: {
+      level: "medium",
+      message: "Potential for mindless content generation",
+      reason: "While powerful for creativity, can encourage dependency over developing personal artistic vision."
+    },
+    votes: { upvotes: 34, downvotes: 12, userVote: null },
     promptTips: [
       {
         title: "Cinematic Portraits",
@@ -78,7 +94,15 @@ export const tools: Tool[] = [
     consciousnessScore: 5,
     curatorNote: "Reality augmentation at its finest. Live AI that sees what you see and responds in real-time.",
     featured: true,
-    screenshotUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/gemini-ai-mode.png",
+    pricingModel: "Free" as PricingModel,
+    dateAdded: "2025-01-10",
+    isCuratorPick: true,
+    specialOffer: {
+      code: "CONSCIOUSNESS25",
+      description: "Enhanced reality perception mode - exclusive early access"
+    },
+    votes: { upvotes: 156, downvotes: 8, userVote: null },
     promptTips: [
       {
         title: "Live Environment Analysis",
@@ -100,7 +124,11 @@ export const tools: Tool[] = [
     consciousnessScore: 4,
     curatorNote: "Video generation that actually looks real. Still in preview but the demos are mind-bending.",
     featured: true,
-    screenshotUrl: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/veo-3.png",
+    pricingModel: "Free" as PricingModel,
+    dateAdded: "2025-01-08",
+    isCuratorPick: true,
+    votes: { upvotes: 92, downvotes: 5, userVote: null },
     promptTips: [
       {
         title: "Cinematic Sequences",
@@ -122,7 +150,10 @@ export const tools: Tool[] = [
     consciousnessScore: 4,
     curatorNote: "Your personal research assistant that actually reads everything. The audio summaries are eerily good.",
     featured: true,
-    screenshotUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/notebooklm-plus.png",
+    pricingModel: "Free" as PricingModel,
+    dateAdded: "2025-01-06",
+    votes: { upvotes: 73, downvotes: 4, userVote: null },
     promptTips: [
       {
         title: "Document Synthesis",
@@ -144,7 +175,11 @@ export const tools: Tool[] = [
     consciousnessScore: 5,
     curatorNote: "The future of web automation. Watches you browse once, then does it forever. Still experimental but promising.",
     featured: true,
-    screenshotUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/project-mariner.png",
+    pricingModel: "Free" as PricingModel,
+    dateAdded: "2025-01-04",
+    isCuratorPick: true,
+    votes: { upvotes: 128, downvotes: 12, userVote: null },
     promptTips: [
       {
         title: "Shopping Automation",
@@ -168,4 +203,40 @@ export function getAllTools(): Tool[] {
 
 export function getFeaturedGoogleTools(): Tool[] {
   return tools.filter(tool => tool.featured);
+}
+
+export function getCuratorPicks(): Tool[] {
+  return tools.filter(tool => tool.isCuratorPick);
+}
+
+export function getToolsByPricing(pricingModel: PricingModel): Tool[] {
+  return tools.filter(tool => tool.pricingModel === pricingModel);
+}
+
+export function getToolsWithWarnings(): Tool[] {
+  return tools.filter(tool => tool.consciousnessWarning);
+}
+
+export function getToolsWithSpecialOffers(): Tool[] {
+  return tools.filter(tool => tool.specialOffer);
+}
+
+export function sortToolsByVotes(tools: Tool[]): Tool[] {
+  return [...tools].sort((a, b) => {
+    const aScore = a.votes.upvotes - a.votes.downvotes;
+    const bScore = b.votes.upvotes - b.votes.downvotes;
+    return bScore - aScore;
+  });
+}
+
+export function sortToolsByDate(tools: Tool[], direction: 'newest' | 'oldest' = 'newest'): Tool[] {
+  return [...tools].sort((a, b) => {
+    const dateA = new Date(a.dateAdded).getTime();
+    const dateB = new Date(b.dateAdded).getTime();
+    return direction === 'newest' ? dateB - dateA : dateA - dateB;
+  });
+}
+
+export function sortToolsByConsciousness(tools: Tool[]): Tool[] {
+  return [...tools].sort((a, b) => b.consciousnessScore - a.consciousnessScore);
 }

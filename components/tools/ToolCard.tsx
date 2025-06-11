@@ -1,21 +1,43 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Star } from "lucide-react"
+import { ExternalLink, Star, ChevronUp, ChevronDown, AlertTriangle, Sparkles, Gift } from "lucide-react"
 import type { ToolCardProps } from "@/types"
 
-export function ToolCard({ tool, showThumbnail = true, variant = "default" }: ToolCardProps) {
+export function ToolCard({ tool, showThumbnail = true, variant = "default", onVote }: ToolCardProps) {
   const href = tool.href || `/tools/${tool.slug || 'unknown'}`
   const fallbackImage = "/placeholder.svg"
+  const [isVoting, setIsVoting] = useState(false)
   
   // Safety checks for required properties
   if (!tool || !tool.name) {
     return null
   }
+
+  const handleVote = async (vote: 'up' | 'down') => {
+    if (isVoting || !onVote) return
+    setIsVoting(true)
+    try {
+      await onVote(tool.slug, vote)
+    } finally {
+      setIsVoting(false)
+    }
+  }
+
+  const netVotes = (tool.votes?.upvotes || 0) - (tool.votes?.downvotes || 0)
+  const pricingColor = {
+    'Free': 'bg-green-500/20 text-green-400 border-green-500/30',
+    'Freemium': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    'Paid': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+    'Open Source': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    'GitHub': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+    'Google Colab': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+  }[tool.pricingModel] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'
   
   return (
     <Card
@@ -48,23 +70,36 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default" }: To
               {/* Overlay Elements */}
               <div className="absolute inset-0 bg-gradient-to-t from-deep-purple/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
-              {/* Editor's Pick Badge */}
-              {tool.isEditorsPick && (
-                <div className="absolute top-3 right-3">
+              {/* Badges */}
+              <div className="absolute top-3 right-3 flex flex-col gap-2">
+                {/* Special Offer Badge */}
+                {tool.specialOffer && (
+                  <div className="bg-gradient-to-r from-neon-magenta to-electric-blue rounded-full p-1">
+                    <Gift className="w-3 h-3 text-white" />
+                  </div>
+                )}
+                
+                {/* Curator Pick Badge */}
+                {tool.isCuratorPick && (
+                  <div className="bg-gradient-to-r from-electric-blue to-cyber-purple rounded-full p-1">
+                    <Sparkles className="w-3 h-3 text-white fill-current" />
+                  </div>
+                )}
+                
+                {/* Editor's Pick Badge (legacy) */}
+                {tool.isEditorsPick && (
                   <div className="bg-gradient-to-r from-electric-blue to-neon-magenta rounded-full p-1">
                     <Star className="w-3 h-3 text-white fill-current" />
                   </div>
-                </div>
-              )}
-              
-              {/* Featured Badge for featured variant */}
-              {variant === "featured" && (
-                <div className="absolute top-3 right-3">
-                  <div className="bg-gradient-to-r from-electric-blue to-neon-magenta rounded-full p-1">
-                    <Star className="w-3 h-3 text-white fill-current" />
+                )}
+                
+                {/* Consciousness Warning */}
+                {tool.consciousnessWarning && (
+                  <div className={`rounded-full p-1 ${tool.consciousnessWarning.level === 'high' ? 'bg-red-500' : tool.consciousnessWarning.level === 'medium' ? 'bg-orange-500' : 'bg-yellow-500'}`}>
+                    <AlertTriangle className="w-3 h-3 text-white" />
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </Link>
         )}
@@ -98,9 +133,56 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default" }: To
             {tool.summary || tool.description}
           </p>
 
-          {/* Tags */}
+          {/* Special Offer Banner */}
+          {tool.specialOffer && (
+            <div className="mb-3 p-2 bg-gradient-to-r from-neon-magenta/10 to-electric-blue/10 border border-neon-magenta/30 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Gift className="w-3 h-3 text-neon-magenta" />
+                <span className="text-xs text-neon-magenta font-medium">
+                  {tool.specialOffer.description}
+                </span>
+              </div>
+              {tool.specialOffer.code && (
+                <div className="mt-1">
+                  <code className="text-xs bg-neon-magenta/20 text-neon-magenta px-2 py-1 rounded">
+                    {tool.specialOffer.code}
+                  </code>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Consciousness Warning */}
+          {tool.consciousnessWarning && (
+            <div className={`mb-3 p-2 border rounded-lg ${
+              tool.consciousnessWarning.level === 'high' 
+                ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                : tool.consciousnessWarning.level === 'medium'
+                ? 'bg-orange-500/10 border-orange-500/30 text-orange-400'
+                : 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400'
+            }`}>
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-xs font-medium">{tool.consciousnessWarning.message}</p>
+                  <p className="text-xs opacity-80 mt-1">{tool.consciousnessWarning.reason}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tags and Pricing */}
           <div className="flex flex-wrap gap-2 mb-4">
-            {(tool.tags || []).slice(0, 4).map((tag, tagIndex) => (
+            {/* Pricing Model Badge */}
+            <Badge
+              variant="outline"
+              className={`text-xs ${pricingColor}`}
+            >
+              {tool.pricingModel}
+            </Badge>
+            
+            {/* Tags */}
+            {(tool.tags || []).slice(0, 3).map((tag, tagIndex) => (
               <Badge
                 key={tagIndex}
                 variant="secondary"
@@ -111,18 +193,50 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default" }: To
             ))}
           </div>
 
-          {/* Learn More Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-electric-blue hover:text-white hover:bg-electric-blue/20 p-0 h-auto font-medium group/btn"
-            asChild
-          >
-            <Link href={href} className="flex items-center gap-2">
-              Learn More 
-              <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
-            </Link>
-          </Button>
+          {/* Bottom section with voting and action */}
+          <div className="flex items-center justify-between">
+            {/* Voting system */}
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleVote('up')}
+                disabled={isVoting}
+                className={`h-8 w-8 p-0 ${tool.votes?.userVote === 'up' ? 'text-electric-blue bg-electric-blue/20' : 'text-white/60 hover:text-electric-blue hover:bg-electric-blue/10'}`}
+              >
+                <ChevronUp className="w-4 h-4" />
+              </Button>
+              
+              <span className={`text-sm font-medium min-w-[2rem] text-center ${
+                netVotes > 0 ? 'text-electric-blue' : netVotes < 0 ? 'text-red-400' : 'text-white/60'
+              }`}>
+                {netVotes}
+              </span>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleVote('down')}
+                disabled={isVoting}
+                className={`h-8 w-8 p-0 ${tool.votes?.userVote === 'down' ? 'text-red-400 bg-red-400/20' : 'text-white/60 hover:text-red-400 hover:bg-red-400/10'}`}
+              >
+                <ChevronDown className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {/* Learn More Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-electric-blue hover:text-white hover:bg-electric-blue/20 px-3 h-8 font-medium group/btn"
+              asChild
+            >
+              <Link href={href} className="flex items-center gap-2">
+                View
+                <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

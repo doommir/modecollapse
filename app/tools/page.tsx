@@ -3,7 +3,7 @@
 import type React from "react"
 import Link from "next/link"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -27,6 +27,8 @@ import {
   Linkedin,
   TrendingUp,
   Star,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react"
 
 interface Tool {
@@ -39,40 +41,48 @@ interface Tool {
   isEditorsPick?: boolean
   dateAdded: string
   screenshotUrl?: string
+  votes?: {
+    upvotes: number
+    downvotes: number
+    userVote?: 'up' | 'down' | null
+  }
 }
 
 const allTools: Tool[] = [
   {
     id: "1",
-    name: "Claude Artifacts",
-    description: "Interactive code generation with real-time preview and execution",
+    name: "Claude AI",
+    description: "Constitutional AI that reasons with nuance",
     icon: <Brain className="w-6 h-6" />,
-    tags: ["GPT-4o", "Free", "Coding"],
-    href: "#",
+    tags: ["Writing", "Analysis", "Pro"],
+    href: "https://claude.ai",
     isEditorsPick: true,
     dateAdded: "2024-01-15",
-    screenshotUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/claude-ai.png",
+    votes: { upvotes: 89, downvotes: 2, userVote: null },
   },
   {
     id: "2",
-    name: "Midjourney Alpha",
-    description: "Next-generation image synthesis for visual storytelling",
+    name: "Midjourney",
+    description: "Visual consciousness through AI imagery",
     icon: <Palette className="w-6 h-6" />,
-    tags: ["Creative", "Subscription", "Image Gen"],
-    href: "#",
+    tags: ["Visual", "Creative", "Pro"],
+    href: "https://midjourney.com",
     isEditorsPick: true,
     dateAdded: "2024-01-10",
-    screenshotUrl: "https://images.unsplash.com/photo-1547394765-185e1e68f34e?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/midjourney.png",
+    votes: { upvotes: 34, downvotes: 12, userVote: null },
   },
   {
     id: "3",
     name: "Cursor AI",
-    description: "AI-powered code editor that thinks alongside you",
+    description: "AI-powered code editor that thinks with you",
     icon: <Zap className="w-6 h-6" />,
-    tags: ["Coding", "Automation", "Subscription"],
-    href: "#",
+    tags: ["Coding", "Automation", "Pro"],
+    href: "https://www.cursor.so",
     dateAdded: "2024-01-08",
-    screenshotUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=240&fit=crop",
+    screenshotUrl: "/screenshots/cursor-ai.png",
+    votes: { upvotes: 156, downvotes: 8, userVote: null },
   },
   {
     id: "4",
@@ -83,6 +93,7 @@ const allTools: Tool[] = [
     href: "#",
     dateAdded: "2024-01-05",
     screenshotUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=240&fit=crop",
+    votes: { upvotes: 73, downvotes: 4, userVote: null },
   },
   {
     id: "5",
@@ -184,6 +195,7 @@ const filterOptions = [
 
 const sortOptions = [
   { value: "relevance", label: "Relevance" },
+  { value: "votes", label: "Most Upvoted" },
   { value: "recent", label: "Recently Added" },
   { value: "editors", label: "Editor's Pick" },
 ]
@@ -196,9 +208,42 @@ export default function ToolsPage() {
   const [sortBy, setSortBy] = useState("relevance")
   const [sidebarEmail, setSidebarEmail] = useState("")
   const [isSubscribed, setIsSubscribed] = useState(false)
+  
+  // State for managing live vote counts
+  const [toolVotes, setToolVotes] = useState<Record<string, { upvotes: number; downvotes: number; userVote?: 'up' | 'down' | null }>>({})
+
+  // Load votes from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedVotes = localStorage.getItem('mode_collapse_tool_votes')
+      if (savedVotes) {
+        try {
+          setToolVotes(JSON.parse(savedVotes))
+        } catch (error) {
+          console.error('Error parsing saved votes:', error)
+        }
+      }
+    }
+  }, [])
 
   const filteredAndSortedTools = useMemo(() => {
-    const filtered = allTools.filter((tool) => {
+    // Merge tools with live vote data
+    const toolsWithLiveVotes = allTools.map(tool => {
+      const liveVoteData = toolVotes[tool.id]
+      if (liveVoteData) {
+        return {
+          ...tool,
+          votes: {
+            upvotes: liveVoteData.upvotes,
+            downvotes: liveVoteData.downvotes,
+            userVote: liveVoteData.userVote
+          }
+        }
+      }
+      return tool
+    })
+
+    const filtered = toolsWithLiveVotes.filter((tool) => {
       const matchesSearch =
         tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -220,16 +265,71 @@ export default function ToolsPage() {
           return 0
         })
         break
+      case "votes":
+        filtered.sort((a, b) => {
+          const aScore = (a.votes?.upvotes || 0) - (a.votes?.downvotes || 0)
+          const bScore = (b.votes?.upvotes || 0) - (b.votes?.downvotes || 0)
+          return bScore - aScore
+        })
+        break
       default:
         // Keep original order for relevance
         break
     }
 
     return filtered
-  }, [searchQuery, activeFilters, sortBy])
+  }, [searchQuery, activeFilters, sortBy, toolVotes])
 
   const toggleFilter = (filter: string) => {
     setActiveFilters((prev) => (prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]))
+  }
+
+  const handleVote = (toolId: string, vote: 'up' | 'down') => {
+    setToolVotes(prev => {
+      const tool = allTools.find(t => t.id === toolId)
+      const currentVotes = prev[toolId] || {
+        upvotes: tool?.votes?.upvotes || 0,
+        downvotes: tool?.votes?.downvotes || 0,
+        userVote: null
+      }
+
+      let newVotes = { ...currentVotes }
+
+      // Handle vote logic
+      if (currentVotes.userVote === vote) {
+        // Remove vote if clicking same button
+        if (vote === 'up') {
+          newVotes.upvotes--
+        } else {
+          newVotes.downvotes--
+        }
+        newVotes.userVote = null
+      } else {
+        // Remove previous vote if exists
+        if (currentVotes.userVote === 'up') {
+          newVotes.upvotes--
+        } else if (currentVotes.userVote === 'down') {
+          newVotes.downvotes--
+        }
+
+        // Add new vote
+        if (vote === 'up') {
+          newVotes.upvotes++
+        } else {
+          newVotes.downvotes++
+        }
+        newVotes.userVote = vote
+      }
+
+      const updatedVotes = { ...prev, [toolId]: newVotes }
+      
+      // Persist to localStorage (client-side only)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('mode_collapse_tool_votes', JSON.stringify(updatedVotes))
+      }
+      
+      return updatedVotes
+    })
   }
 
   const handleSidebarEmailSubmit = (e: React.FormEvent) => {
@@ -330,10 +430,13 @@ export default function ToolsPage() {
                     screenshotUrl: tool.screenshotUrl,
                     icon: tool.icon,
                     isEditorsPick: tool.isEditorsPick,
-                    href: `/tools/${tool.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`
+                    href: `/tools/${tool.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`,
+                    votes: tool.votes,
+                    pricingModel: "Free"
                   }}
                   showThumbnail={true}
                   variant="default"
+                  onVote={(slug, vote) => handleVote(tool.id, vote)}
                 />
               ))}
             </div>

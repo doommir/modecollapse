@@ -5,6 +5,21 @@ export interface PromptTip {
   snippet: string;
 }
 
+export type PricingModel = 'Free' | 'Freemium' | 'Paid' | 'Open Source' | 'GitHub' | 'Google Colab';
+export type WarningLevel = 'low' | 'medium' | 'high';
+
+export interface ConsciousnessWarning {
+  level: WarningLevel;
+  message: string;
+  reason: string;
+}
+
+export interface VoteStats {
+  upvotes: number;
+  downvotes: number;
+  userVote?: 'up' | 'down' | null;
+}
+
 export interface Tool {
   slug: string;
   name: string;
@@ -17,6 +32,17 @@ export interface Tool {
   promptTips: PromptTip[];
   featured?: boolean;
   screenshotUrl?: string;
+  // New FutureTools-inspired features
+  pricingModel: PricingModel;
+  dateAdded: string;
+  isCuratorPick?: boolean;
+  specialOffer?: {
+    code: string;
+    description: string;
+    url?: string;
+  };
+  consciousnessWarning?: ConsciousnessWarning;
+  votes: VoteStats;
 }
 
 // UI component props
@@ -28,6 +54,7 @@ export interface ToolCardProps {
   };
   showThumbnail?: boolean;
   variant?: "default" | "featured";
+  onVote?: (toolSlug: string, vote: 'up' | 'down') => void;
 }
 
 export interface ToolSearchBarProps {
