@@ -9,7 +9,8 @@ import {
   AboutSection, 
   Footer 
 } from "@/components/layout"
-import { SubmitToolCTA, NewsletterModal } from "@/components"
+import { SubmitToolCTA } from "@/components/SubmitToolCTA"
+import { NewsletterModal } from "@/components/newsletter-modal"
 import { getFeaturedGoogleTools } from "@/lib/tools"
 import { Brain, Zap, Sparkles, Code, Palette, MessageSquare } from "lucide-react"
 
