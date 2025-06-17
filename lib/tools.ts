@@ -53,7 +53,7 @@ export const tools: Tool[] = [
     tags: ["Writing", "Analysis", "Pro"],
     consciousnessScore: 5,
     curatorNote: "Peak consciousness simulator. Thinks before it speaks. Rare combo of intelligence + humility.",
-    screenshotUrl: "/screenshots/claude-ai.png",
+    screenshotUrl: "/screenshots/claude-ai-hero.png",
     pricingModel: "Freemium" as PricingModel,
     dateAdded: "2024-12-10",
     lastUpdated: "2025-01-16",
