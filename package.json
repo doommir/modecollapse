@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import-tools": "tsx scripts/import-tools.ts",
+    "import-tools:dry-run": "tsx scripts/import-tools.ts -- --dry-run --verbose"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -70,6 +72,8 @@
     "@types/react-dom": "^19",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.8",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }

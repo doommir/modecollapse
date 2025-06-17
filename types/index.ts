@@ -7,6 +7,8 @@ export interface PromptTip {
 
 export type PricingModel = 'Free' | 'Freemium' | 'Paid' | 'Open Source' | 'GitHub' | 'Google Colab';
 export type WarningLevel = 'low' | 'medium' | 'high';
+export type ReviewStatus = 'pending' | 'approved' | 'rejected';
+export type ToolCategory = 'Coding' | 'Writing' | 'Visual' | 'Audio' | 'Video' | 'Research' | 'Productivity' | 'Marketing' | 'Design' | 'Chat' | 'Search' | 'Analysis' | 'Creative' | 'Automation' | 'Learning' | 'Multimodal' | 'Generation' | 'Assistant' | 'Browsing' | 'Live';
 
 export interface ConsciousnessWarning {
   level: WarningLevel;
@@ -40,17 +42,38 @@ export interface Tool {
   promptTips: PromptTip[];
   featured?: boolean;
   screenshotUrl?: string;
-  // New FutureTools-inspired features
+  // FutureTools-inspired features
   pricingModel: PricingModel;
   dateAdded: string;
-  isCuratorPick?: boolean;
-  specialOffer?: SpecialOffer;
-  consciousnessWarning?: ConsciousnessWarning;
   votes: VoteStats;
-  // Additional FutureTools-like features
   lastUpdated?: string;
   isVerified?: boolean;
   toolCount?: number; // For aggregator tools
+  
+  // Mode Collapse unique curation features
+  isCuratorPick?: boolean;
+  specialOffer?: SpecialOffer;
+  consciousnessWarning?: ConsciousnessWarning;
+  
+  // Production features
+  reviewStatus?: ReviewStatus;
+  submissionDate?: string;
+  submittedBy?: string;
+  affiliateUrl?: string;
+  logoUrl?: string;
+  category?: ToolCategory;
+  
+  // Enhanced metadata
+  website?: string;
+  githubUrl?: string;
+  documentationUrl?: string;
+  supportUrl?: string;
+  
+  // Quality indicators
+  linkHealth?: 'healthy' | 'warning' | 'broken';
+  lastChecked?: string;
+  popularity?: number; // Based on clicks/engagement
+  trendingScore?: number; // For trending tools
 }
 
 // UI component props

@@ -2,43 +2,40 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Star, ChevronUp, ChevronDown, AlertTriangle, Sparkles, Gift } from "lucide-react"
+import { ExternalLink, Star, ChevronUp, ChevronDown, AlertTriangle, Sparkles, Gift, TrendingUp } from "lucide-react"
 import { ToolImage } from "./ToolImage"
+import { PricingBadge } from "./PricingBadge"
+import { VerificationBadge } from "./VerificationBadge"
+import { useVoting } from "@/hooks/use-voting"
 import type { ToolCardProps } from "@/types"
 
 export function ToolCard({ tool, showThumbnail = true, variant = "default", onVote }: ToolCardProps) {
   const href = tool.href || `/tools/${tool.slug || 'unknown'}`
-  const fallbackImage = "/placeholder.svg"
-  const [isVoting, setIsVoting] = useState(false)
   
   // Safety checks for required properties
   if (!tool || !tool.name) {
     return null
   }
 
-  const handleVote = async (vote: 'up' | 'down') => {
-    if (isVoting || !onVote) return
-    setIsVoting(true)
-    try {
-      await onVote(tool.slug, vote)
-    } finally {
-      setIsVoting(false)
-    }
-  }
+  // Initialize voting system
+  const voting = useVoting({
+    initialVotes: tool.votes || { upvotes: 0, downvotes: 0, userVote: null },
+    toolSlug: tool.slug || 'unknown'
+  });
 
-  const netVotes = (tool.votes?.upvotes || 0) - (tool.votes?.downvotes || 0)
-  const pricingColor = {
-    'Free': 'bg-green-500/20 text-green-400 border-green-500/30',
-    'Freemium': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-    'Paid': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-    'Open Source': 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-    'GitHub': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
-    'Google Colab': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-  }[tool.pricingModel] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+  const handleVote = async (vote: 'up' | 'down') => {
+    await voting.submitVote(vote);
+    // Call external onVote callback if provided
+    if (onVote) {
+      onVote(tool.slug, vote);
+    }
+  };
+
+  // Check if tool is trending (you can customize this logic)
+  const isTrending = tool.trendingScore && tool.trendingScore > 0.7;
   
   return (
     <Card
@@ -77,6 +74,13 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
               
               {/* Badges */}
               <div className="absolute top-3 right-3 flex flex-col gap-2">
+                {/* Trending Badge */}
+                {isTrending && (
+                  <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full p-1">
+                    <TrendingUp className="w-3 h-3 text-white" />
+                  </div>
+                )}
+                
                 {/* Special Offer Badge */}
                 {tool.specialOffer && (
                   <div className="bg-gradient-to-r from-neon-magenta to-electric-blue rounded-full p-1">
@@ -189,15 +193,16 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
           {/* Tags and Pricing */}
           <div className="flex flex-wrap gap-2 mb-4">
             {/* Pricing Model Badge */}
-            <Badge
-              variant="outline"
-              className={`text-xs ${pricingColor}`}
-            >
-              {tool.pricingModel}
-            </Badge>
+            <PricingBadge pricingModel={tool.pricingModel} />
+            
+            {/* Verification Badge */}
+            <VerificationBadge 
+              isVerified={tool.isVerified} 
+              linkHealth={tool.linkHealth} 
+            />
             
             {/* Tags */}
-            {(tool.tags || []).slice(0, 3).map((tag, tagIndex) => (
+            {(tool.tags || []).slice(0, 2).map((tag, tagIndex) => (
               <Badge
                 key={tagIndex}
                 variant="secondary"
@@ -206,28 +211,54 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
                 {tag}
               </Badge>
             ))}
+            
+            {/* More tags indicator */}
+            {(tool.tags || []).length > 2 && (
+              <Badge
+                variant="secondary"
+                className="bg-gray-500/20 text-gray-400 border-gray-500/30 text-xs"
+              >
+                +{tool.tags.length - 2}
+              </Badge>
+            )}
           </div>
 
           {/* Bottom section with voting and action */}
           <div className="flex items-center justify-between">
-            {/* Voting system - Upvote only */}
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleVote('up')}
-                disabled={isVoting}
-                className={`h-8 px-3 flex items-center gap-1 ${
-                  tool.votes?.userVote === 'up' 
-                    ? 'text-electric-blue bg-electric-blue/20' 
-                    : 'text-white/60 hover:text-electric-blue hover:bg-electric-blue/10'
-                }`}
-              >
-                <ChevronUp className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  {tool.votes?.upvotes || 0}
-                </span>
-              </Button>
+            {/* Voting system and stats */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleVote('up')}
+                  disabled={voting.isVoting}
+                  className={`h-8 px-3 flex items-center gap-1 ${
+                    voting.votes?.userVote === 'up' 
+                      ? 'text-electric-blue bg-electric-blue/20' 
+                      : 'text-white/60 hover:text-electric-blue hover:bg-electric-blue/10'
+                  }`}
+                >
+                  <ChevronUp className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    {voting.votes?.upvotes || 0}
+                  </span>
+                </Button>
+              </div>
+              
+              {/* Consciousness Score */}
+              <div className="flex items-center gap-1">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-3 h-3 ${
+                      i < tool.consciousnessScore
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-gray-600'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Visit Tool Button */}
@@ -236,8 +267,8 @@ export function ToolCard({ tool, showThumbnail = true, variant = "default", onVo
               className="bg-gradient-to-r from-electric-blue to-neon-magenta hover:from-electric-blue/80 hover:to-neon-magenta/80 text-white font-medium px-4 h-8 group/btn"
               asChild
             >
-              <Link href={tool.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                Visit Tool
+              <Link href={tool.affiliateUrl || tool.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                Try It
                 <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
               </Link>
             </Button>

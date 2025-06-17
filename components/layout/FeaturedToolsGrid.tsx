@@ -21,16 +21,8 @@ export function FeaturedToolsGrid({ filteredTools }: FeaturedToolsGridProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTools.map((tool, index) => (
             <ToolCard
-              key={index}
-              tool={{
-                ...tool,
-                slug: tool.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
-                url: tool.href || `#`,
-                description: tool.description,
-                consciousnessScore: 4,
-                curatorNote: "",
-                promptTips: []
-              }}
+              key={tool.slug || index}
+              tool={tool}
               showThumbnail={true}
               variant="default"
             />
