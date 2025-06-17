@@ -1,12 +1,23 @@
 import Airtable from 'airtable';
 import { Tool, PromptTip, PricingModel, VoteStats } from '@/types';
 
-// Initialize Airtable
-const airtable = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY,
-});
+// Initialize Airtable conditionally
+let airtable: Airtable | null = null;
+let base: any = null;
 
-const base = airtable.base(process.env.AIRTABLE_BASE_ID || '');
+function initializeAirtable() {
+  if (!airtable && process.env.AIRTABLE_API_KEY) {
+    airtable = new Airtable({
+      apiKey: process.env.AIRTABLE_API_KEY,
+    });
+    base = airtable.base(process.env.AIRTABLE_BASE_ID || '');
+  }
+  return { airtable, base };
+}
+
+function isAirtableConfigured(): boolean {
+  return !!(process.env.AIRTABLE_API_KEY && process.env.AIRTABLE_BASE_ID);
+}
 
 // Define the table names
 const TOOLS_TABLE = 'Tools';
@@ -89,9 +100,19 @@ function transformAirtableToTool(record: AirtableToolRecord, promptTips: PromptT
 
 // Fetch all published tools from Airtable
 export async function getToolsFromAirtable(): Promise<Tool[]> {
+  if (!isAirtableConfigured()) {
+    console.warn('Airtable not configured, returning empty array');
+    return [];
+  }
+
   try {
+    const { base: airtableBase } = initializeAirtable();
+    if (!airtableBase) {
+      return [];
+    }
+
     // Fetch tools
-    const toolsResponse = await base(TOOLS_TABLE)
+    const toolsResponse = await airtableBase(TOOLS_TABLE)
       .select({
         filterByFormula: "{Status} = 'Published'",
         sort: [{ field: 'Date Added', direction: 'desc' }],
@@ -99,7 +120,7 @@ export async function getToolsFromAirtable(): Promise<Tool[]> {
       .all();
 
     // Fetch prompt tips
-    const promptTipsResponse = await base(PROMPT_TIPS_TABLE)
+    const promptTipsResponse = await airtableBase(PROMPT_TIPS_TABLE)
       .select()
       .all();
 
@@ -139,9 +160,19 @@ export async function getToolsFromAirtable(): Promise<Tool[]> {
 
 // Update vote count in Airtable
 export async function updateToolVotes(slug: string, upvotes: number, downvotes: number): Promise<void> {
+  if (!isAirtableConfigured()) {
+    console.warn('Airtable not configured, skipping vote update');
+    return;
+  }
+
   try {
+    const { base: airtableBase } = initializeAirtable();
+    if (!airtableBase) {
+      return;
+    }
+
     // Find the tool record by slug
-    const records = await base(TOOLS_TABLE)
+    const records = await airtableBase(TOOLS_TABLE)
       .select({
         filterByFormula: `{Slug} = '${slug}'`,
         maxRecords: 1,
@@ -150,7 +181,7 @@ export async function updateToolVotes(slug: string, upvotes: number, downvotes: 
 
     if (records.length > 0) {
       const recordId = records[0].id;
-      await base(TOOLS_TABLE).update(recordId, {
+      await airtableBase(TOOLS_TABLE).update(recordId, {
         'Upvotes': upvotes,
         'Downvotes': downvotes,
       });
@@ -168,10 +199,20 @@ export async function submitToolToAirtable(toolData: {
   tags: string[];
   submitterEmail?: string;
 }): Promise<string> {
+  if (!isAirtableConfigured()) {
+    console.warn('Airtable not configured, unable to submit tool');
+    throw new Error('Airtable not configured');
+  }
+
   try {
+    const { base: airtableBase } = initializeAirtable();
+    if (!airtableBase) {
+      throw new Error('Failed to initialize Airtable');
+    }
+
     const slug = toolData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     
-    const record = await base(TOOLS_TABLE).create({
+    const record = await airtableBase(TOOLS_TABLE).create({
       'Name': toolData.name,
       'Slug': slug,
       'Summary': toolData.description.substring(0, 150) + (toolData.description.length > 150 ? '...' : ''),
@@ -195,8 +236,18 @@ export async function submitToolToAirtable(toolData: {
 
 // Get a single tool by slug
 export async function getToolBySlugFromAirtable(slug: string): Promise<Tool | null> {
+  if (!isAirtableConfigured()) {
+    console.warn('Airtable not configured, returning null');
+    return null;
+  }
+
   try {
-    const records = await base(TOOLS_TABLE)
+    const { base: airtableBase } = initializeAirtable();
+    if (!airtableBase) {
+      return null;
+    }
+
+    const records = await airtableBase(TOOLS_TABLE)
       .select({
         filterByFormula: `{Slug} = '${slug}'`,
         maxRecords: 1,
@@ -208,7 +259,7 @@ export async function getToolBySlugFromAirtable(slug: string): Promise<Tool | nu
     }
 
     // Fetch prompt tips for this tool
-    const promptTipsResponse = await base(PROMPT_TIPS_TABLE)
+    const promptTipsResponse = await airtableBase(PROMPT_TIPS_TABLE)
       .select({
         filterByFormula: `FIND('${slug}', ARRAYJOIN({Tool Slug}, ',')) > 0`,
       })
