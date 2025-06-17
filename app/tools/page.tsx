@@ -1,14 +1,8 @@
-"use client"
+import { getAllTools } from "@/lib/tools";
+import { ModeCollapseDirectory } from "@/components/tools/ModeCollapseDirectory";
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
+export default async function ToolsPage() {
+  const tools = await getAllTools();
 
-export default function ToolsPage() {
-  const router = useRouter()
-
-  useEffect(() => {
-    router.replace('/')
-  }, [router])
-
-  return null
+  return <ModeCollapseDirectory tools={tools} />;
 }

@@ -7,3 +7,4 @@ export { ToolImage } from './ToolImage';
 export { PricingBadge } from './PricingBadge';
 export { VerificationBadge } from './VerificationBadge';
 export { AdvancedSearch } from './AdvancedSearch';
+export { ModeCollapseDirectory } from './ModeCollapseDirectory';
