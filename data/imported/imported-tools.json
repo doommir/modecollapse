@@ -46,7 +46,7 @@
     "url": "https://x.com/mreflow",
     "tags": [],
     "consciousnessScore": 3,
-    "curatorNote": "Worth exploring for your toolkit.",
+    "curatorNote": "Solid AI tool for practical use.",
     "screenshotUrl": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
     "pricingModel": "Paid",
     "dateAdded": "2025-06-17",
@@ -74,14 +74,14 @@
     ]
   },
   {
-    "slug": "frequently-asked-questions",
-    "name": "Frequently Asked Questions",
-    "summary": "The most common questions asked about Future Tools and Matt Wolfe.",
-    "description": "The most common questions asked about Future Tools and Matt Wolfe.",
-    "url": "https://x.com/mreflow",
+    "slug": "newly-added-tools",
+    "name": "Newly Added Tools",
+    "summary": "The latest AI tools added in the last 24-hours to Future Tools.",
+    "description": "The latest AI tools added in the last 24-hours to Future Tools.",
+    "url": "https://www.futuretools.io/tools/coopa-ai",
     "tags": [],
     "consciousnessScore": 3,
-    "curatorNote": "Good integration capabilities.",
+    "curatorNote": "Useful for specific workflows.",
     "screenshotUrl": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
     "pricingModel": "Paid",
     "dateAdded": "2025-06-17",
@@ -100,11 +100,11 @@
     "promptTips": [
       {
         "title": "General Use",
-        "snippet": "Help me use Frequently Asked Questions effectively for [your specific goal]"
+        "snippet": "Help me use Newly Added Tools effectively for [your specific goal]"
       },
       {
         "title": "Best Practices",
-        "snippet": "What are the best practices for using Frequently Asked Questions in [context]?"
+        "snippet": "What are the best practices for using Newly Added Tools in [context]?"
       }
     ]
   },
@@ -144,14 +144,14 @@
     ]
   },
   {
-    "slug": "newly-added-tools",
-    "name": "Newly Added Tools",
-    "summary": "The latest AI tools added in the last 24-hours to Future Tools.",
-    "description": "The latest AI tools added in the last 24-hours to Future Tools.",
-    "url": "https://www.futuretools.io/tools/coopa-ai",
+    "slug": "frequently-asked-questions",
+    "name": "Frequently Asked Questions",
+    "summary": "The most common questions asked about Future Tools and Matt Wolfe.",
+    "description": "The most common questions asked about Future Tools and Matt Wolfe.",
+    "url": "https://x.com/mreflow",
     "tags": [],
     "consciousnessScore": 3,
-    "curatorNote": "Solid AI tool for practical use.",
+    "curatorNote": "Decent option in its category.",
     "screenshotUrl": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
     "pricingModel": "Paid",
     "dateAdded": "2025-06-17",
@@ -170,46 +170,11 @@
     "promptTips": [
       {
         "title": "General Use",
-        "snippet": "Help me use Newly Added Tools effectively for [your specific goal]"
+        "snippet": "Help me use Frequently Asked Questions effectively for [your specific goal]"
       },
       {
         "title": "Best Practices",
-        "snippet": "What are the best practices for using Newly Added Tools in [context]?"
-      }
-    ]
-  },
-  {
-    "slug": "videos-podcasts",
-    "name": "Videos & Podcasts",
-    "summary": "Latest articles, podcasts, and videos about AI on the FutureTools blog.",
-    "description": "Latest articles, podcasts, and videos about AI on the FutureTools blog.",
-    "url": "https://www.futuretools.io/blog/is-deepseek-worth-the-hype",
-    "tags": [],
-    "consciousnessScore": 3,
-    "curatorNote": "Good integration capabilities.",
-    "screenshotUrl": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
-    "pricingModel": "Paid",
-    "dateAdded": "2025-06-17",
-    "lastUpdated": "2025-06-17",
-    "isCuratorPick": false,
-    "isVerified": false,
-    "linkHealth": "healthy",
-    "popularity": 1,
-    "trendingScore": 0.5,
-    "reviewStatus": "pending",
-    "votes": {
-      "upvotes": 0,
-      "downvotes": 0,
-      "userVote": null
-    },
-    "promptTips": [
-      {
-        "title": "General Use",
-        "snippet": "Help me use Videos & Podcasts effectively for [your specific goal]"
-      },
-      {
-        "title": "Best Practices",
-        "snippet": "What are the best practices for using Videos & Podcasts in [context]?"
+        "snippet": "What are the best practices for using Frequently Asked Questions in [context]?"
       }
     ]
   },
@@ -221,7 +186,7 @@
     "url": "https://www.youtube.com/mattwolfe",
     "tags": [],
     "consciousnessScore": 3,
-    "curatorNote": "Good integration capabilities.",
+    "curatorNote": "Useful for specific workflows.",
     "screenshotUrl": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
     "pricingModel": "Paid",
     "dateAdded": "2025-06-17",
@@ -245,6 +210,41 @@
       {
         "title": "Best Practices",
         "snippet": "What are the best practices for using Latest AI News & Articles in [context]?"
+      }
+    ]
+  },
+  {
+    "slug": "videos-podcasts",
+    "name": "Videos & Podcasts",
+    "summary": "Latest articles, podcasts, and videos about AI on the FutureTools blog.",
+    "description": "Latest articles, podcasts, and videos about AI on the FutureTools blog.",
+    "url": "https://www.futuretools.io/blog/is-deepseek-worth-the-hype",
+    "tags": [],
+    "consciousnessScore": 3,
+    "curatorNote": "Useful for specific workflows.",
+    "screenshotUrl": "https://cdn.prod.website-files.com/639910cce4b41d2a9b3e96fb/63ab94e08af6f9283cef4209_Future%20Tools%20OG.png",
+    "pricingModel": "Paid",
+    "dateAdded": "2025-06-17",
+    "lastUpdated": "2025-06-17",
+    "isCuratorPick": false,
+    "isVerified": false,
+    "linkHealth": "healthy",
+    "popularity": 1,
+    "trendingScore": 0.5,
+    "reviewStatus": "pending",
+    "votes": {
+      "upvotes": 0,
+      "downvotes": 0,
+      "userVote": null
+    },
+    "promptTips": [
+      {
+        "title": "General Use",
+        "snippet": "Help me use Videos & Podcasts effectively for [your specific goal]"
+      },
+      {
+        "title": "Best Practices",
+        "snippet": "What are the best practices for using Videos & Podcasts in [context]?"
       }
     ]
   },
