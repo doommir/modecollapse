@@ -372,6 +372,7 @@ export function ModeCollapseDirectory({
   const [sortBy, setSortBy] = useState("consciousness");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
 
   // Filter and sort tools
   const filteredTools = tools
@@ -423,7 +424,7 @@ export function ModeCollapseDirectory({
       {/* Header */}
       <div className="border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <motion.h1 
               className="text-4xl md:text-6xl font-bold mb-4"
               initial={{ opacity: 0, y: 20 }}
@@ -434,7 +435,7 @@ export function ModeCollapseDirectory({
               </span>
             </motion.h1>
             <motion.p 
-              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -442,42 +443,139 @@ export function ModeCollapseDirectory({
               Escape the algorithmic trance. Discover consciousness-expanding AI tools 
               curated by humans who understand the difference between automation and awakening.
             </motion.p>
+            
+            {/* Primary CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
+            >
+              <Button size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Brain className="w-5 h-5 mr-2" />
+                Discover Tools Now
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-lg px-8 py-6"
+                onClick={() => setShowHowItWorks(!showHowItWorks)}
+              >
+                <Sparkles className="w-5 h-5 mr-2" />
+                {showHowItWorks ? 'Hide Guide' : 'How It Works'}
+              </Button>
+            </motion.div>
+
+            {/* Quick Stats */}
+            <motion.div 
+              className="flex justify-center gap-8 text-sm text-muted-foreground"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="flex items-center gap-1">
+                <Shield className="w-4 h-4" />
+                <span>{filteredTools.length} Curated Tools</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Crown className="w-4 h-4" />
+                <span>{filteredTools.filter(t => t.isCuratorPick).length} Expert Picks</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Brain className="w-4 h-4" />
+                <span>Consciousness Rated</span>
+              </div>
+            </motion.div>
+
+            {/* How It Works Section */}
+            <AnimatePresence>
+              {showHowItWorks && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-8 p-6 bg-muted/30 rounded-xl border border-border/50 max-w-4xl mx-auto"
+                >
+                  <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <Brain className="w-6 h-6 text-blue-500" />
+                    Understanding Consciousness Ratings
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-6 text-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                        <span className="text-green-600 dark:text-green-400 font-bold">5</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-green-600 dark:text-green-400">Peak Consciousness</div>
+                        <p className="text-muted-foreground">Tools that enhance human agency, promote critical thinking, and expand awareness.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center">
+                        <span className="text-yellow-600 dark:text-yellow-400 font-bold">3</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-yellow-600 dark:text-yellow-400">Moderate Awareness</div>
+                        <p className="text-muted-foreground">Useful tools with some limitations. Use mindfully to maintain agency.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                        <span className="text-red-600 dark:text-red-400 font-bold">1</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-red-600 dark:text-red-400">Use With Caution</div>
+                        <p className="text-muted-foreground">May encourage dependency or mindless consumption. Approach deliberately.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-6 p-4 bg-background/50 rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      💡 <strong>Our Mission:</strong> We rate tools not just on functionality, but on their potential to expand human consciousness and maintain personal agency in an age of algorithmic dependence.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          {/* Search and Filters */}
-          <div className="space-y-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          {/* Simplified Search */}
+          <div className="space-y-6">
+            <div className="max-w-2xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
                 <Input
-                  placeholder="Search consciousness-expanding tools..."
+                  placeholder="Search for AI tools by name, category, or purpose..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="pl-12 pr-4 py-3 text-lg bg-background/50 border-2 border-border/50 focus:border-primary/50 rounded-xl"
                 />
               </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="flex items-center gap-2"
-                >
-                  <Filter className="w-4 h-4" />
-                  Filters
-                  {(selectedPricing.length > 0) && (
-                    <Badge variant="secondary" className="ml-1">
-                      {selectedPricing.length}
-                    </Badge>
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
-                >
-                  {viewMode === "grid" ? <List className="w-4 h-4" /> : <Grid className="w-4 h-4" />}
-                </Button>
-              </div>
+            </div>
+            
+            {/* Advanced Controls - Collapsed by default */}
+            <div className="flex justify-center gap-4">
+              <Button
+                variant="outline"
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2"
+              >
+                <Filter className="w-4 h-4" />
+                {showFilters ? 'Hide' : 'Show'} Filters
+                {(selectedPricing.length > 0) && (
+                  <Badge variant="secondary" className="ml-1">
+                    {selectedPricing.length}
+                  </Badge>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+                className="flex items-center gap-2"
+              >
+                {viewMode === "grid" ? <List className="w-4 h-4" /> : <Grid className="w-4 h-4" />}
+                {viewMode === "grid" ? 'List View' : 'Grid View'}
+              </Button>
             </div>
 
             {/* Advanced Filters */}
@@ -550,41 +648,97 @@ export function ModeCollapseDirectory({
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Results Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-semibold">
-              {selectedCategory === "all" ? "All Tools" : categories.find(c => c.id === selectedCategory)?.name}
-            </h2>
-            <Badge variant="outline" className="text-sm">
-              {filteredTools.length} consciousness-expanding tools
-            </Badge>
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        
+        {/* Featured Tools Section */}
+        {filteredTools.filter(tool => tool.isCuratorPick).length > 0 && (
+          <motion.section 
+            className="mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-2 flex items-center justify-center gap-3">
+                <Crown className="w-8 h-8 text-yellow-500" />
+                Curator's Picks
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Hand-selected tools that have proven their worth in expanding consciousness and enhancing human capability.
+              </p>
+            </div>
+            
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredTools.filter(tool => tool.isCuratorPick).slice(0, 6).map((tool) => (
+                <ToolCard
+                  key={`featured-${tool.slug}`}
+                  tool={tool}
+                  onBookmark={handleBookmark}
+                  onShare={handleShare}
+                  onVote={handleVote}
+                />
+              ))}
+            </div>
+          </motion.section>
+        )}
 
-        {/* Tools Grid */}
-        <motion.div
-          layout
-          className={cn(
-            "grid gap-6",
-            viewMode === "grid" 
-              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-              : "grid-cols-1"
-          )}
+        {/* All Tools Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
         >
-          <AnimatePresence mode="popLayout">
-            {filteredTools.map((tool) => (
-              <ToolCard
-                key={tool.slug}
-                tool={tool}
-                onBookmark={handleBookmark}
-                onShare={handleShare}
-                onVote={handleVote}
-              />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <h2 className="text-3xl font-bold flex items-center gap-3">
+                <Sparkles className="w-8 h-8 text-blue-500" />
+                {selectedCategory === "all" ? "All Tools" : categories.find(c => c.id === selectedCategory)?.name}
+              </h2>
+              <Badge variant="outline" className="text-sm">
+                {filteredTools.length} tools
+              </Badge>
+            </div>
+            
+            {/* Sort Options */}
+            <div className="hidden md:flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-3 py-1 rounded-md border border-border bg-background text-sm"
+              >
+                <option value="consciousness">Consciousness Score</option>
+                <option value="curated">Curator's Picks</option>
+                <option value="trending">Trending</option>
+                <option value="votes">Most Upvoted</option>
+                <option value="newest">Newest</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Tools Grid */}
+          <motion.div
+            layout
+            className={cn(
+              "grid gap-6",
+              viewMode === "grid" 
+                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "grid-cols-1"
+            )}
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredTools.map((tool) => (
+                <ToolCard
+                  key={tool.slug}
+                  tool={tool}
+                  onBookmark={handleBookmark}
+                  onShare={handleShare}
+                  onVote={handleVote}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </motion.section>
 
         {/* Empty State */}
         {filteredTools.length === 0 && (
