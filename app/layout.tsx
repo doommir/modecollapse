@@ -1,3 +1,4 @@
+import Script from "next/script";
 import type { Metadata } from 'next'
 import './globals.css'
 import { Navigation } from '@/components/layout'
@@ -24,7 +25,9 @@ export default function RootLayout({
           <SpeedInsights />
           <Analytics />
         </main>
-      </body>
+      <Script id="novapath-traffic" strategy="afterInteractive" src="/novapath-traffic.js" data-np-hosts="modecollapse.io,modecollapse.vercel.app,www.modecollapse.io" data-np-paths='["/","/tools"]' data-np-privacy="/analytics-privacy.html" />
+</body>
     </html>
   )
 }
+
